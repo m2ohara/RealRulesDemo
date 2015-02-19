@@ -13,7 +13,7 @@ public class DemoGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		img = new Texture("screens//TitleScreen.png");
 	}
 
 	@Override
@@ -24,4 +24,14 @@ public class DemoGame extends ApplicationAdapter {
 		batch.draw(img, 0, 0);
 		batch.end();
 	}
+	
+	private void setTitleScreen() {
+		
+	}
+	
+	private void setTutorialScreen() {
+		
+	}
+	
+	
 }
