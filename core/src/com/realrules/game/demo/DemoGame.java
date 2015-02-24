@@ -33,5 +33,11 @@ public class DemoGame extends ApplicationAdapter {
 		
 	}
 	
+	private void setIdeaCreationScreen() {
+		
+		img = new Texture("screens//TitleScreen.png");
+		
+	}
+	
 	
 }
