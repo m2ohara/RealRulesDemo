@@ -1,0 +1,47 @@
+
+buttonsPack.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+CreateSpeechBtn
+  rotate: false
+  xy: 1, 81
+  size: 240, 40
+  orig: 240, 40
+  offset: 0, 0
+  index: -1
+DebateBtn
+  rotate: false
+  xy: 1, 39
+  size: 240, 40
+  orig: 240, 40
+  offset: 0, 0
+  index: -1
+PlayGameBtn
+  rotate: false
+  xy: 243, 81
+  size: 240, 40
+  orig: 240, 40
+  offset: 0, 0
+  index: -1
+PlayExpressionBtn
+  rotate: false
+  xy: 243, 1
+  size: 77, 78
+  orig: 77, 78
+  offset: 0, 0
+  index: -1
+ImproveBtn
+  rotate: false
+  xy: 322, 9
+  size: 71, 70
+  orig: 71, 70
+  offset: 0, 0
+  index: -1
+IdeasBtn
+  rotate: false
+  xy: 395, 12
+  size: 68, 67
+  orig: 68, 67
+  offset: 0, 0
+  index: -1
