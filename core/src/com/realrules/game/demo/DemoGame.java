@@ -1,12 +1,11 @@
 package com.realrules.game.demo;
 
-import java.util.List;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -40,7 +39,10 @@ public class DemoGame extends ApplicationAdapter {
 	public void render () {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.begin();
 		stage.draw();
+		stage.act();
+		batch.end();
 	}
 	
 	private void setTitleScreen() {
@@ -91,18 +93,18 @@ public class DemoGame extends ApplicationAdapter {
 	private void setDebateScreen() {
 		setToStage(getImage("DebateScreen", "screens//screensPack"), 0, 0);
 		
-		Actor player = getImage("PlayerSprite", "sprites//");
-		setToStage(player, -50, 0);
+//		Actor player = getImage("PlayerSprite", "sprites//");
+		setToStage(new Character("playerPack", -90, 30), -90, 30);
 		
-		player.addAction(new Action() {
-
-			@Override
-			public boolean act(float delta) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		
-		});
+//		player.addAction(new Action() {
+//
+//			@Override
+//			public boolean act(float delta) {
+//				// TODO Auto-generated method stub
+//				return false;
+//			}
+//		
+//		});
 	}
 	
 	private Actor getButton(String type) {
@@ -161,39 +163,39 @@ public class DemoGame extends ApplicationAdapter {
 	}
 	
 	public class Character extends Image {
-		
-	    TextureRegion[] argueFrames;
+	
 	    private String type;
+	    private float x;
+	    private float y;
 	    private TextureRegion currentFrame;
 	    
 	    public Animation argue;
 	    public Actor actor;
 		
-		public Character(String type) {
+		public Character(String type, float x, float y) {
+			super(new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first());
 			this.type = type;
-			
+			this.x = x;
+			this.y = y;
+			currentFrame = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first();
 			createAnimation();
 			
 		}
 		
-		private Character() {
-			super(argueFrames[0]);
-		}
-		
-		private TextureRegion getTextureRegion(String type) {
-			TextureAtlas txAtlas;
-			
-			txAtlas = new TextureAtlas(Gdx.files.internal("sprites//"+type+".png"));
-			
-			TextureRegion txRegion = txAtlas.findRegion(type);
-			
-			return txRegion;
-		}
+//		private TextureRegion getTextureRegion(String type) {
+//			TextureAtlas txAtlas;
+//			
+//			txAtlas = new TextureAtlas(Gdx.files.internal("sprites//"+type+".png"));
+//			
+//			TextureRegion txRegion = txAtlas.findRegion(type);
+//			
+//			return txRegion;
+//		}
 		
 		private void createAnimation() {
 			TextureAtlas txAtlas;
 			
-			txAtlas = new TextureAtlas(Gdx.files.internal("sprites//"+type+".png"));
+			txAtlas = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack"));
 			Array<AtlasRegion> regions  = (Array<AtlasRegion>) txAtlas.getRegions();
 
 			argue = new Animation(0.25f, regions);
@@ -201,14 +203,21 @@ public class DemoGame extends ApplicationAdapter {
 		}
 		
 		private void setCurrentFrame() {
-			currentFrame =  argue.getKeyFrame(Gdx.graphics.getDeltaTime(), true);
+			currentFrame =  argue.getKeyFrame(0.0001f, true);
+//			this.setDrawable(new TextureRegionDrawable(currentFrame));
 		}
 		
-		   @Override
+		@Override
 		public void act(float delta )
 		{
-		        super.act( delta );
-		        setCurrentFrame();
+			super.act( delta );
+			setCurrentFrame();
+		}
+
+		@Override
+		public void draw(Batch batch, float alpha){
+			batch.draw(currentFrame,0,260);
+			
 		}
 	}
 
