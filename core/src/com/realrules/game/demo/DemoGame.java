@@ -1,5 +1,7 @@
 package com.realrules.game.demo;
 
+import java.util.Random;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -93,18 +94,16 @@ public class DemoGame extends ApplicationAdapter {
 	private void setDebateScreen() {
 		setToStage(getImage("DebateScreen", "screens//screensPack"), 0, 0);
 		
-//		Actor player = getImage("PlayerSprite", "sprites//");
-		setToStage(new Character("playerPack", -90, 30), -90, 30);
+		setToStage(new Character("playerPack", 0, 260), -90, 30);
+		setToStage(new Character("opponentPack", 230, 265), 90, 30);
 		
-//		player.addAction(new Action() {
-//
-//			@Override
-//			public boolean act(float delta) {
-//				// TODO Auto-generated method stub
-//				return false;
-//			}
-//		
-//		});
+		new BlinkingIcon("SpeechBubbleLeft", 100, 320, 50);
+		new BlinkingIcon("SpeechBubbleRight", 100, 250, 40);
+//		new RandomBlinkingExpression("ExpressionSmall1", 130, 350, 50);
+		
+		setToStage(getButton("IdeasBtn"), -130, -230);
+		setToStage(getButton("ImproveBtn"), 0, -230);
+		setToStage(getButton("PlayExpressionBtn"), 130, -230);
 	}
 	
 	private Actor getButton(String type) {
@@ -133,16 +132,6 @@ public class DemoGame extends ApplicationAdapter {
 		return new Image(txSkin.getDrawable(type));
 	}
 	
-	private TextureRegion getTextureRegion(String type) {
-		
-		TextureAtlas txAtlas;
-		
-		txAtlas = new TextureAtlas(Gdx.files.internal("sprites//"+type+".png"));
-		TextureRegion txRegion = txAtlas.findRegion(type);
-		
-		return txRegion;
-	}
-	
 	public void setToStage(Actor actor, float _xCentreOffset, float _yCentreOffset) {
 		
 		setRelativePosition(actor, _xCentreOffset, _yCentreOffset);
@@ -162,35 +151,27 @@ public class DemoGame extends ApplicationAdapter {
 		actorToSet.setPosition(x, y);
 	}
 	
+	//***************Character class
 	public class Character extends Image {
 	
 	    private String type;
 	    private float x;
 	    private float y;
 	    private TextureRegion currentFrame;
-	    
-	    public Animation argue;
-	    public Actor actor;
+	    private float stateTime;
+	    private Animation argue;
 		
 		public Character(String type, float x, float y) {
 			super(new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first());
 			this.type = type;
 			this.x = x;
 			this.y = y;
+			this.stateTime = 0f;
 			currentFrame = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first();
 			createAnimation();
+
 			
 		}
-		
-//		private TextureRegion getTextureRegion(String type) {
-//			TextureAtlas txAtlas;
-//			
-//			txAtlas = new TextureAtlas(Gdx.files.internal("sprites//"+type+".png"));
-//			
-//			TextureRegion txRegion = txAtlas.findRegion(type);
-//			
-//			return txRegion;
-//		}
 		
 		private void createAnimation() {
 			TextureAtlas txAtlas;
@@ -203,8 +184,8 @@ public class DemoGame extends ApplicationAdapter {
 		}
 		
 		private void setCurrentFrame() {
-			currentFrame =  argue.getKeyFrame(0.0001f, true);
-//			this.setDrawable(new TextureRegionDrawable(currentFrame));
+			stateTime += Gdx.graphics.getDeltaTime();
+			currentFrame =  argue.getKeyFrame(stateTime, true);
 		}
 		
 		@Override
@@ -216,9 +197,96 @@ public class DemoGame extends ApplicationAdapter {
 
 		@Override
 		public void draw(Batch batch, float alpha){
-			batch.draw(currentFrame,0,260);
+			batch.draw(currentFrame,x,y);
+		}
+	}
+	
+	//*****************Blinking icon class
+	public class BlinkingIcon extends Image {
+		
+	    protected float x;
+	    protected float y;
+	    protected TextureRegion currentFrame;
+	    protected float stateTime;
+	    protected boolean drawImage;
+	    protected int displayInterval;
+		
+		public BlinkingIcon(String type, float x, float y, int displayInterval) {
+			super(new TextureAtlas(Gdx.files.internal("icons//iconsPack.pack")).findRegion(type));
+			currentFrame = getTextureRegionFromPack(type);
+			stateTime = 0f;
+			this.x = x;
+			this.y = y;
+			this.displayInterval = displayInterval;
+			setToStage(this, 0, -400);
+		}
+		
+		@Override
+		public void act(float delta )
+		{
+			super.act( delta );
+			
+			//Draw at regular intervals
+			if(stateTime >= delta * displayInterval) {
+				stateTime = 0f;
+				drawImage = drawImage == false ? true : false;
+			}
+			else {
+				stateTime += Gdx.graphics.getDeltaTime();
+			}
 			
 		}
+
+		@Override
+		public void draw(Batch batch, float alpha){
+			if(drawImage)
+				batch.draw(currentFrame,x,y);
+		}
+		
+		protected TextureRegion getTextureRegionFromPack(String type) {
+			
+			TextureAtlas txAtlas;
+			
+			txAtlas = new TextureAtlas(Gdx.files.internal("icons//iconsPack.pack"));
+			TextureRegion txRegion = txAtlas.findRegion(type);
+			
+			return txRegion;
+		}
+		
+	}
+	
+	public class RandomBlinkingExpression extends BlinkingIcon {
+		
+		private static final int expressionLength = 5;
+
+		public RandomBlinkingExpression(String expressionType, float x, float y,
+				int displayInterval) {
+			super(expressionType, x, y, displayInterval);
+			// TODO Auto-generated constructor stub
+		}
+		
+		private String getRandomExpressionType() {
+			String exp = "ExpressionSmall"+(new Random().nextInt(expressionLength)+1);
+			return exp;
+		}
+		
+		@Override
+		public void act(float delta )
+		{
+			super.act( delta );
+			
+			//Draw at regular intervals
+			if(stateTime >= delta * displayInterval) {
+				stateTime = 0f;
+				drawImage = drawImage == false ? true : false;
+				currentFrame = getTextureRegionFromPack(getRandomExpressionType());
+			}
+			else {
+				stateTime += Gdx.graphics.getDeltaTime();
+			}
+			
+		}
+		
 	}
 
 }
