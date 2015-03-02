@@ -5,6 +5,7 @@ import java.util.Random;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -22,16 +23,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class DemoGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture background;
 	public Stage stage;
+	OrthographicCamera camera;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		stage = new Stage();
+		StretchViewport viewport = new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		stage = new Stage(viewport);
 		Gdx.input.setInputProcessor(stage);
 		setTitleScreen();
 	}
@@ -44,6 +48,11 @@ public class DemoGame extends ApplicationAdapter {
 		stage.draw();
 		stage.act();
 		batch.end();
+	}
+	
+	@Override
+	public void resize(int width, int heigth) {
+	    stage.getViewport().update(width/2, heigth, true);
 	}
 	
 	private void setTitleScreen() {
@@ -94,12 +103,18 @@ public class DemoGame extends ApplicationAdapter {
 	private void setDebateScreen() {
 		setToStage(getImage("DebateScreen", "screens//screensPack"), 0, 0);
 		
-		setToStage(new Character("playerPack", 0, 260), -90, 30);
-		setToStage(new Character("opponentPack", 230, 265), 90, 30);
+		setToStage(new Character("playerPack", 350, 920), -90, 30);
+		setToStage(new Character("opponentPack", 550, 925), 90, 30);
 		
-		new BlinkingIcon("SpeechBubbleLeft", 100, 320, 50);
-		new BlinkingIcon("SpeechBubbleRight", 100, 250, 40);
+		new BlinkingIcon("SpeechBubbleLeft", 450, 980, 50);
+		new BlinkingIcon("SpeechBubbleRight", 450, 910, 40);
 //		new RandomBlinkingExpression("ExpressionSmall1", 130, 350, 50);
+		
+//		setToStage(new Character("playerPack", 0, 260), -90, 30);
+//		setToStage(new Character("opponentPack", 230, 265), 90, 30);
+//		
+//		new BlinkingIcon("SpeechBubbleLeft", 100, 320, 50);
+//		new BlinkingIcon("SpeechBubbleRight", 100, 250, 40);
 		
 		setToStage(getButton("IdeasBtn"), -130, -230);
 		setToStage(getButton("ImproveBtn"), 0, -230);
