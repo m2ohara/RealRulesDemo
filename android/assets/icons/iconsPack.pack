@@ -5,140 +5,147 @@ filter: Nearest,Nearest
 repeat: none
 Scroll
   rotate: false
-  xy: 1, 181
+  xy: 1, 179
   size: 381, 291
   orig: 381, 291
   offset: 0, 0
   index: -1
-SpeechBubbleLeft
+SpeechBubbleRight
   rotate: false
-  xy: 1, 19
+  xy: 1, 17
   size: 190, 160
   orig: 190, 160
   offset: 0, 0
   index: -1
-SpeechBubbleRight
+SpeechBubbleLeft
   rotate: false
-  xy: 384, 312
+  xy: 384, 310
   size: 190, 160
   orig: 190, 160
   offset: 0, 0
   index: -1
 Expression6
   rotate: false
-  xy: 193, 62
+  xy: 193, 60
   size: 111, 117
   orig: 111, 117
   offset: 0, 0
   index: -1
 Expression9
   rotate: false
-  xy: 384, 193
+  xy: 384, 191
   size: 108, 117
   orig: 108, 117
   offset: 0, 0
   index: -1
 Expression2
   rotate: false
-  xy: 576, 355
+  xy: 576, 353
   size: 107, 117
   orig: 107, 117
   offset: 0, 0
   index: -1
-Expression5
+Expression7
   rotate: false
-  xy: 685, 359
+  xy: 685, 357
   size: 111, 113
   orig: 111, 113
   offset: 0, 0
   index: -1
-Expression7
+Expression5
   rotate: false
-  xy: 798, 359
+  xy: 798, 357
   size: 111, 113
   orig: 111, 113
   offset: 0, 0
   index: -1
 Expression1
   rotate: false
-  xy: 911, 359
+  xy: 911, 357
   size: 108, 113
   orig: 108, 113
   offset: 0, 0
   index: -1
 Expression3
   rotate: false
-  xy: 494, 197
+  xy: 494, 195
+  size: 107, 113
+  orig: 107, 113
+  offset: 0, 0
+  index: -1
+Expression8
+  rotate: false
+  xy: 306, 64
   size: 107, 113
   orig: 107, 113
   offset: 0, 0
   index: -1
 Expression4
   rotate: false
-  xy: 306, 66
+  xy: 415, 76
   size: 108, 113
   orig: 108, 113
   offset: 0, 0
   index: -1
-Expression8
+ExpressionBox
   rotate: false
-  xy: 416, 78
-  size: 107, 113
-  orig: 107, 113
-  offset: 0, 0
-  index: -1
-ExpressionSmall6
-  rotate: false
-  xy: 525, 136
-  size: 57, 59
-  orig: 57, 59
+  xy: 525, 119
+  size: 64, 74
+  orig: 64, 74
   offset: 0, 0
   index: -1
 ExpressionSmall7
   rotate: false
-  xy: 525, 77
+  xy: 193, 1
   size: 57, 57
   orig: 57, 57
   offset: 0, 0
   index: -1
-ExpressionSmall1
+ExpressionSmall3
   rotate: false
-  xy: 193, 3
+  xy: 252, 1
   size: 54, 57
   orig: 54, 57
   offset: 0, 0
   index: -1
-ExpressionSmall2
+ExpressionSmall6
   rotate: false
-  xy: 249, 1
-  size: 54, 59
-  orig: 54, 59
+  xy: 308, 3
+  size: 57, 59
+  orig: 57, 59
   offset: 0, 0
   index: -1
 ExpressionSmall9
   rotate: false
-  xy: 584, 136
+  xy: 367, 3
   size: 54, 59
   orig: 54, 59
   offset: 0, 0
   index: -1
-ExpressionSmall3
+ExpressionSmall2
   rotate: false
-  xy: 584, 77
-  size: 54, 57
-  orig: 54, 57
+  xy: 423, 15
+  size: 54, 59
+  orig: 54, 59
   offset: 0, 0
   index: -1
 ExpressionSmall4
   rotate: false
-  xy: 603, 296
+  xy: 479, 17
   size: 54, 57
   orig: 54, 57
   offset: 0, 0
   index: -1
 ExpressionSmall8
   rotate: false
-  xy: 603, 237
+  xy: 603, 294
+  size: 54, 57
+  orig: 54, 57
+  offset: 0, 0
+  index: -1
+ExpressionSmall1
+  rotate: false
+  xy: 603, 235
   size: 54, 57
   orig: 54, 57
   offset: 0, 0

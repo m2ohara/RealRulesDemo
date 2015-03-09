@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -34,8 +35,11 @@ public class DemoGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		StretchViewport viewport = new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		OrthographicCamera camera = new OrthographicCamera(1080, 1520);
+		StretchViewport viewport = new StretchViewport(1080, 1920);
+		camera.zoom = 0.38f;
 		stage = new Stage(viewport);
+		stage.getViewport().setCamera(camera);
 		Gdx.input.setInputProcessor(stage);
 		setTitleScreen();
 	}
@@ -52,7 +56,7 @@ public class DemoGame extends ApplicationAdapter {
 	
 	@Override
 	public void resize(int width, int heigth) {
-	    stage.getViewport().update(width/2, heigth, true);
+	    stage.getViewport().update(width, heigth, true);
 	}
 	
 	private void setTitleScreen() {
@@ -103,22 +107,70 @@ public class DemoGame extends ApplicationAdapter {
 	private void setDebateScreen() {
 		setToStage(getImage("DebateScreen", "screens//screensPack"), 0, 0);
 		
-		setToStage(new Character("playerPack", 350, 920), -90, 30);
-		setToStage(new Character("opponentPack", 550, 925), 90, 30);
+		final Character player = new Character("playerPack", 350, 920);
+		setToStage(player, -90, 30);
+		final Character opponent = new Character("opponentPack", 550, 925);
+		setToStage(opponent, 90, 30);
 		
-		new BlinkingIcon("SpeechBubbleLeft", 450, 980, 50);
-		new BlinkingIcon("SpeechBubbleRight", 450, 910, 40);
-//		new RandomBlinkingExpression("ExpressionSmall1", 130, 350, 50);
 		
-//		setToStage(new Character("playerPack", 0, 260), -90, 30);
-//		setToStage(new Character("opponentPack", 230, 265), 90, 30);
-//		
-//		new BlinkingIcon("SpeechBubbleLeft", 100, 320, 50);
-//		new BlinkingIcon("SpeechBubbleRight", 100, 250, 40);
+		setToStage(getImage("SpeechBubbleLeft", "icons//iconsPack"), 0, 120);
 		
-		setToStage(getButton("IdeasBtn"), -130, -230);
+		setToStage(getImage("ExpressionBox", "icons//iconsPack"), -130, -100);
+		setToStage(getImage("ExpressionBox", "icons//iconsPack"), -65, -100);
+		setToStage(getImage("ExpressionBox", "icons//iconsPack"), 65, -100);
+		setToStage(getImage("ExpressionBox", "icons//iconsPack"), 130, -100);
+		
+		
+		final ActionFactory actionFactory = new ActionFactory();
+		final Actor btn1 = getButton("ExpressionSmall1");
+		setToStage(btn1, -130, -100);
+		
+		btn1.addListener(new ClickListener() {
+			 public void clicked(InputEvent event, float x, float y) {
+				 actionFactory.setMoveToAction(btn1, 540, 1100, 0.3f);
+				 player.createAnimation();
+			 }
+		});
+		
+		final Actor btn2 = getButton("ExpressionSmall2");
+		setToStage(btn2, -65, -100);
+		btn2.addListener(new ClickListener() {
+			 public void clicked(InputEvent event, float x, float y) {
+				 actionFactory.setMoveToAction(btn2, 540, 1100, 0.3f);
+				 player.createAnimation();
+			 }
+		});
+		
+		final Actor btn3 = getButton("ExpressionSmall3");
+		setToStage(btn3, 65, -100);
+		btn3.addListener(new ClickListener() {
+			 public void clicked(InputEvent event, float x, float y) {
+				 actionFactory.setMoveToAction(btn3, 540, 1100, 0.3f);
+				 player.createAnimation();
+			 }
+		});
+		
+		final Actor btn4 = getButton("ExpressionSmall4");
+		setToStage(btn4, 130, -100);
+		btn4.addListener(new ClickListener() {
+			 public void clicked(InputEvent event, float x, float y) {
+				 actionFactory.setMoveToAction(btn4, 540, 1100, 0.3f);
+				 player.createAnimation();
+			 }
+		});
+		
+		Actor playBtn = getButton("PlayExpressionBtn");
+		setToStage(playBtn, 130, -230);
+		playBtn.addListener(new ClickListener() {
+			 public void clicked(InputEvent event, float x, float y) {
+				 setToStage(getImage("SpeechBubbleRight", "icons//iconsPack"), 0, 40);
+				 setToStage(getImage("ExpressionSmall6", "icons//iconsPack"), 10, 90);
+				 opponent.createAnimation();
+			 }
+		});
+		
 		setToStage(getButton("ImproveBtn"), 0, -230);
-		setToStage(getButton("PlayExpressionBtn"), 130, -230);
+		setToStage(getButton("IdeasBtn"), -130, -230);
 	}
 	
 	private Actor getButton(String type) {
@@ -183,12 +235,11 @@ public class DemoGame extends ApplicationAdapter {
 			this.y = y;
 			this.stateTime = 0f;
 			currentFrame = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first();
-			createAnimation();
 
 			
 		}
 		
-		private void createAnimation() {
+		public void createAnimation() {
 			TextureAtlas txAtlas;
 			
 			txAtlas = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack"));
@@ -206,8 +257,10 @@ public class DemoGame extends ApplicationAdapter {
 		@Override
 		public void act(float delta )
 		{
-			super.act( delta );
-			setCurrentFrame();
+			if(argue != null) {
+				super.act( delta );
+				setCurrentFrame();
+			}
 		}
 
 		@Override
@@ -300,6 +353,30 @@ public class DemoGame extends ApplicationAdapter {
 				stateTime += Gdx.graphics.getDeltaTime();
 			}
 			
+		}
+		
+	}
+	
+	public class ActionFactory extends Image {
+		
+	    private TextureRegion currentFrame;
+		
+		public ActionFactory() {
+		}
+		
+		public void setMoveToAction(Actor actor, int x, int y, float duration) {
+			MoveToAction moveTo = new MoveToAction();
+			
+			moveTo.setPosition(x, y);
+			moveTo.setDuration(duration);
+			
+			actor.addAction(moveTo);
+			
+		}
+		
+		@Override
+		public void draw(Batch batch, float alpha){
+//			batch.draw(currentFrame,x,y);
 		}
 		
 	}
