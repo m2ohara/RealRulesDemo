@@ -35,13 +35,18 @@ public class DemoGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		OrthographicCamera camera = new OrthographicCamera(1080, 1520);
-		StretchViewport viewport = new StretchViewport(1080, 1920);
-		camera.zoom = 0.38f;
-		stage = new Stage(viewport);
-		stage.getViewport().setCamera(camera);
+		setView();
 		Gdx.input.setInputProcessor(stage);
 		setTitleScreen();
+	}
+	
+	private void setView() {
+//		OrthographicCamera camera = new OrthographicCamera(1080, 1520);
+//		StretchViewport viewport = new StretchViewport(1080, 1920);
+//		camera.zoom = 0.38f;
+//		stage = new Stage(viewport);
+//		stage.getViewport().setCamera(camera);
+		stage = new Stage();
 	}
 
 	@Override
@@ -105,11 +110,29 @@ public class DemoGame extends ApplicationAdapter {
 	}
 	
 	private void setDebateScreen() {
-		setToStage(getImage("DebateScreen", "screens//screensPack"), 0, 0);
 		
-		final Character player = new Character("playerPack", 350, 920);
+		//Desktop
+//		final int expX = 190;
+//		final int expY = 440;
+//		int plX = 0;
+//		int plY = 260;
+//		int oppX = 230;
+//		int oppY = 265;
+		
+		//Android
+		//Diff: ~350, ~480
+		final int expX = 540;
+		final int expY = 1100;
+		int plX = 350;
+		int plY = 920;
+		int oppX = 550;
+		int oppY = 925;
+		
+		setToStage(getImage("DebateScreen", "screens//screensPack"), 0, 0);
+
+		final Character player = new Character("playerPack", plX, plY);
 		setToStage(player, -90, 30);
-		final Character opponent = new Character("opponentPack", 550, 925);
+		final Character opponent = new Character("opponentPack", oppX, oppY);
 		setToStage(opponent, 90, 30);
 		
 		
@@ -120,14 +143,13 @@ public class DemoGame extends ApplicationAdapter {
 		setToStage(getImage("ExpressionBox", "icons//iconsPack"), 65, -100);
 		setToStage(getImage("ExpressionBox", "icons//iconsPack"), 130, -100);
 		
-		
 		final ActionFactory actionFactory = new ActionFactory();
 		final Actor btn1 = getButton("ExpressionSmall1");
 		setToStage(btn1, -130, -100);
 		
 		btn1.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
-				 actionFactory.setMoveToAction(btn1, 540, 1100, 0.3f);
+				 actionFactory.setMoveToAction(btn1, expX, expY, 0.3f);
 				 player.createAnimation();
 			 }
 		});
@@ -136,7 +158,7 @@ public class DemoGame extends ApplicationAdapter {
 		setToStage(btn2, -65, -100);
 		btn2.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
-				 actionFactory.setMoveToAction(btn2, 540, 1100, 0.3f);
+				 actionFactory.setMoveToAction(btn2, expX, expY, 0.3f);
 				 player.createAnimation();
 			 }
 		});
@@ -145,7 +167,7 @@ public class DemoGame extends ApplicationAdapter {
 		setToStage(btn3, 65, -100);
 		btn3.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
-				 actionFactory.setMoveToAction(btn3, 540, 1100, 0.3f);
+				 actionFactory.setMoveToAction(btn3, expX, expY, 0.3f);
 				 player.createAnimation();
 			 }
 		});
@@ -154,7 +176,7 @@ public class DemoGame extends ApplicationAdapter {
 		setToStage(btn4, 130, -100);
 		btn4.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
-				 actionFactory.setMoveToAction(btn4, 540, 1100, 0.3f);
+				 actionFactory.setMoveToAction(btn4, expX, expY, 0.3f);
 				 player.createAnimation();
 			 }
 		});
@@ -165,12 +187,22 @@ public class DemoGame extends ApplicationAdapter {
 			 public void clicked(InputEvent event, float x, float y) {
 				 setToStage(getImage("SpeechBubbleRight", "icons//iconsPack"), 0, 40);
 				 setToStage(getImage("ExpressionSmall6", "icons//iconsPack"), 10, 90);
+				 Actor OppWave = new BlinkingIcon("SoundWave2", 130, 295, 20);
+				 Actor PlWave = new BlinkingIcon("SoundWave1", 110, 370, 22);
 				 opponent.createAnimation();
 			 }
 		});
 		
 		setToStage(getButton("ImproveBtn"), 0, -230);
-		setToStage(getButton("IdeasBtn"), -130, -230);
+
+
+		Actor ideasBtn = getButton("IdeasBtn");
+		setToStage(ideasBtn, -130, -230);
+		ideasBtn.addListener(new ClickListener() {
+			 public void clicked(InputEvent event, float x, float y) {
+				setToStage(getImage("Scroll", "icons//iconsPack"), 0, -60);
+			 }
+		});
 	}
 	
 	private Actor getButton(String type) {
@@ -286,7 +318,7 @@ public class DemoGame extends ApplicationAdapter {
 			this.x = x;
 			this.y = y;
 			this.displayInterval = displayInterval;
-			setToStage(this, 0, -400);
+			setToStage(this, x, y);
 		}
 		
 		@Override
@@ -371,6 +403,10 @@ public class DemoGame extends ApplicationAdapter {
 			moveTo.setDuration(duration);
 			
 			actor.addAction(moveTo);
+			
+		}
+		
+		public void setFightAction(Actor actor, int x, int y, float duration) {
 			
 		}
 		
