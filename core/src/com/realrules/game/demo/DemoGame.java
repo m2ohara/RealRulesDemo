@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,6 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TransformDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -41,12 +43,12 @@ public class DemoGame extends ApplicationAdapter {
 	}
 	
 	private void setView() {
-//		OrthographicCamera camera = new OrthographicCamera(1080, 1520);
-//		StretchViewport viewport = new StretchViewport(1080, 1920);
-//		camera.zoom = 0.38f;
-//		stage = new Stage(viewport);
-//		stage.getViewport().setCamera(camera);
-		stage = new Stage();
+		OrthographicCamera camera = new OrthographicCamera(1080, 1520);
+		StretchViewport viewport = new StretchViewport(1080, 1920);
+		camera.zoom = 0.38f;
+		stage = new Stage(viewport);
+		stage.getViewport().setCamera(camera);
+//		stage = new Stage();
 	}
 
 	@Override
@@ -168,7 +170,6 @@ public class DemoGame extends ApplicationAdapter {
 		btn3.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
 				 actionFactory.setMoveToAction(btn3, expX, expY, 0.3f);
-				 player.createAnimation();
 			 }
 		});
 		
@@ -177,7 +178,7 @@ public class DemoGame extends ApplicationAdapter {
 		btn4.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
 				 actionFactory.setMoveToAction(btn4, expX, expY, 0.3f);
-				 player.createAnimation();
+
 			 }
 		});
 		
@@ -187,9 +188,10 @@ public class DemoGame extends ApplicationAdapter {
 			 public void clicked(InputEvent event, float x, float y) {
 				 setToStage(getImage("SpeechBubbleRight", "icons//iconsPack"), 0, 40);
 				 setToStage(getImage("ExpressionSmall6", "icons//iconsPack"), 10, 90);
-				 Actor OppWave = new BlinkingIcon("SoundWave2", 130, 295, 20);
-				 Actor PlWave = new BlinkingIcon("SoundWave1", 110, 370, 22);
+				 player.createAnimation();
 				 opponent.createAnimation();
+				 new BlinkingIcon("SoundWave2", 15, 90, 20);
+				 new BlinkingIcon("SoundWave1", 30, 170, 22);
 			 }
 		});
 		
@@ -200,7 +202,15 @@ public class DemoGame extends ApplicationAdapter {
 		setToStage(ideasBtn, -130, -230);
 		ideasBtn.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
-				setToStage(getImage("Scroll", "icons//iconsPack"), 0, -60);
+				Actor scroll = getImage("Scroll", "icons//iconsPack");
+				if(scroll.isVisible()) {
+					scroll.setVisible(false);
+				}
+				else if(!scroll.isVisible()){
+					scroll.setVisible(true);
+				}
+				else
+					setToStage(scroll, 0, -60);
 			 }
 		});
 	}
@@ -339,8 +349,27 @@ public class DemoGame extends ApplicationAdapter {
 
 		@Override
 		public void draw(Batch batch, float alpha){
-			if(drawImage)
-				batch.draw(currentFrame,x,y);
+			if(drawImage) {
+				validate();
+
+				Color color = getColor();
+				batch.setColor(color.r, color.g, color.b, color.a * this.getParent().getColor().a);
+
+				float x = getX();
+				float y = getY();
+				float scaleX = getScaleX();
+				float scaleY = getScaleY();
+
+				if (getDrawable() instanceof TransformDrawable && drawImage) {
+					float rotation = getRotation();
+					if (scaleX != 1 || scaleY != 1 || rotation != 0) {
+						((TransformDrawable)getDrawable()).draw(batch, x + this.getImageX(), y + this.getImageY(), getOriginX() - this.getImageX(), getOriginY() - this.getImageY(),
+								this.getImageWidth(), this.getImageHeight(), scaleX, scaleY, rotation);
+						return;
+					}
+				}
+				if (this.getDrawable() != null) this.getDrawable().draw(batch, x + this.getImageX(), y + this.getImageY(), this.getImageWidth() * scaleX, this.getImageHeight()* scaleY);
+			}
 		}
 		
 		protected TextureRegion getTextureRegionFromPack(String type) {

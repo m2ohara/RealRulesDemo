@@ -7,8 +7,8 @@ import com.realrules.game.demo.DemoGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.height = 600;
-		config.width = 420;
+		config.height = 1920;
+		config.width = 1080;
 		new LwjglApplication(new DemoGame(), config);
 	}
 }
