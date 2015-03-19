@@ -3,21 +3,21 @@ buttonsPack.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-PlayGameBtn
+CreateSpeechBtn
   rotate: false
   xy: 1, 81
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
-CreateSpeechBtn
+DebateBtn
   rotate: false
   xy: 1, 39
   size: 240, 40
   orig: 240, 40
   offset: 0, 0
   index: -1
-DebateBtn
+PlayGameBtn
   rotate: false
   xy: 243, 81
   size: 240, 40
@@ -45,58 +45,79 @@ IdeasBtn
   orig: 68, 67
   offset: 0, 0
   index: -1
-ExpressionSmall7
+ExpressionSmall6
   rotate: false
-  xy: 485, 64
-  size: 57, 57
-  orig: 57, 57
+  xy: 485, 62
+  size: 57, 59
+  orig: 57, 59
   offset: 0, 0
   index: -1
-ExpressionSmall6
+ExpressionSmall6Right
   rotate: false
   xy: 544, 62
   size: 57, 59
   orig: 57, 59
   offset: 0, 0
   index: -1
-ExpressionSmall9
+ExpressionSmall7
   rotate: false
-  xy: 603, 62
-  size: 54, 59
-  orig: 54, 59
+  xy: 603, 64
+  size: 57, 57
+  orig: 57, 57
   offset: 0, 0
   index: -1
-ExpressionSmall2
+ExpressionSmall1Left
   rotate: false
-  xy: 659, 62
-  size: 54, 59
-  orig: 54, 59
-  offset: 0, 0
-  index: -1
-ExpressionSmall3
-  rotate: false
-  xy: 715, 64
+  xy: 662, 64
   size: 54, 57
   orig: 54, 57
   offset: 0, 0
   index: -1
-ExpressionSmall4
+ExpressionSmall1Right
   rotate: false
-  xy: 771, 64
+  xy: 718, 64
+  size: 54, 57
+  orig: 54, 57
+  offset: 0, 0
+  index: -1
+ExpressionSmall2Left
+  rotate: false
+  xy: 774, 62
+  size: 54, 59
+  orig: 54, 59
+  offset: 0, 0
+  index: -1
+ExpressionSmall9
+  rotate: false
+  xy: 830, 62
+  size: 54, 59
+  orig: 54, 59
+  offset: 0, 0
+  index: -1
+ExpressionSmall3Left
+  rotate: false
+  xy: 886, 64
+  size: 54, 57
+  orig: 54, 57
+  offset: 0, 0
+  index: -1
+ExpressionSmall4Left
+  rotate: false
+  xy: 942, 64
+  size: 54, 57
+  orig: 54, 57
+  offset: 0, 0
+  index: -1
+ExpressionSmall4Right
+  rotate: false
+  xy: 465, 3
   size: 54, 57
   orig: 54, 57
   offset: 0, 0
   index: -1
 ExpressionSmall8
   rotate: false
-  xy: 827, 64
-  size: 54, 57
-  orig: 54, 57
-  offset: 0, 0
-  index: -1
-ExpressionSmall1
-  rotate: false
-  xy: 883, 64
+  xy: 521, 3
   size: 54, 57
   orig: 54, 57
   offset: 0, 0

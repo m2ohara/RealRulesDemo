@@ -43,12 +43,12 @@ public class DemoGame extends ApplicationAdapter {
 	}
 	
 	private void setView() {
-		OrthographicCamera camera = new OrthographicCamera(1080, 1520);
-		StretchViewport viewport = new StretchViewport(1080, 1920);
-		camera.zoom = 0.38f;
-		stage = new Stage(viewport);
-		stage.getViewport().setCamera(camera);
-//		stage = new Stage();
+//		OrthographicCamera camera = new OrthographicCamera(1080, 1520);
+//		StretchViewport viewport = new StretchViewport(1080, 1920);
+//		camera.zoom = 0.38f;
+//		stage = new Stage(viewport);
+//		stage.getViewport().setCamera(camera);
+		stage = new Stage();
 	}
 
 	@Override
@@ -114,21 +114,21 @@ public class DemoGame extends ApplicationAdapter {
 	private void setDebateScreen() {
 		
 		//Desktop
-//		final int expX = 190;
-//		final int expY = 440;
-//		int plX = 0;
-//		int plY = 260;
-//		int oppX = 230;
-//		int oppY = 265;
+		final int expX = 190;
+		final int expY = 440;
+		int plX = 0;
+		int plY = 260;
+		int oppX = 230;
+		int oppY = 265;
 		
 		//Android
 		//Diff: ~350, ~480
-		final int expX = 540;
-		final int expY = 1100;
-		int plX = 350;
-		int plY = 920;
-		int oppX = 550;
-		int oppY = 925;
+//		final int expX = 540;
+//		final int expY = 1100;
+//		int plX = 350;
+//		int plY = 920;
+//		int oppX = 550;
+//		int oppY = 925;
 		
 		setToStage(getImage("DebateScreen", "screens//screensPack"), 0, 0);
 
@@ -146,26 +146,24 @@ public class DemoGame extends ApplicationAdapter {
 		setToStage(getImage("ExpressionBox", "icons//iconsPack"), 130, -100);
 		
 		final ActionFactory actionFactory = new ActionFactory();
-		final Actor btn1 = getButton("ExpressionSmall1");
+		final Actor btn1 = getButton("ExpressionSmall1Left");
 		setToStage(btn1, -130, -100);
 		
 		btn1.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
 				 actionFactory.setMoveToAction(btn1, expX, expY, 0.3f);
-				 player.createAnimation();
 			 }
 		});
 		
-		final Actor btn2 = getButton("ExpressionSmall2");
+		final Actor btn2 = getButton("ExpressionSmall2Left");
 		setToStage(btn2, -65, -100);
 		btn2.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
 				 actionFactory.setMoveToAction(btn2, expX, expY, 0.3f);
-				 player.createAnimation();
 			 }
 		});
 		
-		final Actor btn3 = getButton("ExpressionSmall3");
+		final Actor btn3 = getButton("ExpressionSmall3Left");
 		setToStage(btn3, 65, -100);
 		btn3.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
@@ -173,12 +171,11 @@ public class DemoGame extends ApplicationAdapter {
 			 }
 		});
 		
-		final Actor btn4 = getButton("ExpressionSmall4");
+		final Actor btn4 = getButton("ExpressionSmall4Left");
 		setToStage(btn4, 130, -100);
 		btn4.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
 				 actionFactory.setMoveToAction(btn4, expX, expY, 0.3f);
-
 			 }
 		});
 		
@@ -187,11 +184,11 @@ public class DemoGame extends ApplicationAdapter {
 		playBtn.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
 				 setToStage(getImage("SpeechBubbleRight", "icons//iconsPack"), 0, 40);
-				 setToStage(getImage("ExpressionSmall6", "icons//iconsPack"), 10, 90);
+				 setToStage(getImage("ExpressionSmall6Right", "buttons//buttonsPack"), 10, 90);
 				 player.createAnimation();
 				 opponent.createAnimation();
-				 new BlinkingIcon("SoundWave2", 15, 90, 20);
-				 new BlinkingIcon("SoundWave1", 30, 170, 22);
+				 new BlinkingIcon("SoundWave2", 15, 90, 40);
+				 new BlinkingIcon("SoundWave1", 30, 170, 42);
 			 }
 		});
 		
@@ -313,6 +310,8 @@ public class DemoGame extends ApplicationAdapter {
 	
 	//*****************Blinking icon class
 	public class BlinkingIcon extends Image {
+		
+		//TO DO: Create spinning feature
 		
 	    protected float x;
 	    protected float y;
