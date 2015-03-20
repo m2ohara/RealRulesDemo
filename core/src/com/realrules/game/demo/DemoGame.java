@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -43,12 +44,12 @@ public class DemoGame extends ApplicationAdapter {
 	}
 	
 	private void setView() {
-//		OrthographicCamera camera = new OrthographicCamera(1080, 1520);
-//		StretchViewport viewport = new StretchViewport(1080, 1920);
-//		camera.zoom = 0.38f;
-//		stage = new Stage(viewport);
-//		stage.getViewport().setCamera(camera);
-		stage = new Stage();
+		OrthographicCamera camera = new OrthographicCamera(1080, 1520);
+		StretchViewport viewport = new StretchViewport(1080, 1920);
+		camera.zoom = 0.38f;
+		stage = new Stage(viewport);
+		stage.getViewport().setCamera(camera);
+//		stage = new Stage();
 	}
 
 	@Override
@@ -114,21 +115,21 @@ public class DemoGame extends ApplicationAdapter {
 	private void setDebateScreen() {
 		
 		//Desktop
-		final int expX = 190;
-		final int expY = 440;
-		int plX = 0;
-		int plY = 260;
-		int oppX = 230;
-		int oppY = 265;
+//		final int expX = 190;
+//		final int expY = 440;
+//		int plX = 0;
+//		int plY = 260;
+//		int oppX = 230;
+//		int oppY = 265;
 		
 		//Android
 		//Diff: ~350, ~480
-//		final int expX = 540;
-//		final int expY = 1100;
-//		int plX = 350;
-//		int plY = 920;
-//		int oppX = 550;
-//		int oppY = 925;
+		final int expX = 540;
+		final int expY = 1100;
+		int plX = 350;
+		int plY = 920;
+		int oppX = 550;
+		int oppY = 925;
 		
 		setToStage(getImage("DebateScreen", "screens//screensPack"), 0, 0);
 
@@ -188,7 +189,9 @@ public class DemoGame extends ApplicationAdapter {
 				 player.createAnimation();
 				 opponent.createAnimation();
 				 new BlinkingIcon("SoundWave2", 15, 90, 40);
-				 new BlinkingIcon("SoundWave1", 30, 170, 42);
+//				 new BlinkingIcon("SoundWave1", 30, 170, 42);
+				 final SoundWave soundWave1 = new SoundWave("soundWave1Pack", 110, 370);
+				 setToStage(soundWave1, 30, 170);
 			 }
 		});
 		
@@ -300,6 +303,72 @@ public class DemoGame extends ApplicationAdapter {
 				super.act( delta );
 				setCurrentFrame();
 			}
+		}
+
+		@Override
+		public void draw(Batch batch, float alpha){
+			batch.draw(currentFrame,x,y);
+		}
+	}
+	
+	public class SoundWave extends Image {
+		
+	    private String type;
+	    private float x;
+	    private float y;
+	    private TextureRegion currentFrame;
+	    private float stateTime;
+	    private float deltaStateTime;
+	    private Animation rotate;
+		
+		public SoundWave(String type, float x, float y) {
+			super(new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first());
+			this.type = type;
+			this.x = x;
+			this.y = y;
+			this.stateTime = 0f;
+			currentFrame = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first();
+			
+			this.addListener(new ClickListener() {
+			    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+			    {
+					createAnimation();
+			        return true;
+			    }
+			});
+			
+
+			
+		}
+		
+		public void createAnimation() {
+			TextureAtlas txAtlas;
+			
+			txAtlas = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack"));
+			Array<AtlasRegion> regions  = (Array<AtlasRegion>) txAtlas.getRegions();
+
+			rotate = new Animation(0.03f, regions);
+			deltaStateTime = 0.03f;
+		
+		}
+		
+		private void setCurrentFrame() {
+			
+			stateTime += Gdx.graphics.getDeltaTime();
+//			stateTime += deltaStateTime;
+			currentFrame =  rotate.getKeyFrame(stateTime, true);
+			
+//			deltaStateTime -= 0.001;
+			
+		}
+		
+		@Override
+		public void act(float delta )
+		{
+				if(rotate != null) {
+					super.act( delta );
+					setCurrentFrame();
+				}
 		}
 
 		@Override
