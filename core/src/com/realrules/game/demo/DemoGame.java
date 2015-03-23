@@ -18,7 +18,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -34,7 +34,17 @@ public class DemoGame extends ApplicationAdapter {
 	Texture background;
 	public Stage stage;
 	OrthographicCamera camera;
+	private boolean isAndroid = false;
 	
+	
+	public boolean isAndroid() {
+		return isAndroid;
+	}
+
+	public void setAndroid(boolean isAndroid) {
+		this.isAndroid = isAndroid;
+	}
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -44,12 +54,20 @@ public class DemoGame extends ApplicationAdapter {
 	}
 	
 	private void setView() {
+		if(!isAndroid) {
+			stage = new Stage();
+		}
+		else {
+			setViewport();
+		}
+	}
+	
+	private void setViewport() {
 		OrthographicCamera camera = new OrthographicCamera(1080, 1520);
 		StretchViewport viewport = new StretchViewport(1080, 1920);
 		camera.zoom = 0.38f;
 		stage = new Stage(viewport);
 		stage.getViewport().setCamera(camera);
-//		stage = new Stage();
 	}
 
 	@Override
@@ -114,22 +132,29 @@ public class DemoGame extends ApplicationAdapter {
 	
 	private void setDebateScreen() {
 		
-		//Desktop
-//		final int expX = 190;
-//		final int expY = 440;
-//		int plX = 0;
-//		int plY = 260;
-//		int oppX = 230;
-//		int oppY = 265;
-		
 		//Android
-		//Diff: ~350, ~480
-		final int expX = 540;
-		final int expY = 1100;
-		int plX = 350;
-		int plY = 920;
-		int oppX = 550;
-		int oppY = 925;
+		//Diff: ~350, ~675
+		final int expX = 190;
+		final int expY = 440;
+		int plX = 0;
+		int plY = 260;
+		int oppX = 230;
+		int oppY = 265;
+		final int sndWv1X = 110;
+		final int sndWv1Y = 370;
+		
+		//Desktop
+//		if(!isAndroid) {
+//			expX = 190;
+//			expY = 440;
+//			plX = 0;
+//			plY = 260;
+//			oppX = 230;
+//			oppY = 265;
+//			sndWv1X = 110;
+//			sndWv1Y = 370;
+//		}
+
 		
 		setToStage(getImage("DebateScreen", "screens//screensPack"), 0, 0);
 
@@ -189,8 +214,7 @@ public class DemoGame extends ApplicationAdapter {
 				 player.createAnimation();
 				 opponent.createAnimation();
 				 new BlinkingIcon("SoundWave2", 15, 90, 40);
-//				 new BlinkingIcon("SoundWave1", 30, 170, 42);
-				 final SoundWave soundWave1 = new SoundWave("soundWave1Pack", 110, 370);
+				 final SoundWave soundWave1 = new SoundWave("soundWave1Pack", sndWv1X, sndWv1Y);
 				 setToStage(soundWave1, 30, 170);
 			 }
 		});
@@ -332,7 +356,8 @@ public class DemoGame extends ApplicationAdapter {
 			this.addListener(new ClickListener() {
 			    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
 			    {
-					createAnimation();
+					createSpinAnimation();
+					createMoveAnimation();
 			        return true;
 			    }
 			});
@@ -341,7 +366,7 @@ public class DemoGame extends ApplicationAdapter {
 			
 		}
 		
-		public void createAnimation() {
+		public void createSpinAnimation() {
 			TextureAtlas txAtlas;
 			
 			txAtlas = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack"));
@@ -350,6 +375,12 @@ public class DemoGame extends ApplicationAdapter {
 			rotate = new Animation(0.03f, regions);
 			deltaStateTime = 0.03f;
 		
+		}
+		
+		public void createMoveAnimation() {
+			MoveByAction moveAction = new MoveByAction();
+			moveAction.setAmount(5, 5);
+			this.addAction(moveAction);
 		}
 		
 		private void setCurrentFrame() {
@@ -366,9 +397,10 @@ public class DemoGame extends ApplicationAdapter {
 		public void act(float delta )
 		{
 				if(rotate != null) {
-					super.act( delta );
 					setCurrentFrame();
 				}
+				
+				super.act( delta );
 		}
 
 		@Override
