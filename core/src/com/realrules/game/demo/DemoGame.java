@@ -134,6 +134,16 @@ public class DemoGame extends ApplicationAdapter {
 		
 		//Android
 		//Diff: ~350, ~675
+//		final int expX = 540;
+//		final int expY = 1100;
+//		int plX = 350;
+//		int plY = 920;
+//		int oppX = 550;
+//		int oppY = 925
+//		final int sndWv1X = 460;
+//		final int sndWv1Y = 1040;
+		
+		//Desktop
 		final int expX = 190;
 		final int expY = 440;
 		int plX = 0;
@@ -215,6 +225,16 @@ public class DemoGame extends ApplicationAdapter {
 				 opponent.createAnimation();
 				 new BlinkingIcon("SoundWave2", 15, 90, 40);
 				 final SoundWave soundWave1 = new SoundWave("soundWave1Pack", sndWv1X, sndWv1Y);
+//				 soundWave1.addListener(new ClickListener() {
+//						public void clicked(InputEvent event, float x, float y) 
+//					    {
+//							Random rand = new Random();
+//							int xCoord = rand.nextInt(200);
+//					    	int yCoord = rand.nextInt(300); 
+//					    	actionFactory.setMoveToAction(soundWave1., xCoord, yCoord, 2.0f);
+//					    	actionFactory.setMoveToAction(btn4, xCoord, yCoord, 2.0f);
+//					    }
+//					});
 				 setToStage(soundWave1, 30, 170);
 			 }
 		});
@@ -344,6 +364,9 @@ public class DemoGame extends ApplicationAdapter {
 	    private float stateTime;
 	    private float deltaStateTime;
 	    private Animation rotate;
+	    private int state = 0;
+	    final ActionFactory actionFactory = new ActionFactory();
+	    private final Actor soundWave;
 		
 		public SoundWave(String type, float x, float y) {
 			super(new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first());
@@ -352,15 +375,28 @@ public class DemoGame extends ApplicationAdapter {
 			this.y = y;
 			this.stateTime = 0f;
 			currentFrame = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first();
+			createSpinAnimation();
 			
-			this.addListener(new ClickListener() {
-			    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
-			    {
-					createSpinAnimation();
-					createMoveAnimation();
-			        return true;
-			    }
-			});
+			soundWave = this;
+			
+//			this.addListener(new ClickListener() {
+//				public void clicked(InputEvent event, float x, float y) 
+//			    {
+//			    	if(state == 0) {
+////			    		
+////			    		state++;
+////			    	}
+////			    	else if(state == 1) {
+//			    		Random rand = new Random();
+//			    		int xCoord = rand.nextInt(200);
+//			    		int yCoord = rand.nextInt(300); 
+//			    		actionFactory.setMoveToAction(soundWave, xCoord, yCoord, 2.0f);			    		
+//			    	}
+//			    	else if(state == 2) {
+//			    		
+//			    	}
+//			    }
+//			});
 			
 
 			
@@ -377,12 +413,6 @@ public class DemoGame extends ApplicationAdapter {
 		
 		}
 		
-		public void createMoveAnimation() {
-			MoveByAction moveAction = new MoveByAction();
-			moveAction.setAmount(5, 5);
-			this.addAction(moveAction);
-		}
-		
 		private void setCurrentFrame() {
 			
 			stateTime += Gdx.graphics.getDeltaTime();
@@ -393,18 +423,19 @@ public class DemoGame extends ApplicationAdapter {
 			
 		}
 		
-		@Override
-		public void act(float delta )
-		{
-				if(rotate != null) {
-					setCurrentFrame();
-				}
-				
-				super.act( delta );
-		}
+//		@Override
+//		public void act(float delta )
+//		{
+//				
+//				super.act( delta );
+//		}
 
 		@Override
 		public void draw(Batch batch, float alpha){
+			
+			if(rotate != null) {
+				setCurrentFrame();
+			}
 			batch.draw(currentFrame,x,y);
 		}
 	}
