@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -18,7 +19,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -76,7 +77,7 @@ public class DemoGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		stage.draw();
-		stage.act();
+		stage.act(Gdx.graphics.getDeltaTime());
 		batch.end();
 	}
 	
@@ -207,7 +208,7 @@ public class DemoGame extends ApplicationAdapter {
 			 }
 		});
 		
-		final Actor btn4 = getButton("ExpressionSmall4Left");
+		final Actor btn4 = getImage("ExpressionSmall4Left", "buttons//buttonsPack");
 		setToStage(btn4, 130, -100);
 		btn4.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
@@ -224,18 +225,8 @@ public class DemoGame extends ApplicationAdapter {
 				 player.createAnimation();
 				 opponent.createAnimation();
 				 new BlinkingIcon("SoundWave2", 15, 90, 40);
-				 final SoundWave soundWave1 = new SoundWave("soundWave1Pack", sndWv1X, sndWv1Y);
-//				 soundWave1.addListener(new ClickListener() {
-//						public void clicked(InputEvent event, float x, float y) 
-//					    {
-//							Random rand = new Random();
-//							int xCoord = rand.nextInt(200);
-//					    	int yCoord = rand.nextInt(300); 
-//					    	actionFactory.setMoveToAction(soundWave1., xCoord, yCoord, 2.0f);
-//					    	actionFactory.setMoveToAction(btn4, xCoord, yCoord, 2.0f);
-//					    }
-//					});
-				 setToStage(soundWave1, 30, 170);
+//				 new SoundWave("soundWave1Pack", sndWv1X, sndWv1Y);
+				 new SpinSprite("soundWave1Pack", sndWv1X, sndWv1Y);
 			 }
 		});
 		
@@ -321,7 +312,6 @@ public class DemoGame extends ApplicationAdapter {
 			this.y = y;
 			this.stateTime = 0f;
 			currentFrame = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first();
-
 			
 		}
 		
@@ -355,7 +345,7 @@ public class DemoGame extends ApplicationAdapter {
 		}
 	}
 	
-	public class SoundWave extends Image {
+	public class SpinSprite extends Image {
 		
 	    private String type;
 	    private float x;
@@ -366,7 +356,87 @@ public class DemoGame extends ApplicationAdapter {
 	    private Animation rotate;
 	    private int state = 0;
 	    final ActionFactory actionFactory = new ActionFactory();
-	    private final Actor soundWave;
+	    
+	    public SpinSprite(String type, float x, float y) {	    	
+			super(new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first());
+	    	this.x = x;
+	    	this.y = y;
+	    	this.type = type;
+	    	
+			this.addListener(new ClickListener() {
+				public void clicked(InputEvent event, float x, float y) 
+			    {
+			    	if(state == 0) {
+				    	setMoveToAction();		    		
+			    	}
+			    }
+			});
+			
+			
+//			createSpinAnimation();
+			
+			setToStage(this, 30, 170);
+			
+	    }
+	   
+		private void setMoveToAction() {
+			
+    		Random rand = new Random();
+    		int xCoord = rand.nextInt(50);
+    		int yCoord = rand.nextInt(70); 
+			
+			this.addAction(Actions.moveBy(xCoord, yCoord, 6.0f));
+			
+		}
+		
+		public void createSpinAnimation() {
+			TextureAtlas txAtlas;
+			
+			txAtlas = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack"));
+			Array<AtlasRegion> regions  = (Array<AtlasRegion>) txAtlas.getRegions();
+
+			rotate = new Animation(0.03f, regions);
+			deltaStateTime = 0.03f;
+		
+		}
+		
+		private void setCurrentFrame() {
+			
+			stateTime += Gdx.graphics.getDeltaTime();
+			currentFrame =  rotate.getKeyFrame(stateTime, true);
+			
+		}
+		
+//		@Override
+//		public void draw(Batch batch, float parentAlpha) {
+//			
+//			setCurrentFrame();
+//			
+//			Color color = new Color(this.getColor().r, this.getColor().g,
+//		            this.getColor().b, this.getColor().a * parentAlpha);
+//
+//		    batch.setColor(color);	  
+//			
+//			batch.draw(currentFrame,x,y);
+//		}
+		
+//		@Override
+//		public void act(float delta) {
+//			super.act(delta);
+//		}
+		
+	}
+	
+	public class SoundWave extends Image {
+		
+	    private String type;
+	    private float x;
+	    private float y;
+	    private TextureRegion currentFrame;
+	    private float stateTime;
+	    private float deltaStateTime;
+	    private Animation rotate;
+	    final ActionFactory actionFactory = new ActionFactory();
 		
 		public SoundWave(String type, float x, float y) {
 			super(new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first());
@@ -375,30 +445,40 @@ public class DemoGame extends ApplicationAdapter {
 			this.y = y;
 			this.stateTime = 0f;
 			currentFrame = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first();
-			createSpinAnimation();
-			
-			soundWave = this;
+//			createSpinAnimation();
 			
 //			this.addListener(new ClickListener() {
 //				public void clicked(InputEvent event, float x, float y) 
 //			    {
-//			    	if(state == 0) {
-////			    		
-////			    		state++;
-////			    	}
-////			    	else if(state == 1) {
-//			    		Random rand = new Random();
-//			    		int xCoord = rand.nextInt(200);
-//			    		int yCoord = rand.nextInt(300); 
-//			    		actionFactory.setMoveToAction(soundWave, xCoord, yCoord, 2.0f);			    		
-//			    	}
-//			    	else if(state == 2) {
-//			    		
-//			    	}
+//			    	Random rand = new Random();
+//			    	int xCoord = rand.nextInt(200);
+//			    	int yCoord = rand.nextInt(300); 
+//			    	setMoveToAction(xCoord, yCoord, 2.0f);			    		
 //			    }
 //			});
 			
+	    	Random rand = new Random();
+	    	int xCoord = rand.nextInt(200);
+	    	int yCoord = rand.nextInt(300); 
 
+			
+			setToStage(this, 30, 170);
+			
+	    	this.addAction(Actions.rotateTo(90.0f));
+			
+		}
+		
+		private void setMoveToAction(int x, int y, float duration) {
+			MoveToAction moveTo = new MoveToAction();
+			
+			moveTo.setPosition(x, y);
+			moveTo.setDuration(duration);
+			
+			Actor actor = (Actor)this;
+			
+			actor.addAction(moveTo);
+			
+			//TODO: Examine casting to resolve acting issue
 			
 		}
 		
@@ -423,12 +503,13 @@ public class DemoGame extends ApplicationAdapter {
 			
 		}
 		
-//		@Override
-//		public void act(float delta )
-//		{
-//				
-//				super.act( delta );
-//		}
+		@Override
+		public void act(float delta )
+		{
+			super.act( delta );
+		}
+		
+		
 
 		@Override
 		public void draw(Batch batch, float alpha){
