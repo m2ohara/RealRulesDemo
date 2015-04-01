@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -22,10 +21,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TransformDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -226,7 +227,8 @@ public class DemoGame extends ApplicationAdapter {
 				 opponent.createAnimation();
 				 new BlinkingIcon("SoundWave2", 15, 90, 40);
 //				 new SoundWave("soundWave1Pack", sndWv1X, sndWv1Y);
-				 new SpinSprite("soundWave1Pack", sndWv1X, sndWv1Y);
+//				 new SpinSprite("soundWave1Pack", sndWv1X, sndWv1Y, new TextureAtlas(Gdx.files.internal("sprites//soundWave1Pack.pack")).getRegions());
+				 new SpinSprite2("soundWave1Pack", sndWv1X, sndWv1Y, new TextureAtlas(Gdx.files.internal("sprites//soundWave1Pack.pack")).getRegions());
 			 }
 		});
 		
@@ -352,16 +354,16 @@ public class DemoGame extends ApplicationAdapter {
 	    private float y;
 	    private TextureRegion currentFrame;
 	    private float stateTime;
-	    private float deltaStateTime;
 	    private Animation rotate;
 	    private int state = 0;
-	    final ActionFactory actionFactory = new ActionFactory();
+	    private Array<AtlasRegion> frames;
 	    
-	    public SpinSprite(String type, float x, float y) {	    	
-			super(new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first());
+	    public SpinSprite(String type, float x, float y, Array<AtlasRegion> frames) {	    	
+			super(frames.get(0));
 	    	this.x = x;
 	    	this.y = y;
 	    	this.type = type;
+	    	this.frames = frames;
 	    	
 			this.addListener(new ClickListener() {
 				public void clicked(InputEvent event, float x, float y) 
@@ -372,8 +374,7 @@ public class DemoGame extends ApplicationAdapter {
 			    }
 			});
 			
-			
-//			createSpinAnimation();
+			rotate = new Animation(0.03f, frames);
 			
 			setToStage(this, 30, 170);
 			
@@ -389,137 +390,24 @@ public class DemoGame extends ApplicationAdapter {
 			
 		}
 		
-		public void createSpinAnimation() {
-			TextureAtlas txAtlas;
-			
-			txAtlas = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack"));
-			Array<AtlasRegion> regions  = (Array<AtlasRegion>) txAtlas.getRegions();
-
-			rotate = new Animation(0.03f, regions);
-			deltaStateTime = 0.03f;
-		
-		}
-		
 		private void setCurrentFrame() {
 			
 			stateTime += Gdx.graphics.getDeltaTime();
 			currentFrame =  rotate.getKeyFrame(stateTime, true);
 			
+			this.setDrawable(new TextureRegionDrawable(new TextureRegion(currentFrame)));
+			
 		}
 		
-//		@Override
-//		public void draw(Batch batch, float parentAlpha) {
-//			
-//			setCurrentFrame();
-//			
-//			Color color = new Color(this.getColor().r, this.getColor().g,
-//		            this.getColor().b, this.getColor().a * parentAlpha);
-//
-//		    batch.setColor(color);	  
-//			
-//			batch.draw(currentFrame,x,y);
-//		}
-		
-//		@Override
-//		public void act(float delta) {
-//			super.act(delta);
-//		}
+		@Override
+		public void act(float delta) {
+			super.act(delta);
+			
+			setCurrentFrame();
+		}
 		
 	}
 	
-	public class SoundWave extends Image {
-		
-	    private String type;
-	    private float x;
-	    private float y;
-	    private TextureRegion currentFrame;
-	    private float stateTime;
-	    private float deltaStateTime;
-	    private Animation rotate;
-	    final ActionFactory actionFactory = new ActionFactory();
-		
-		public SoundWave(String type, float x, float y) {
-			super(new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first());
-			this.type = type;
-			this.x = x;
-			this.y = y;
-			this.stateTime = 0f;
-			currentFrame = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack")).getRegions().first();
-//			createSpinAnimation();
-			
-//			this.addListener(new ClickListener() {
-//				public void clicked(InputEvent event, float x, float y) 
-//			    {
-//			    	Random rand = new Random();
-//			    	int xCoord = rand.nextInt(200);
-//			    	int yCoord = rand.nextInt(300); 
-//			    	setMoveToAction(xCoord, yCoord, 2.0f);			    		
-//			    }
-//			});
-			
-	    	Random rand = new Random();
-	    	int xCoord = rand.nextInt(200);
-	    	int yCoord = rand.nextInt(300); 
-
-			
-			setToStage(this, 30, 170);
-			
-	    	this.addAction(Actions.rotateTo(90.0f));
-			
-		}
-		
-		private void setMoveToAction(int x, int y, float duration) {
-			MoveToAction moveTo = new MoveToAction();
-			
-			moveTo.setPosition(x, y);
-			moveTo.setDuration(duration);
-			
-			Actor actor = (Actor)this;
-			
-			actor.addAction(moveTo);
-			
-			//TODO: Examine casting to resolve acting issue
-			
-		}
-		
-		public void createSpinAnimation() {
-			TextureAtlas txAtlas;
-			
-			txAtlas = new TextureAtlas(Gdx.files.internal("sprites//"+type+".pack"));
-			Array<AtlasRegion> regions  = (Array<AtlasRegion>) txAtlas.getRegions();
-
-			rotate = new Animation(0.03f, regions);
-			deltaStateTime = 0.03f;
-		
-		}
-		
-		private void setCurrentFrame() {
-			
-			stateTime += Gdx.graphics.getDeltaTime();
-//			stateTime += deltaStateTime;
-			currentFrame =  rotate.getKeyFrame(stateTime, true);
-			
-//			deltaStateTime -= 0.001;
-			
-		}
-		
-		@Override
-		public void act(float delta )
-		{
-			super.act( delta );
-		}
-		
-		
-
-		@Override
-		public void draw(Batch batch, float alpha){
-			
-			if(rotate != null) {
-				setCurrentFrame();
-			}
-			batch.draw(currentFrame,x,y);
-		}
-	}
 	
 	//*****************Blinking icon class
 	public class BlinkingIcon extends Image {
