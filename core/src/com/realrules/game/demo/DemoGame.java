@@ -141,19 +141,19 @@ public class DemoGame extends ApplicationAdapter {
 //		int plX = 350;
 //		int plY = 920;
 //		int oppX = 550;
-//		int oppY = 925
-//		final int sndWv1X = 460;
-//		final int sndWv1Y = 1040;
+//		int oppY = 925;
+//		final int sndWv1X = 25;
+//		final int sndWv1Y = 160;
 		
 		//Desktop
 		final int expX = 190;
 		final int expY = 440;
-		int plX = 0;
+		int plX = 40;
 		int plY = 260;
-		int oppX = 230;
+		int oppX = 270;
 		int oppY = 265;
-		final int sndWv1X = 110;
-		final int sndWv1Y = 370;
+		final int sndWv1X = -25;
+		final int sndWv1Y = 170;
 		
 		//Desktop
 //		if(!isAndroid) {
@@ -226,9 +226,7 @@ public class DemoGame extends ApplicationAdapter {
 				 player.createAnimation();
 				 opponent.createAnimation();
 				 new BlinkingIcon("SoundWave2", 15, 90, 40);
-//				 new SoundWave("soundWave1Pack", sndWv1X, sndWv1Y);
-//				 new SpinSprite("soundWave1Pack", sndWv1X, sndWv1Y, new TextureAtlas(Gdx.files.internal("sprites//soundWave1Pack.pack")).getRegions());
-				 new SpinSprite2("soundWave1Pack", sndWv1X, sndWv1Y, new TextureAtlas(Gdx.files.internal("sprites//soundWave1Pack.pack")).getRegions());
+				 new SpinSprite("soundWave1Pack", sndWv1X, sndWv1Y, new TextureAtlas(Gdx.files.internal("sprites//soundWave1Pack.pack")).getRegions());
 			 }
 		});
 		
@@ -281,7 +279,7 @@ public class DemoGame extends ApplicationAdapter {
 	public void setToStage(Actor actor, float _xCentreOffset, float _yCentreOffset) {
 		
 		setRelativePosition(actor, _xCentreOffset, _yCentreOffset);
-		//Add actor to stage for physics processing
+
 		stage.addActor(actor);
 	}
 	
@@ -374,19 +372,23 @@ public class DemoGame extends ApplicationAdapter {
 			    }
 			});
 			
-			rotate = new Animation(0.03f, frames);
+			rotate = new Animation(0.5f, this.frames);
 			
-			setToStage(this, 30, 170);
+			setToStage(this, this.x, this.y);
 			
 	    }
 	   
 		private void setMoveToAction() {
 			
     		Random rand = new Random();
-    		int xCoord = rand.nextInt(50);
-    		int yCoord = rand.nextInt(70); 
+    		int xCoord = rand.nextInt(230) + 20;
+    		int yCoord = rand.nextInt(140) + 180; 
+    		
+//    		int xCoord = rand.nextInt(540) + 330;
+//    		int yCoord = rand.nextInt(810) + 850; 
 			
-			this.addAction(Actions.moveBy(xCoord, yCoord, 6.0f));
+
+    		this.addAction(Actions.moveTo(xCoord, yCoord, 0.5f));
 			
 		}
 		
@@ -408,8 +410,6 @@ public class DemoGame extends ApplicationAdapter {
 		
 	}
 	
-	
-	//*****************Blinking icon class
 	public class BlinkingIcon extends Image {
 		
 		//TO DO: Create spinning feature
@@ -484,43 +484,8 @@ public class DemoGame extends ApplicationAdapter {
 		
 	}
 	
-	public class RandomBlinkingExpression extends BlinkingIcon {
+	public class ActionFactory {
 		
-		private static final int expressionLength = 5;
-
-		public RandomBlinkingExpression(String expressionType, float x, float y,
-				int displayInterval) {
-			super(expressionType, x, y, displayInterval);
-			// TODO Auto-generated constructor stub
-		}
-		
-		private String getRandomExpressionType() {
-			String exp = "ExpressionSmall"+(new Random().nextInt(expressionLength)+1);
-			return exp;
-		}
-		
-		@Override
-		public void act(float delta )
-		{
-			super.act( delta );
-			
-			//Draw at regular intervals
-			if(stateTime >= delta * displayInterval) {
-				stateTime = 0f;
-				drawImage = drawImage == false ? true : false;
-				currentFrame = getTextureRegionFromPack(getRandomExpressionType());
-			}
-			else {
-				stateTime += Gdx.graphics.getDeltaTime();
-			}
-			
-		}
-		
-	}
-	
-	public class ActionFactory extends Image {
-		
-	    private TextureRegion currentFrame;
 		
 		public ActionFactory() {
 		}
@@ -535,15 +500,160 @@ public class DemoGame extends ApplicationAdapter {
 			
 		}
 		
-		public void setFightAction(Actor actor, int x, int y, float duration) {
+		
+	}
+	
+	public class HeadSprite extends Image {
+		
+		private IHeadBehaviour behaviour;
+		
+		public HeadSprite(Head type, float x, float y, Array<AtlasRegion> frames) {
+			
+			setTouchAction();
+			
+			//TODO: Set behaviour based on type
+		}
+		
+		//Implement onTouch action
+		private void setTouchAction() {
+			
+			this.addListener(new ClickListener() {
+				
+				public void clicked(InputEvent event, float x, float y) 
+			    {
+					behaviour.onTouch();
+			    }
+				
+			});
+		}
+
+		@Override
+		public void draw(Batch batch, float parentAlpha) {
+			// TODO Auto-generated method stub
+			super.draw(batch, parentAlpha);
+			
+			behaviour.onDraw();
+		}
+
+		@Override
+		public void act(float delta) {
+			// TODO Auto-generated method stub
+			super.act(delta);
+			
+			behaviour.onAct();
+		}
+		
+		
+	}
+	
+	public enum Head { GOSSIPER, DECEIVER, INFLUENCER}
+	
+	public class GossiperBehaviour implements IHeadBehaviour {
+		
+		public GossiperBehaviour() {
+			
+		}
+
+		@Override
+		public void onAct() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onDraw() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onTouch() {
+			// TODO Auto-generated method stub
 			
 		}
 		
-		@Override
-		public void draw(Batch batch, float alpha){
-//			batch.draw(currentFrame,x,y);
-		}
+		//Implement movement action
+		
+		//Implement frame setting
+		
+		//Implement collision detection
 		
 	}
+	
+	public class DeceiverBehaviour implements IHeadBehaviour {
+		
+		public DeceiverBehaviour() {
+			
+		}
 
+		@Override
+		public void onAct() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onDraw() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onTouch() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		//Implement movement action
+		
+		//Implement frame setting
+		
+		//Implement collision detection
+		
+	}
+	
+	public class InfluencerBehaviour implements IHeadBehaviour {
+		
+		public InfluencerBehaviour() {
+			
+		}
+
+		@Override
+		public void onAct() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onDraw() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onTouch() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		//Implement movement action
+		
+		//Implement frame setting
+		
+		//Implement collision detection
+		
+	}
+	
+	public interface IHeadBehaviour {
+		
+		//Act behaviour
+		void onAct();
+		
+		//Draw behaviour
+		void onDraw();
+		
+		//Touch behaviour
+		void onTouch();
+		
+	}
 }
