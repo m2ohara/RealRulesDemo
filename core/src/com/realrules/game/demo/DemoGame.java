@@ -506,12 +506,30 @@ public class DemoGame extends ApplicationAdapter {
 	public class HeadSprite extends Image {
 		
 		private IHeadBehaviour behaviour;
+		private float startingX;
+		private float startingY;
+		private Array<AtlasRegion> frames;
+		
+		public float getStartingX() {
+			return startingX;
+		}
+
+		public float getStartingY() {
+			return startingY;
+		}
 		
 		public HeadSprite(Head type, float x, float y, Array<AtlasRegion> frames) {
 			
-			setTouchAction();
+			frames = new TextureAtlas(Gdx.files.internal("sprites//gossiperHeadPack.pack")).getRegions();
+			
+			startingX = x;
+			startingY = y;
 			
 			//TODO: Set behaviour based on type
+			
+			setTouchAction();
+			
+			setToStage(this, this.startingX, this.startingY);
 		}
 		
 		//Implement onTouch action
@@ -529,7 +547,6 @@ public class DemoGame extends ApplicationAdapter {
 
 		@Override
 		public void draw(Batch batch, float parentAlpha) {
-			// TODO Auto-generated method stub
 			super.draw(batch, parentAlpha);
 			
 			behaviour.onDraw();
@@ -537,7 +554,6 @@ public class DemoGame extends ApplicationAdapter {
 
 		@Override
 		public void act(float delta) {
-			// TODO Auto-generated method stub
 			super.act(delta);
 			
 			behaviour.onAct();
@@ -550,13 +566,26 @@ public class DemoGame extends ApplicationAdapter {
 	
 	public class GossiperBehaviour implements IHeadBehaviour {
 		
-		public GossiperBehaviour() {
+		//Behaviour: 
+		//Movement: Random interacting in all directions
+		//On touch: Send soundwave in currently set direction, with a large spread
+		//Draw: Default 
+		
+		HeadSprite gossiper;
+		
+		public GossiperBehaviour(HeadSprite gossiper) {
+			this.gossiper = gossiper;
+			
 			
 		}
 
 		@Override
 		public void onAct() {
-			// TODO Auto-generated method stub
+			
+			//Add a random move destination when previous is finished
+			if(gossiper.getActions().size == 0) {
+				setMoveToAction();
+			}
 			
 		}
 
@@ -573,6 +602,15 @@ public class DemoGame extends ApplicationAdapter {
 		}
 		
 		//Implement movement action
+		private void setMoveToAction() {
+			
+    		Random rand = new Random();
+    		int xCoord = rand.nextInt(((int)gossiper.getStartingX()) - 20) + 20;
+    		int yCoord = rand.nextInt(140) + 180;   
+
+    		gossiper.addAction(Actions.moveTo(xCoord, yCoord, 0.5f));
+			
+		}
 		
 		//Implement frame setting
 		
