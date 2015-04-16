@@ -127,7 +127,8 @@ public class DemoGame extends ApplicationAdapter {
 		
 		btn.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
-				 setDebateScreen();
+//				 setDebateScreen();
+				 setCrowdScreen();
 			 }
 		});
 	}
@@ -248,6 +249,15 @@ public class DemoGame extends ApplicationAdapter {
 					setToStage(scroll, 0, -60);
 			 }
 		});
+	}
+	
+	private void setCrowdScreen() {
+		
+		setToStage(getImage("CrowdScreen", "screens//screensPack"), 0, 0);
+		
+		new HeadSprite(Head.GOSSIPER, 10, 115, "sprites//gossiperFollowerPack.pack");
+		
+		
 	}
 	
 	private Actor getButton(String type) {
@@ -509,6 +519,10 @@ public class DemoGame extends ApplicationAdapter {
 		private float startingX;
 		private float startingY;
 		private Array<AtlasRegion> frames;
+		private TextureRegion currentFrame;
+		private float movementP = 0.1f;
+		private float rotateP = 0.3f;
+		private float argueSuccessP = 0.4f;
 		
 		public float getStartingX() {
 			return startingX;
@@ -518,14 +532,19 @@ public class DemoGame extends ApplicationAdapter {
 			return startingY;
 		}
 		
-		public HeadSprite(Head type, float x, float y, Array<AtlasRegion> frames) {
-			
-			frames = new TextureAtlas(Gdx.files.internal("sprites//gossiperHeadPack.pack")).getRegions();
+		public HeadSprite(Head type, float x, float y, String framesPath) {
+			super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
+			frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
+			currentFrame = frames.get(0);
+			//Centre origin in frame for rotation;
+			this.setOrigin(this.currentFrame.getRegionWidth()/2, this.currentFrame.getRegionHeight()/2);
 			
 			startingX = x;
 			startingY = y;
 			
-			//TODO: Set behaviour based on type
+			if(type == type.GOSSIPER) {
+				behaviour = new GossiperBehaviour(this);
+			}
 			
 			setTouchAction();
 			
@@ -549,14 +568,14 @@ public class DemoGame extends ApplicationAdapter {
 		public void draw(Batch batch, float parentAlpha) {
 			super.draw(batch, parentAlpha);
 			
-			behaviour.onDraw();
+			behaviour.onDraw(batch, parentAlpha);
 		}
 
 		@Override
 		public void act(float delta) {
 			super.act(delta);
 			
-			behaviour.onAct();
+			behaviour.onAct(delta);
 		}
 		
 		
@@ -572,6 +591,9 @@ public class DemoGame extends ApplicationAdapter {
 		//Draw: Default 
 		
 		HeadSprite gossiper;
+		Random rand = new Random();
+		float stateLength = 1.0f;
+		float stateTime = stateLength;
 		
 		public GossiperBehaviour(HeadSprite gossiper) {
 			this.gossiper = gossiper;
@@ -580,18 +602,21 @@ public class DemoGame extends ApplicationAdapter {
 		}
 
 		@Override
-		public void onAct() {
+		public void onAct(float delta) {
 			
-			//Add a random move destination when previous is finished
-			if(gossiper.getActions().size == 0) {
-				setMoveToAction();
+			if(stateTime >= stateLength) {
+				stateTime = 0.0f;
+				setFrame();
 			}
-			
+			stateTime += delta;
 		}
 
 		@Override
-		public void onDraw() {
-			// TODO Auto-generated method stub
+		public void onDraw(Batch batch, float parentAlpha) {
+//			batch.draw(
+//					gossiper.currentFrame, 0, 0, gossiper.currentFrame.getRegionWidth()/2, gossiper.currentFrame.getRegionHeight()/2, 
+//					gossiper.currentFrame.getRegionWidth(), gossiper.currentFrame.getRegionHeight(), 0, 0,  gossiper.rotation
+//					);
 			
 		}
 
@@ -613,8 +638,21 @@ public class DemoGame extends ApplicationAdapter {
 		}
 		
 		//Implement frame setting
+		private void setFrame() {
+			
+			//Based on rotation probability
+			if(rand.nextFloat() > gossiper.rotateP) {
+				//Set direction
+				gossiper.currentFrame = gossiper.frames.get(rand.nextInt(2));
+				//Set angle
+				int angle = rand.nextInt(3);
+				gossiper.setRotation((float) (45 * angle));
+				
+				gossiper.setDrawable(new TextureRegionDrawable(new TextureRegion(gossiper.currentFrame)));
+			}
+			
+		}
 		
-		//Implement collision detection
 		
 	}
 	
@@ -625,13 +663,13 @@ public class DemoGame extends ApplicationAdapter {
 		}
 
 		@Override
-		public void onAct() {
+		public void onAct(float delta) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void onDraw() {
+		public void onDraw(Batch batch, float parentAlpha) {
 			// TODO Auto-generated method stub
 			
 		}
@@ -657,13 +695,13 @@ public class DemoGame extends ApplicationAdapter {
 		}
 
 		@Override
-		public void onAct() {
+		public void onAct(float delta) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void onDraw() {
+		public void onDraw(Batch batch, float parentAlpha) {
 			// TODO Auto-generated method stub
 			
 		}
@@ -685,10 +723,10 @@ public class DemoGame extends ApplicationAdapter {
 	public interface IHeadBehaviour {
 		
 		//Act behaviour
-		void onAct();
+		void onAct(float delta);
 		
 		//Draw behaviour
-		void onDraw();
+		void onDraw(Batch batch, float parentAlpha);
 		
 		//Touch behaviour
 		void onTouch();
