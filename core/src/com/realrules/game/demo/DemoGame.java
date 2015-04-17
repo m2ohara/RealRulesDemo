@@ -257,6 +257,14 @@ public class DemoGame extends ApplicationAdapter {
 		
 		new HeadSprite(Head.GOSSIPER, 10, 115, "sprites//gossiperFollowerPack.pack");
 		
+		new HeadSprite(Head.GOSSIPER, 10, -90, "sprites//gossiperFollowerPack.pack");
+		
+		new HeadSprite(Head.GOSSIPER, -70, -30, "sprites//promoterFollowerPack.pack");
+		
+		new HeadSprite(Head.GOSSIPER, -70, 45, "sprites//deceiverFollowerPack.pack");
+		
+		new HeadSprite(Head.GOSSIPER, 90, -30, "sprites//promoterFollowerPack.pack");
+		
 		
 	}
 	
@@ -523,6 +531,8 @@ public class DemoGame extends ApplicationAdapter {
 		private float movementP = 0.1f;
 		private float rotateP = 0.3f;
 		private float argueSuccessP = 0.4f;
+		private float interactP = 0.7f;
+		private InteractSprite soundWave;
 		
 		public float getStartingX() {
 			return startingX;
@@ -549,6 +559,10 @@ public class DemoGame extends ApplicationAdapter {
 			setTouchAction();
 			
 			setToStage(this, this.startingX, this.startingY);
+			
+			//Set interact sprite
+			soundWave = new InteractSprite(this.startingX, this.startingY, "sprites//soundWaveFollower.pack"); 
+			
 		}
 		
 		//Implement onTouch action
@@ -583,6 +597,41 @@ public class DemoGame extends ApplicationAdapter {
 	
 	public enum Head { GOSSIPER, DECEIVER, INFLUENCER}
 	
+	public class InteractSprite extends Image {
+		
+		private Array<AtlasRegion> frames;
+		private TextureRegion currentFrame;
+		private float xCoord;
+		private float yCoord;
+		
+		
+		public InteractSprite(float x, float y, String framesPath) {
+			super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
+			frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
+			currentFrame = frames.get(0);
+			this.xCoord = x;
+			this.yCoord = y;
+			
+			//Centre origin in frame for rotation;
+			this.setOrigin(this.currentFrame.getRegionWidth()/2, this.currentFrame.getRegionHeight()/2);
+			
+			setToStage(this, this.xCoord, this.yCoord);
+			
+			this.setDrawable(new TextureRegionDrawable(new TextureRegion(this.currentFrame)));
+		}
+		
+		public void setFrame(float rotation) {
+			this.setRotation(rotation);
+		}
+		
+		public void setIsDrawable(boolean isDrawable) {
+				this.setVisible(isDrawable);
+		}
+		
+	}
+	
+	public enum Interact { SOUNDWAVE }
+	
 	public class GossiperBehaviour implements IHeadBehaviour {
 		
 		//Behaviour: 
@@ -594,11 +643,12 @@ public class DemoGame extends ApplicationAdapter {
 		Random rand = new Random();
 		float stateLength = 1.0f;
 		float stateTime = stateLength;
+		float InStateLength = 0.7f;
+		float InStateTime = InStateLength;
+		
 		
 		public GossiperBehaviour(HeadSprite gossiper) {
-			this.gossiper = gossiper;
-			
-			
+			this.gossiper = gossiper;		
 		}
 
 		@Override
@@ -609,15 +659,16 @@ public class DemoGame extends ApplicationAdapter {
 				setFrame();
 			}
 			stateTime += delta;
+			
+			if(InStateTime >= InStateLength) {
+				InStateTime = 0.0f;
+				setInteraction();
+			}
+			InStateTime += delta;
 		}
 
 		@Override
 		public void onDraw(Batch batch, float parentAlpha) {
-//			batch.draw(
-//					gossiper.currentFrame, 0, 0, gossiper.currentFrame.getRegionWidth()/2, gossiper.currentFrame.getRegionHeight()/2, 
-//					gossiper.currentFrame.getRegionWidth(), gossiper.currentFrame.getRegionHeight(), 0, 0,  gossiper.rotation
-//					);
-			
 		}
 
 		@Override
@@ -643,14 +694,33 @@ public class DemoGame extends ApplicationAdapter {
 			//Based on rotation probability
 			if(rand.nextFloat() > gossiper.rotateP) {
 				//Set direction
-				gossiper.currentFrame = gossiper.frames.get(rand.nextInt(2));
+				int direction = rand.nextInt(2);
+				gossiper.currentFrame = gossiper.frames.get(direction);
 				//Set angle
-				int angle = rand.nextInt(3);
-				gossiper.setRotation((float) (45 * angle));
+				int angleSector = rand.nextInt(2);
+				int angleMultiple = 45 * rand.nextInt(3);
+				int startingAngle = angleSector == 0 ? 0 : 270;
+				int finalAngle = startingAngle + angleMultiple;
+				gossiper.setRotation((float) (finalAngle));
 				
 				gossiper.setDrawable(new TextureRegionDrawable(new TextureRegion(gossiper.currentFrame)));
+				
+				//Rotate soundwave
+				int soundWaveAngle = direction == 1 ? finalAngle : finalAngle + 180 % 360;
+				gossiper.soundWave.setRotation(soundWaveAngle);
+				
 			}
 			
+		}
+		
+		private void setInteraction() {
+			
+			if(rand.nextFloat() > gossiper.interactP) {
+				gossiper.soundWave.setVisible(true);
+			}
+			else {
+				gossiper.soundWave.setVisible(false);
+			}
 		}
 		
 		
