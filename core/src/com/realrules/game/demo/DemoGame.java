@@ -127,7 +127,6 @@ public class DemoGame extends ApplicationAdapter {
 		
 		btn.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
-//				 setDebateScreen();
 				 setCrowdScreen();
 			 }
 		});
@@ -255,15 +254,15 @@ public class DemoGame extends ApplicationAdapter {
 		
 		setToStage(getImage("CrowdScreen", "screens//screensPack"), 0, 0);
 		
-		new HeadSprite(Head.GOSSIPER, 10, 115, "sprites//gossiperFollowerPack.pack");
+		new HeadSprite(Head.GOSSIPER, 10, 115, "sprites//gossiperFollowerPack.pack", true);
 		
-		new HeadSprite(Head.GOSSIPER, 10, -90, "sprites//gossiperFollowerPack.pack");
+		new HeadSprite(Head.GOSSIPER, 10, -90, "sprites//gossiperFollowerPack.pack", false);
 		
-		new HeadSprite(Head.GOSSIPER, -70, -30, "sprites//promoterFollowerPack.pack");
+		new HeadSprite(Head.GOSSIPER, -70, -30, "sprites//promoterFollowerPack.pack", false);
 		
-		new HeadSprite(Head.GOSSIPER, -70, 45, "sprites//deceiverFollowerPack.pack");
+		new HeadSprite(Head.GOSSIPER, -70, 45, "sprites//deceiverFollowerPack.pack", false);
 		
-		new HeadSprite(Head.GOSSIPER, 90, -30, "sprites//promoterFollowerPack.pack");
+		new HeadSprite(Head.GOSSIPER, 90, -30, "sprites//promoterFollowerPack.pack", false);
 		
 		
 	}
@@ -542,7 +541,7 @@ public class DemoGame extends ApplicationAdapter {
 			return startingY;
 		}
 		
-		public HeadSprite(Head type, float x, float y, String framesPath) {
+		public HeadSprite(Head type, float x, float y, String framesPath, boolean isActive) {
 			super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 			frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
 			currentFrame = frames.get(0);
@@ -553,7 +552,7 @@ public class DemoGame extends ApplicationAdapter {
 			startingY = y;
 			
 			if(type == type.GOSSIPER) {
-				behaviour = new GossiperBehaviour(this);
+				behaviour = new GossiperBehaviour(this,isActive);
 			}
 			
 			setTouchAction();
@@ -601,10 +600,10 @@ public class DemoGame extends ApplicationAdapter {
 		
 		private Array<AtlasRegion> frames;
 		private TextureRegion currentFrame;
+		private int currentAngle;
 		private float xCoord;
 		private float yCoord;
-		
-		
+
 		public InteractSprite(float x, float y, String framesPath) {
 			super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 			frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
@@ -625,7 +624,63 @@ public class DemoGame extends ApplicationAdapter {
 		}
 		
 		public void setIsDrawable(boolean isDrawable) {
-				this.setVisible(isDrawable);
+			this.setVisible(isDrawable);
+		}
+		
+		public void setMoveAction() {
+			
+			this.setVisible(true);
+			
+			//Get acting coords
+			float x = 0; 
+			float y = 0; 
+			float duration = 1.5f;
+			
+			//Move sprite to destination
+			switch(currentAngle) {
+				case 0 :  
+					x += this.currentFrame.getRegionWidth()/2;
+					break;
+				
+				case 45: 
+					x += this.currentFrame.getRegionWidth()/2;
+					y += this.currentFrame.getRegionHeight()/2;
+					break;
+					
+				case 90:
+					y += this.currentFrame.getRegionHeight()/2;
+					break;
+					
+				case 135:
+					x -= this.currentFrame.getRegionWidth()/2;
+					y += this.currentFrame.getRegionHeight()/2;
+					break;
+					
+				case 180:
+					x -= this.currentFrame.getRegionWidth()/2;
+					break;
+					
+				case 225:
+					x -= this.currentFrame.getRegionWidth()/2;
+					y -= this.currentFrame.getRegionHeight()/2;
+					break;
+					
+				case 270:
+					y -= this.currentFrame.getRegionHeight()/2;
+					break;
+					
+				case 315:
+					x += this.currentFrame.getRegionWidth()/2;
+					y -= this.currentFrame.getRegionHeight()/2;
+					break;
+					
+				case 360:
+					x += this.currentFrame.getRegionWidth()/2;
+					y -= this.currentFrame.getRegionHeight()/2;
+					break;					
+				
+			}
+			this.addAction(Actions.moveBy(x, y, duration));
 		}
 		
 	}
@@ -645,26 +700,43 @@ public class DemoGame extends ApplicationAdapter {
 		float stateTime = stateLength;
 		float InStateLength = 0.7f;
 		float InStateTime = InStateLength;
+		float TouchStateLength = 3.0f;
+		float TouchStateTime = 0;
+		private boolean isActive = false;
 		
 		
-		public GossiperBehaviour(HeadSprite gossiper) {
+		public GossiperBehaviour(HeadSprite gossiper, boolean isActive) {
 			this.gossiper = gossiper;		
+			this.isActive = isActive;
 		}
 
 		@Override
 		public void onAct(float delta) {
 			
-			if(stateTime >= stateLength) {
-				stateTime = 0.0f;
-				setFrame();
+			if(isActive) {
+				if(stateTime >= stateLength) {
+					stateTime = 0.0f;
+					setFrame();
+				}
+				stateTime += delta;
+				
+
+				if( InStateTime >= InStateLength) {
+					InStateTime = 0.0f;
+					setInteraction();
+				}
+				InStateTime += delta;
 			}
-			stateTime += delta;
-			
-			if(InStateTime >= InStateLength) {
-				InStateTime = 0.0f;
-				setInteraction();
+			else if(!isActive) {
+				if(TouchStateTime >= TouchStateLength) {
+					gossiper.soundWave.remove();
+					gossiper.setColor(Color.GRAY);
+				}
+				boolean newVisible = gossiper.soundWave.isVisible() ? false : true;
+				gossiper.soundWave.setVisible(newVisible);
+				
+				TouchStateTime += delta;
 			}
-			InStateTime += delta;
 		}
 
 		@Override
@@ -673,7 +745,10 @@ public class DemoGame extends ApplicationAdapter {
 
 		@Override
 		public void onTouch() {
-			// TODO Auto-generated method stub
+			if(isActive) {
+				gossiper.soundWave.setMoveAction();
+				isActive = false;
+			}
 			
 		}
 		
@@ -706,8 +781,9 @@ public class DemoGame extends ApplicationAdapter {
 				gossiper.setDrawable(new TextureRegionDrawable(new TextureRegion(gossiper.currentFrame)));
 				
 				//Rotate soundwave
-				int soundWaveAngle = direction == 1 ? finalAngle : finalAngle + 180 % 360;
+				int soundWaveAngle = direction == 1 ? finalAngle : (finalAngle + 180) % 360;
 				gossiper.soundWave.setRotation(soundWaveAngle);
+				gossiper.soundWave.currentAngle = (int)gossiper.soundWave.getRotation();
 				
 			}
 			
@@ -800,6 +876,22 @@ public class DemoGame extends ApplicationAdapter {
 		
 		//Touch behaviour
 		void onTouch();
+		
+	}
+	
+	public class Interaction {
+		
+		public void Interact(Head initiator, Head receiver) {
+			
+			//If interaction probability is achieved
+			
+			//Update status of receiver
+			
+		}
+		
+	}
+	
+	public interface IInteraction {
 		
 	}
 }
