@@ -26,6 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TransformDrawable;
 import com.badlogic.gdx.utils.Array;
@@ -255,14 +256,21 @@ public class DemoGame extends ApplicationAdapter {
 		setToStage(getImage("CrowdScreen", "screens//screensPack"), 0, 0);
 		
 		new HeadSprite(Head.GOSSIPER, 10, 115, "sprites//gossiperFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, -70, 115, "sprites//deceiverFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, 90, 115, "sprites//deceiverFollowerPack.pack", true);
 		
-		new HeadSprite(Head.GOSSIPER, 10, -90, "sprites//gossiperFollowerPack.pack", false);
+		new HeadSprite(Head.GOSSIPER, 10, 45, "sprites//gossiperFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, -70, 45, "sprites//deceiverFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, 90, 45, "sprites//deceiverFollowerPack.pack", true);
 		
-		new HeadSprite(Head.GOSSIPER, -70, -30, "sprites//promoterFollowerPack.pack", false);
+		new HeadSprite(Head.GOSSIPER, 10, -30, "sprites//gossiperFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, -70, -30, "sprites//promoterFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, 90, -30, "sprites//promoterFollowerPack.pack", true);
 		
-		new HeadSprite(Head.GOSSIPER, -70, 45, "sprites//deceiverFollowerPack.pack", false);
-		
-		new HeadSprite(Head.GOSSIPER, 90, -30, "sprites//promoterFollowerPack.pack", false);
+		new HeadSprite(Head.GOSSIPER, 10, -90, "sprites//gossiperFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, -70, -90, "sprites//deceiverFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, 90, -90, "sprites//deceiverFollowerPack.pack", true);
+	
 		
 		
 	}
@@ -531,7 +539,7 @@ public class DemoGame extends ApplicationAdapter {
 		private float rotateP = 0.3f;
 		private float argueSuccessP = 0.4f;
 		private float interactP = 0.7f;
-		private InteractSprite soundWave;
+//		private InteractSprite soundWave;
 		
 		public float getStartingX() {
 			return startingX;
@@ -560,7 +568,7 @@ public class DemoGame extends ApplicationAdapter {
 			setToStage(this, this.startingX, this.startingY);
 			
 			//Set interact sprite
-			soundWave = new InteractSprite(this.startingX, this.startingY, "sprites//soundWaveFollower.pack"); 
+//			soundWave = new InteractSprite(this.startingX, this.startingY, "sprites//soundWaveFollower.pack"); 
 			
 		}
 		
@@ -575,6 +583,34 @@ public class DemoGame extends ApplicationAdapter {
 			    }
 				
 			});
+		}
+		
+		private void setDragAction() {
+			
+			this.addListener(new DragListener() {
+				
+				public void dragStart (InputEvent event, float x, float y, int pointer) {
+					//Stop actor movement
+					
+					//Set starting actor
+					
+					//Set isDrag to true
+				}
+
+				public void drag (InputEvent event, float x, float y, int pointer) {
+					
+					
+					
+				}
+
+				public void dragStop (InputEvent event, float x, float y, int pointer) {
+					
+					//Set isDrag to false
+					
+				}
+			
+			});
+			
 		}
 
 		@Override
@@ -591,6 +627,25 @@ public class DemoGame extends ApplicationAdapter {
 			behaviour.onAct(delta);
 		}
 		
+		
+	}
+	
+	public class DragAction {
+		
+		//Drag listener
+		private DragListener dragListener;
+		
+		//Starting coords
+		
+		//Current actor
+		HeadSprite actor;
+		
+		//On drag method
+		public void onDrag() {
+			
+			
+			
+		}
 		
 	}
 	
@@ -728,14 +783,14 @@ public class DemoGame extends ApplicationAdapter {
 				InStateTime += delta;
 			}
 			else if(!isActive) {
-				if(TouchStateTime >= TouchStateLength) {
-					gossiper.soundWave.remove();
-					gossiper.setColor(Color.GRAY);
-				}
-				boolean newVisible = gossiper.soundWave.isVisible() ? false : true;
-				gossiper.soundWave.setVisible(newVisible);
-				
-				TouchStateTime += delta;
+//				if(TouchStateTime >= TouchStateLength) {
+//					gossiper.soundWave.remove();
+//					gossiper.setColor(Color.GRAY);
+//				}
+//				boolean newVisible = gossiper.soundWave.isVisible() ? false : true;
+//				gossiper.soundWave.setVisible(newVisible);
+//				
+//				TouchStateTime += delta;
 			}
 		}
 
@@ -746,9 +801,25 @@ public class DemoGame extends ApplicationAdapter {
 		@Override
 		public void onTouch() {
 			if(isActive) {
-				gossiper.soundWave.setMoveAction();
+//				gossiper.soundWave.setMoveAction();
 				isActive = false;
 			}
+			
+		}
+		
+		public void onDrag() {
+			
+			//Perform interaction
+			
+		}
+		
+		private void performInteraction() {
+			
+			//If actor is at correct angle
+			
+			//Perform interaction with neighbouring actor
+			
+			//Move channel 
 			
 		}
 		
@@ -781,9 +852,9 @@ public class DemoGame extends ApplicationAdapter {
 				gossiper.setDrawable(new TextureRegionDrawable(new TextureRegion(gossiper.currentFrame)));
 				
 				//Rotate soundwave
-				int soundWaveAngle = direction == 1 ? finalAngle : (finalAngle + 180) % 360;
-				gossiper.soundWave.setRotation(soundWaveAngle);
-				gossiper.soundWave.currentAngle = (int)gossiper.soundWave.getRotation();
+//				int soundWaveAngle = direction == 1 ? finalAngle : (finalAngle + 180) % 360;
+//				gossiper.soundWave.setRotation(soundWaveAngle);
+//				gossiper.soundWave.currentAngle = (int)gossiper.soundWave.getRotation();
 				
 			}
 			
@@ -792,10 +863,10 @@ public class DemoGame extends ApplicationAdapter {
 		private void setInteraction() {
 			
 			if(rand.nextFloat() > gossiper.interactP) {
-				gossiper.soundWave.setVisible(true);
+//				gossiper.soundWave.setVisible(true);
 			}
 			else {
-				gossiper.soundWave.setVisible(false);
+//				gossiper.soundWave.setVisible(false);
 			}
 		}
 		
@@ -876,6 +947,8 @@ public class DemoGame extends ApplicationAdapter {
 		
 		//Touch behaviour
 		void onTouch();
+		
+//		void onSwipe();
 		
 	}
 	
