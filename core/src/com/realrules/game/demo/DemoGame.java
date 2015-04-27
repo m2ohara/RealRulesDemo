@@ -1,6 +1,8 @@
 package com.realrules.game.demo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Random;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -30,7 +32,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class DemoGame extends ApplicationAdapter {
@@ -39,6 +40,10 @@ public class DemoGame extends ApplicationAdapter {
 	public Stage stage;
 	OrthographicCamera camera;
 	private boolean isAndroid = false;
+	Interaction interaction = new Interaction();
+	public ArrayList<Integer> gameXCoords = new ArrayList<Integer>(Arrays.asList(-70, 10, 90)); //Not matched
+	public ArrayList<Integer>  gameYCoords = new ArrayList<Integer>(Arrays.asList(115, 45, -25, -95));
+
 	
 	
 	public boolean isAndroid() {
@@ -140,6 +145,13 @@ public class DemoGame extends ApplicationAdapter {
 		actorToSet.setPosition(x, y);
 	}
 	
+	public HeadSprite getMemberFromCoords(int gameXPos, int gameYPos) {
+		//Not resolving
+		Actor neighbour = stage.hit((float)gameXCoords.get(gameXPos), (float)gameYCoords.get(gameYPos), false);
+		
+		return (HeadSprite)neighbour;
+	}
+	
 	private void setTitleScreen() {
 		
 		setToStage(getImage("TitleScreen", "screens//screensPack"), 0, 0);
@@ -191,9 +203,9 @@ public class DemoGame extends ApplicationAdapter {
 		
 		setToStage(getImage("CrowdScreen", "screens//screensPack"), 0, 0);
 		
+		new HeadSprite(Head.GOSSIPER, -70, 115, "sprites//deceiverFollowerPack.pack", true);
 		HeadSprite start =  new HeadSprite(Head.GOSSIPER, 10, 115, "sprites//gossiperFollowerPack.pack", true);
 		start.status = 1; start.setColor(Color.CYAN);
-		new HeadSprite(Head.GOSSIPER, -70, 115, "sprites//deceiverFollowerPack.pack", true);
 		new HeadSprite(Head.GOSSIPER, 90, 115, "sprites//deceiverFollowerPack.pack", true);
 		
 		new HeadSprite(Head.GOSSIPER, 10, 45, "sprites//gossiperFollowerPack.pack", true);
@@ -227,6 +239,14 @@ public class DemoGame extends ApplicationAdapter {
 		private InteractSprite soundWave;
 		public boolean isActive = true;
 		public int status = 0; //0 : neutral, 1 : for 2 : against
+		
+		public int getXGameCoord() {
+			return gameXCoords.indexOf((int)this.startingX);
+		}
+		
+		public int getYGameCoord() {
+			return gameYCoords.indexOf((int)this.startingY);
+		}
 
 		public int getDirection() {
 			return direction;
@@ -271,6 +291,7 @@ public class DemoGame extends ApplicationAdapter {
 				
 				public void clicked(InputEvent event, float x, float y) 
 			    {
+					System.out.println("Hit at: x: "+x+", y: "+y+"");
 					behaviour.onTouch();
 			    }
 				
@@ -294,7 +315,7 @@ public class DemoGame extends ApplicationAdapter {
 		
 		
 	}
-	
+
 	public enum Head { GOSSIPER, DECEIVER, INFLUENCER}
 
 	
@@ -314,6 +335,7 @@ public class DemoGame extends ApplicationAdapter {
 		float TouchStateLength = 3.0f;
 		float TouchStateTime = 0;
 		private boolean isActive = false;
+		
 		//Skills
 		private int influenceAmount = 2;
 		
@@ -340,7 +362,7 @@ public class DemoGame extends ApplicationAdapter {
 
 				if( InStateTime >= InStateLength) {
 					InStateTime = 0.0f;
-					setInteraction();
+					performAutonomousInteraction();
 				}
 				InStateTime += delta;
 			}
@@ -411,10 +433,12 @@ public class DemoGame extends ApplicationAdapter {
 			
 		}
 		
-		private void setInteraction() {
+		private void performAutonomousInteraction() {
 			
 			if(rand.nextFloat() > gossiper.interactP) {
 				gossiper.soundWave.setVisible(true);
+				interaction.interactAutonomous(this.gossiper);
+				
 			}
 			else {
 				gossiper.soundWave.setVisible(false);
@@ -599,7 +623,6 @@ public class DemoGame extends ApplicationAdapter {
 	
 	public class GameGestures implements GestureListener {
 		
-		Interaction interaction = new Interaction();
 		boolean isFirstHit = true;
 
 		@Override
@@ -782,6 +805,73 @@ public class DemoGame extends ApplicationAdapter {
 		private void setToFollower(HeadSprite hitActor) {
 			hitActor.setColor(Color.CYAN);
 			hitActor.status = 1;
+		}
+		
+		public void interactAutonomous(HeadSprite interactor) {
+			
+			//As long as interactor isn't neutral
+			if(interactor.status != 0) {
+				//Determine interactor's direction
+				float facingAngle = interactor.getRotation();
+				int direction = interactor.getDirection();
+				
+				HeadSprite interactee = null;
+				
+				//If facing towards the right
+				if(direction == 1) {
+					if(facingAngle == 0) {
+						//Get interactee by coordinates
+						interactee = getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()+1));
+						System.out.println("Interactor facing to the right");
+	
+					}
+					if(facingAngle == 90) {
+						System.out.println("Follower facing above");
+	
+					}
+					if(facingAngle == 270) {
+						System.out.println("Follower facing below");
+					}
+				}
+				
+				//If facing towards the left
+				if(direction == 0) {
+					if(facingAngle == 0) {
+						System.out.println("Follower facing to the left");
+	
+					}
+					if(facingAngle == 90) {
+						System.out.println("Follower facing above");
+					}
+					if(facingAngle == 270) {
+						System.out.println("Follower facing below");
+					}
+				}
+				
+				//Perform interaction
+				if(interactee != null) {
+					interact(interactor, interactee);
+				}
+			}
+			
+		}
+		
+		private void interact(HeadSprite interactor, HeadSprite interactee) {
+			
+			Random rand = new Random();
+			
+			//TODO: Check interactee isn't hit
+			//Influence if interactee is neutral
+			if(interactee.status == 0 && interactee.isActive == true) {
+				if(rand.nextFloat() > interactor.argueSuccessP) {
+					interactee.status = 2;
+					interactee.setColor(Color.GRAY);
+				}
+				else {
+					interactee.status = 1;
+					interactee.setColor(Color.GRAY);
+				}
+			}
 		}
 		
 	}
