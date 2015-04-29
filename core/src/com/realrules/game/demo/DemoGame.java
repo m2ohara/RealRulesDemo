@@ -24,6 +24,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -41,8 +42,8 @@ public class DemoGame extends ApplicationAdapter {
 	OrthographicCamera camera;
 	private boolean isAndroid = false;
 	Interaction interaction = new Interaction();
-	public ArrayList<Integer> gameXCoords = new ArrayList<Integer>(Arrays.asList(-70, 10, 90)); //Not matched
-	public ArrayList<Integer>  gameYCoords = new ArrayList<Integer>(Arrays.asList(115, 45, -25, -95));
+	public ArrayList<Float> gameXCoords = new ArrayList<Float>(Arrays.asList(134f, 214f, 294f)); //Not matched
+	public ArrayList<Float>  gameYCoords = new ArrayList<Float>(Arrays.asList(382.5f, 312.5f, 242.5f, 172.5f));
 
 	
 	
@@ -123,7 +124,9 @@ public class DemoGame extends ApplicationAdapter {
 		txAtlas = new TextureAtlas(Gdx.files.internal(pack+".pack"));
 		txSkin = new Skin(txAtlas);
 		
-		return new Image(txSkin.getDrawable(type));
+		Actor image = new Image(txSkin.getDrawable(type));
+		image.setTouchable(Touchable.disabled);
+		return image;
 	}
 	
 	public void setToStage(Actor actor, float _xCentreOffset, float _yCentreOffset) {
@@ -143,12 +146,17 @@ public class DemoGame extends ApplicationAdapter {
 		y += _yCentreOffset;
 		
 		actorToSet.setPosition(x, y);
+		
+		_xCentreOffset = actorToSet.getX();
+		_yCentreOffset = actorToSet.getY();
 	}
 	
 	public HeadSprite getMemberFromCoords(int gameXPos, int gameYPos) {
-		//Not resolving
-		Actor neighbour = stage.hit((float)gameXCoords.get(gameXPos), (float)gameYCoords.get(gameYPos), false);
 		
+		Actor neighbour = null;
+		if(gameXPos != -1 && gameYPos != -1); {
+			neighbour = stage.hit(gameXCoords.get(gameXPos), gameYCoords.get(gameYPos), true);
+		}
 		return (HeadSprite)neighbour;
 	}
 	
@@ -201,7 +209,9 @@ public class DemoGame extends ApplicationAdapter {
 	
 	private void setCrowdScreen() {
 		
-		setToStage(getImage("CrowdScreen", "screens//screensPack"), 0, 0);
+		Actor screen = getImage("CrowdScreen", "screens//screensPack");
+		screen.setTouchable(Touchable.disabled);
+		setToStage(screen, 0, 0);
 		
 		new HeadSprite(Head.GOSSIPER, -70, 115, "sprites//deceiverFollowerPack.pack", true);
 		HeadSprite start =  new HeadSprite(Head.GOSSIPER, 10, 115, "sprites//gossiperFollowerPack.pack", true);
@@ -234,18 +244,18 @@ public class DemoGame extends ApplicationAdapter {
 		private int direction; //0 : right, 1 : left
 		private float movementP = 0.1f;
 		private float rotateP = 0.3f;
-		private float argueSuccessP = 0.4f;
-		private float interactP = 0.7f;
+		private float argueSuccessP = 0.2f;
+		private float interactSuccessP = 0.1f;
 		private InteractSprite soundWave;
 		public boolean isActive = true;
 		public int status = 0; //0 : neutral, 1 : for 2 : against
 		
 		public int getXGameCoord() {
-			return gameXCoords.indexOf((int)this.startingX);
+			return gameXCoords.indexOf(this.getX());
 		}
 		
 		public int getYGameCoord() {
-			return gameYCoords.indexOf((int)this.startingY);
+			return gameYCoords.indexOf(this.getY());
 		}
 
 		public int getDirection() {
@@ -281,6 +291,7 @@ public class DemoGame extends ApplicationAdapter {
 			
 			//Set interact sprite
 			soundWave = new InteractSprite(this.startingX, this.startingY, "sprites//soundWaveFollower.pack"); 
+			soundWave.setTouchable(Touchable.disabled);
 			
 		}
 		
@@ -327,7 +338,6 @@ public class DemoGame extends ApplicationAdapter {
 		//Draw: Default 
 		
 		HeadSprite gossiper;
-		Random rand = new Random();
 		float stateLength = 2.0f;
 		float stateTime = stateLength;
 		float InStateLength = 0.7f;
@@ -338,6 +348,7 @@ public class DemoGame extends ApplicationAdapter {
 		
 		//Skills
 		private int influenceAmount = 2;
+		Random rand = new Random();
 		
 		
 		public int getInfluenceAmount() {
@@ -406,7 +417,6 @@ public class DemoGame extends ApplicationAdapter {
 		
 		//Implement frame setting
 		private void setFrame() {
-			
 			//Based on rotation probability
 			if(rand.nextFloat() > gossiper.rotateP) {
 				//Set direction
@@ -434,8 +444,8 @@ public class DemoGame extends ApplicationAdapter {
 		}
 		
 		private void performAutonomousInteraction() {
-			
-			if(rand.nextFloat() > gossiper.interactP) {
+			Random rand = new Random();
+			if(rand.nextFloat() < gossiper.interactSuccessP) {
 				gossiper.soundWave.setVisible(true);
 				interaction.interactAutonomous(this.gossiper);
 				
@@ -819,32 +829,36 @@ public class DemoGame extends ApplicationAdapter {
 				
 				//If facing towards the right
 				if(direction == 1) {
-					if(facingAngle == 0) {
+					if(facingAngle == 0 && (interactor.getXGameCoord()+1) < gameXCoords.size()) {
 						//Get interactee by coordinates
+						interactee = getMemberFromCoords(interactor.getXGameCoord()+1, (interactor.getYGameCoord()));
+						System.out.println("Member type "+interactor.status+"  influencing to the right");
+	
+					}
+					if(facingAngle == 90 && (interactor.getYGameCoord()-1) > -1) {
+						interactee = getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()-1));
+						System.out.println("Member type "+interactor.status+"  influencing above");
+	
+					}
+					if(facingAngle == 270 && (interactor.getYGameCoord()+1) < gameYCoords.size()) {
 						interactee = getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()+1));
-						System.out.println("Interactor facing to the right");
-	
-					}
-					if(facingAngle == 90) {
-						System.out.println("Follower facing above");
-	
-					}
-					if(facingAngle == 270) {
-						System.out.println("Follower facing below");
+						System.out.println("Member type "+interactor.status+"  influencing below");
 					}
 				}
 				
 				//If facing towards the left
 				if(direction == 0) {
-					if(facingAngle == 0) {
-						System.out.println("Follower facing to the left");
-	
+					if(facingAngle == 0 && (interactor.getXGameCoord()-1) > -1) {
+						interactee = getMemberFromCoords(interactor.getXGameCoord()-1, (interactor.getYGameCoord()));
+						System.out.println("Member type "+interactor.status+" influencing to the left");
 					}
-					if(facingAngle == 90) {
-						System.out.println("Follower facing above");
+					if(facingAngle == 90 && (interactor.getYGameCoord()+1) < gameYCoords.size()) {
+						interactee = getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()+1));
+						System.out.println("Member type "+interactor.status+" influencing above");
 					}
-					if(facingAngle == 270) {
-						System.out.println("Follower facing below");
+					if(facingAngle == 270 && (interactor.getYGameCoord()-1) > -1) {
+						interactee = getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()-1));
+						System.out.println("Member type "+interactor.status+" influencing below");
 					}
 				}
 				
@@ -866,10 +880,12 @@ public class DemoGame extends ApplicationAdapter {
 				if(rand.nextFloat() > interactor.argueSuccessP) {
 					interactee.status = 2;
 					interactee.setColor(Color.GRAY);
+					System.out.println("Opposer influenced");
 				}
 				else {
 					interactee.status = 1;
-					interactee.setColor(Color.GRAY);
+					interactee.setColor(Color.CYAN);
+					System.out.println("Follower influenced");
 				}
 			}
 		}
