@@ -2,7 +2,6 @@ package com.realrules.game.demo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Random;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -33,6 +32,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class DemoGame extends ApplicationAdapter {
@@ -42,8 +42,12 @@ public class DemoGame extends ApplicationAdapter {
 	OrthographicCamera camera;
 	private boolean isAndroid = false;
 	Interaction interaction = new Interaction();
-	public ArrayList<Float> gameXCoords = new ArrayList<Float>(Arrays.asList(134f, 214f, 294f)); //Not matched
+	public ArrayList<Float> gameXCoords = new ArrayList<Float>(Arrays.asList(134f, 214f, 294f)); 
 	public ArrayList<Float>  gameYCoords = new ArrayList<Float>(Arrays.asList(382.5f, 312.5f, 242.5f, 172.5f));
+	
+	//Get android coords (automate setting)
+//	public ArrayList<Float> gameXCoords = new ArrayList<Float>(Arrays.asList(134f, 214f, 294f)); 
+//	public ArrayList<Float>  gameYCoords = new ArrayList<Float>(Arrays.asList(382.5f, 312.5f, 242.5f, 172.5f));
 
 	
 	
@@ -154,7 +158,8 @@ public class DemoGame extends ApplicationAdapter {
 	public HeadSprite getMemberFromCoords(int gameXPos, int gameYPos) {
 		
 		Actor neighbour = null;
-		if(gameXPos != -1 && gameYPos != -1); {
+		System.out.println("Getting member at gameCoords "+gameXPos+", "+gameYPos);
+		if(gameXPos != -1 && gameXPos < gameXCoords.size() && gameYPos != -1 && gameYPos < gameYCoords.size()) {
 			neighbour = stage.hit(gameXCoords.get(gameXPos), gameYCoords.get(gameYPos), true);
 		}
 		return (HeadSprite)neighbour;
@@ -243,18 +248,20 @@ public class DemoGame extends ApplicationAdapter {
 		private TextureRegion currentFrame;
 		private int direction; //0 : right, 1 : left
 		private float movementP = 0.1f;
-		private float rotateP = 0.3f;
+		private float rotateP = 0.8f;
 		private float argueSuccessP = 0.2f;
-		private float interactSuccessP = 0.1f;
+		private float interactSuccessP = 0.2f;
 		private InteractSprite soundWave;
 		public boolean isActive = true;
 		public int status = 0; //0 : neutral, 1 : for 2 : against
 		
 		public int getXGameCoord() {
+			System.out.println("member x is "+this.getX());
 			return gameXCoords.indexOf(this.getX());
 		}
 		
 		public int getYGameCoord() {
+			System.out.println("member y is "+this.getY());
 			return gameYCoords.indexOf(this.getY());
 		}
 
@@ -418,7 +425,7 @@ public class DemoGame extends ApplicationAdapter {
 		//Implement frame setting
 		private void setFrame() {
 			//Based on rotation probability
-			if(rand.nextFloat() > gossiper.rotateP) {
+			if(rand.nextFloat() < gossiper.rotateP) {
 				//Set direction
 				int direction = rand.nextInt(2);
 				gossiper.direction = direction;
@@ -731,11 +738,11 @@ public class DemoGame extends ApplicationAdapter {
 						
 						System.out.println("First follower hit facing "+angle);
 					}
-					//Interactee
-					else if(interactor != null && !invalidInteraction && !isFirst && interactor.behaviour.getInfluenceAmount() > interactees.size()) {
+					//Neutral interactee
+					else if(interactor != null && !invalidInteraction && !isFirst && interactor.behaviour.getInfluenceAmount() > interactees.size() && hitActor.status == 0) {
 						if(validInteraction(hitActor)) {
-							//Pause previous hit actor
-							lastHitActor.isActive = false;
+							//Set previous hit actor to untouchable
+							lastHitActor.status = 2;
 							interactees.add(hitActor);
 							setToFollower(hitActor);
 						}
@@ -745,7 +752,7 @@ public class DemoGame extends ApplicationAdapter {
 						}
 					}		
 					
-	//				hitActor.isActive = true;
+					hitActor.isActive = true;
 					
 					lastHitActor = hitActor;
 				}
@@ -864,6 +871,7 @@ public class DemoGame extends ApplicationAdapter {
 				
 				//Perform interaction
 				if(interactee != null) {
+					System.out.println("Influencing type "+interactee.status+"");
 					interact(interactor, interactee);
 				}
 			}
@@ -878,7 +886,7 @@ public class DemoGame extends ApplicationAdapter {
 			//Influence if interactee is neutral
 			if(interactee.status == 0 && interactee.isActive == true) {
 				if(rand.nextFloat() > interactor.argueSuccessP) {
-					interactee.status = 2;
+					interactee.status = 3;
 					interactee.setColor(Color.GRAY);
 					System.out.println("Opposer influenced");
 				}
