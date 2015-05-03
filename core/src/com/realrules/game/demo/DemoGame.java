@@ -42,14 +42,35 @@ public class DemoGame extends ApplicationAdapter {
 	OrthographicCamera camera;
 	private boolean isAndroid = false;
 	Interaction interaction = new Interaction();
-	public ArrayList<Float> gameXCoords = new ArrayList<Float>(Arrays.asList(134f, 214f, 294f)); 
-	public ArrayList<Float>  gameYCoords = new ArrayList<Float>(Arrays.asList(382.5f, 312.5f, 242.5f, 172.5f));
 	
-	//Get android coords (automate setting)
+	
 //	public ArrayList<Float> gameXCoords = new ArrayList<Float>(Arrays.asList(134f, 214f, 294f)); 
 //	public ArrayList<Float>  gameYCoords = new ArrayList<Float>(Arrays.asList(382.5f, 312.5f, 242.5f, 172.5f));
-
+	public ArrayList<Float> gameXCoords = new ArrayList<Float>();
+	public ArrayList<Float>  gameYCoords = new ArrayList<Float>();
+	public final int xSpan = 216;
+	public final int ySpan = 288;
+	public final int xGrid = 3;
+	public final int yGrid = 4;
+	float headSpriteH = 72;
+	int headSpriteW = 72;
 	
+
+	private void setGameCoords() {
+		float centreX = (Gdx.graphics.getWidth()) / 2; 
+		float startX = centreX - (xSpan/2);
+		float spanLengthX = startX + xSpan;
+		for(float x = startX; x < spanLengthX; x+=headSpriteW) {
+			gameXCoords.add(x);
+		}
+		
+		float centreY = (Gdx.graphics.getHeight()) / 2; 
+		float startY = centreY - (ySpan/2);
+		float spanLengthY = startY + ySpan;
+		for(float y = startY; y < spanLengthY; y+=headSpriteH) {
+			gameYCoords.add(y);
+		}
+	}
 	
 	public boolean isAndroid() {
 		return isAndroid;
@@ -61,6 +82,7 @@ public class DemoGame extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		setGameCoords();
 		batch = new SpriteBatch();
 		setView();
 		
@@ -210,30 +232,37 @@ public class DemoGame extends ApplicationAdapter {
 		});
 	}
 	
-
-	
 	private void setCrowdScreen() {
 		
 		Actor screen = getImage("CrowdScreen", "screens//screensPack");
 		screen.setTouchable(Touchable.disabled);
 		setToStage(screen, 0, 0);
 		
-		new HeadSprite(Head.GOSSIPER, -70, 115, "sprites//deceiverFollowerPack.pack", true);
-		HeadSprite start =  new HeadSprite(Head.GOSSIPER, 10, 115, "sprites//gossiperFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(3), "sprites//deceiverFollowerPack.pack", true);
+		HeadSprite start =  new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(3), "sprites//gossiperFollowerPack.pack", true);
 		start.status = 1; start.setColor(Color.CYAN);
-		new HeadSprite(Head.GOSSIPER, 90, 115, "sprites//deceiverFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(3), "sprites//deceiverFollowerPack.pack", true);
 		
-		new HeadSprite(Head.GOSSIPER, 10, 45, "sprites//gossiperFollowerPack.pack", true);
-		new HeadSprite(Head.GOSSIPER, -70, 45, "sprites//deceiverFollowerPack.pack", true);
-		new HeadSprite(Head.GOSSIPER, 90, 45, "sprites//deceiverFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(2), "sprites//gossiperFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(2), "sprites//deceiverFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(2), "sprites//deceiverFollowerPack.pack", true);
 		
-		new HeadSprite(Head.GOSSIPER, 10, -25, "sprites//gossiperFollowerPack.pack", true);
-		new HeadSprite(Head.GOSSIPER, -70, -25, "sprites//promoterFollowerPack.pack", true);
-		new HeadSprite(Head.GOSSIPER, 90, -25, "sprites//promoterFollowerPack.pack", true);
-		
-		new HeadSprite(Head.GOSSIPER, 10, -95, "sprites//gossiperFollowerPack.pack", true);
-		new HeadSprite(Head.GOSSIPER, -70, -95, "sprites//deceiverFollowerPack.pack", true);
-		new HeadSprite(Head.GOSSIPER, 90, -95, "sprites//deceiverFollowerPack.pack", true);
+//		new HeadSprite(Head.GOSSIPER, -70, 115, "sprites//deceiverFollowerPack.pack", true);
+//		HeadSprite start =  new HeadSprite(Head.GOSSIPER, 10, 115, "sprites//gossiperFollowerPack.pack", true);
+//		start.status = 1; start.setColor(Color.CYAN);
+//		new HeadSprite(Head.GOSSIPER, 90, 115, "sprites//deceiverFollowerPack.pack", true);
+//		
+//		new HeadSprite(Head.GOSSIPER, 10, 45, "sprites//gossiperFollowerPack.pack", true);
+//		new HeadSprite(Head.GOSSIPER, -70, 45, "sprites//deceiverFollowerPack.pack", true);
+//		new HeadSprite(Head.GOSSIPER, 90, 45, "sprites//deceiverFollowerPack.pack", true);
+//		
+//		new HeadSprite(Head.GOSSIPER, 10, -25, "sprites//gossiperFollowerPack.pack", true);
+//		new HeadSprite(Head.GOSSIPER, -70, -25, "sprites//promoterFollowerPack.pack", true);
+//		new HeadSprite(Head.GOSSIPER, 90, -25, "sprites//promoterFollowerPack.pack", true);
+//		
+//		new HeadSprite(Head.GOSSIPER, 10, -95, "sprites//gossiperFollowerPack.pack", true);
+//		new HeadSprite(Head.GOSSIPER, -70, -95, "sprites//deceiverFollowerPack.pack", true);
+//		new HeadSprite(Head.GOSSIPER, 90, -95, "sprites//deceiverFollowerPack.pack", true);
 	
 		
 		
@@ -294,7 +323,9 @@ public class DemoGame extends ApplicationAdapter {
 			
 			setTouchAction();
 			
-			setToStage(this, this.startingX, this.startingY);
+//			setToStage(this, this.startingX, this.startingY);
+			this.setPosition(startingX, startingY);
+			stage.addActor(this);
 			
 			//Set interact sprite
 			soundWave = new InteractSprite(this.startingX, this.startingY, "sprites//soundWaveFollower.pack"); 
@@ -558,71 +589,7 @@ public class DemoGame extends ApplicationAdapter {
 	}
 	
 	public enum Interact { SOUNDWAVE }
-//	
-//	public class DeceiverBehaviour implements IHeadBehaviour {
-//		
-//		public DeceiverBehaviour() {
-//			
-//		}
-//
-//		@Override
-//		public void onAct(float delta) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//
-//		@Override
-//		public void onDraw(Batch batch, float parentAlpha) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//
-//		@Override
-//		public void onTouch() {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//		
-//		//Implement movement action
-//		
-//		//Implement frame setting
-//		
-//		//Implement collision detection
-//		
-//	}
-//	
-//	public class InfluencerBehaviour implements IHeadBehaviour {
-//		
-//		public InfluencerBehaviour() {
-//			
-//		}
-//
-//		@Override
-//		public void onAct(float delta) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//
-//		@Override
-//		public void onDraw(Batch batch, float parentAlpha) {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//
-//		@Override
-//		public void onTouch() {
-//			// TODO Auto-generated method stub
-//			
-//		}
-//		
-//		//Implement movement action
-//		
-//		//Implement frame setting
-//		
-//		//Implement collision detection
-//		
-//	}
-//	
+
 	public interface IHeadBehaviour {
 		
 		//Act behaviour
@@ -903,4 +870,70 @@ public class DemoGame extends ApplicationAdapter {
 	public interface IInteraction {
 		
 	}
+	
+//	
+//	public class DeceiverBehaviour implements IHeadBehaviour {
+//		
+//		public DeceiverBehaviour() {
+//			
+//		}
+//
+//		@Override
+//		public void onAct(float delta) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void onDraw(Batch batch, float parentAlpha) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void onTouch() {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//		
+//		//Implement movement action
+//		
+//		//Implement frame setting
+//		
+//		//Implement collision detection
+//		
+//	}
+//	
+//	public class InfluencerBehaviour implements IHeadBehaviour {
+//		
+//		public InfluencerBehaviour() {
+//			
+//		}
+//
+//		@Override
+//		public void onAct(float delta) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void onDraw(Batch batch, float parentAlpha) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void onTouch() {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//		
+//		//Implement movement action
+//		
+//		//Implement frame setting
+//		
+//		//Implement collision detection
+//		
+//	}
+//	
 }
