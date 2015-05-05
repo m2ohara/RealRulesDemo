@@ -6,7 +6,7 @@ repeat: none
 SoundWave1
   rotate: false
   xy: 1, 1
-  size: 150, 76
-  orig: 150, 76
+  size: 130, 72
+  orig: 130, 72
   offset: 0, 0
   index: -1

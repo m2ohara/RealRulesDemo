@@ -48,16 +48,17 @@ public class DemoGame extends ApplicationAdapter {
 //	public ArrayList<Float>  gameYCoords = new ArrayList<Float>(Arrays.asList(382.5f, 312.5f, 242.5f, 172.5f));
 	public ArrayList<Float> gameXCoords = new ArrayList<Float>();
 	public ArrayList<Float>  gameYCoords = new ArrayList<Float>();
-	public final int xSpan = 216;
-	public final int ySpan = 288;
+//	public final int xSpan = 216;
+//	public final int ySpan = 288;
 	public final int xGrid = 3;
-	public final int yGrid = 4;
+	public final int yGrid = 5;
 	float headSpriteH = 72;
 	int headSpriteW = 72;
 	
 
 	private void setGameCoords() {
 		float centreX = (Gdx.graphics.getWidth()) / 2; 
+		float xSpan = headSpriteW*xGrid;
 		float startX = centreX - (xSpan/2);
 		float spanLengthX = startX + xSpan;
 		for(float x = startX; x < spanLengthX; x+=headSpriteW) {
@@ -65,9 +66,10 @@ public class DemoGame extends ApplicationAdapter {
 		}
 		
 		float centreY = (Gdx.graphics.getHeight()) / 2; 
-		float startY = centreY - (ySpan/2);
-		float spanLengthY = startY + ySpan;
-		for(float y = startY; y < spanLengthY; y+=headSpriteH) {
+		float ySpan = headSpriteH*yGrid;
+		float startY = centreY + (ySpan/2);
+		float spanLengthY = startY - ySpan;
+		for(float y = startY; y > spanLengthY; y-=headSpriteH) {
 			gameYCoords.add(y);
 		}
 	}
@@ -238,14 +240,28 @@ public class DemoGame extends ApplicationAdapter {
 		screen.setTouchable(Touchable.disabled);
 		setToStage(screen, 0, 0);
 		
-		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(3), "sprites//deceiverFollowerPack.pack", true);
-		HeadSprite start =  new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(3), "sprites//gossiperFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(0), "sprites//deceiverFollowerPack.pack", true);
+		HeadSprite start =  new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(0), "sprites//gossiperFollowerPack.pack", true);
 		start.status = 1; start.setColor(Color.CYAN);
-		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(3), "sprites//deceiverFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(0), "sprites//deceiverFollowerPack.pack", true);
+		
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(1), "sprites//gossiperFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(1), "sprites//deceiverFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(1), "sprites//deceiverFollowerPack.pack", true);
 		
 		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(2), "sprites//gossiperFollowerPack.pack", true);
 		new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(2), "sprites//deceiverFollowerPack.pack", true);
 		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(2), "sprites//deceiverFollowerPack.pack", true);
+		
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(3), "sprites//gossiperFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true);
+		
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(4), "sprites//gossiperFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
+		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
+		
+		
 		
 //		new HeadSprite(Head.GOSSIPER, -70, 115, "sprites//deceiverFollowerPack.pack", true);
 //		HeadSprite start =  new HeadSprite(Head.GOSSIPER, 10, 115, "sprites//gossiperFollowerPack.pack", true);
@@ -504,22 +520,28 @@ public class DemoGame extends ApplicationAdapter {
 		private float xCoord;
 		private float yCoord;
 
-		public InteractSprite(float x, float y, String framesPath) {
+		public InteractSprite(float followerX, float followerY, String framesPath) {
 			super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 			frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
 			currentFrame = frames.get(0);
-			this.xCoord = x;
-			this.yCoord = y;
+			
+			//Centre sprite to follower centre
+			this.xCoord = followerX + (headSpriteW/2) - (this.getWidth()/2);
+			this.yCoord = followerY + (headSpriteH/2) - (this.getHeight()/2);
 			
 			//Centre origin in frame for rotation;
 			this.setOrigin(this.currentFrame.getRegionWidth()/2, this.currentFrame.getRegionHeight()/2);			
+
 			
-			setToStage(this, this.xCoord, this.yCoord);
+//			setToStage(this, this.xCoord, this.yCoord);
+			this.setPosition(this.xCoord, this.yCoord);
+			stage.addActor(this);
 			
 			this.setDrawable(new TextureRegionDrawable(new TextureRegion(this.currentFrame)));
 			
 			//TO DO: Temp solution remove
 			this.scaleBy(-0.5f);
+			
 		}
 		
 		public void setFrame(float rotation) {
