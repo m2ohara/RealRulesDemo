@@ -43,15 +43,11 @@ public class DemoGame extends ApplicationAdapter {
 	private boolean isAndroid = false;
 	ManualInteraction interaction = new ManualInteraction();
 	
-	
-//	public ArrayList<Float> gameXCoords = new ArrayList<Float>(Arrays.asList(134f, 214f, 294f)); 
-//	public ArrayList<Float>  gameYCoords = new ArrayList<Float>(Arrays.asList(382.5f, 312.5f, 242.5f, 172.5f));
+	//Properties related to setting sprites on game screen
 	public ArrayList<Float> gameXCoords = new ArrayList<Float>();
 	public ArrayList<Float>  gameYCoords = new ArrayList<Float>();
-//	public final int xSpan = 216;
-//	public final int ySpan = 288;
 	public final int xGrid = 3;
-	public final int yGrid = 5;
+	public final int yGrid = 4;
 	float headSpriteH = 72;
 	int headSpriteW = 72;
 	
@@ -242,7 +238,7 @@ public class DemoGame extends ApplicationAdapter {
 		
 		new HeadSprite(Head.DECEIVER, gameXCoords.get(0), gameYCoords.get(0), "sprites//deceiverFollowerPack.pack", true);
 		HeadSprite start =  new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(0), "sprites//gossiperFollowerPack.pack", true);
-		start.status = 1; start.setColor(Color.CYAN);
+		start.status = 1; start.setColor(Color.GREEN);
 		new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(0), "sprites//deceiverFollowerPack.pack", true);
 		
 		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(1), "sprites//gossiperFollowerPack.pack", true);
@@ -257,9 +253,9 @@ public class DemoGame extends ApplicationAdapter {
 		new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true);
 		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true);
 		
-		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(4), "sprites//gossiperFollowerPack.pack", true);
-		new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
-		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
+//		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(4), "sprites//gossiperFollowerPack.pack", true);
+//		new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
+//		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
 	
 	}
 	
@@ -349,7 +345,7 @@ public class DemoGame extends ApplicationAdapter {
 				public void clicked(InputEvent event, float x, float y) 
 			    {
 					System.out.println("Hit at: x: "+x+", y: "+y+"");
-					behaviour.onTouch();
+//					behaviour.onTouch();
 			    }
 				
 			});
@@ -539,9 +535,8 @@ public class DemoGame extends ApplicationAdapter {
 		private InteractSprite soundWave;
 		
 		public int status = 0; //0 : neutral, 1 : for 2 : against
-		public int influenceAmount = 3;
+		private int influenceAmount = 3;
 		public float argueSuccessP = 0.2f;
-		
 		//Current angles
 		int deceiverAngle = 0;
 		int soundWaveAngle = 0;
@@ -583,8 +578,7 @@ public class DemoGame extends ApplicationAdapter {
 
 		@Override
 		public int getInfluenceAmount() {
-			// TODO Auto-generated method stub
-			return 0;
+			return influenceAmount;
 		}
 
 		@Override
@@ -595,13 +589,13 @@ public class DemoGame extends ApplicationAdapter {
 					stateTime = 0.0f;
 					updateCurrentAngle();
 				}
-				stateTime += delta;
-				
 
-				if( InStateTime >= InStateLength) {
+				else if( InStateTime >= InStateLength) {
 					InStateTime = 0.0f;
 					performAutonomousInteraction(actor);
 				}
+				
+				stateTime += delta;
 				InStateTime += delta;
 			}
 			
@@ -866,7 +860,7 @@ public class DemoGame extends ApplicationAdapter {
 					if(isFirst && hitActor.status == 1 && hitActor.isActive) {	
 						invalidInteraction =false;
 						interactor = hitActor;
-						setToFollower(hitActor);
+//						setToFollower(hitActor);
 						
 						float angle = hitActor.getRotation();
 						angle = hitActor.getDirection() == 0 ? angle + 180f : angle;
@@ -877,9 +871,9 @@ public class DemoGame extends ApplicationAdapter {
 					else if(interactor != null && !invalidInteraction && !isFirst && interactor.behaviour.getInfluenceAmount() > interactees.size() && hitActor.status == 0) {
 						if(validInteraction(hitActor)) {
 							//Set previous hit actor to untouchable
-							lastHitActor.status = 2;
+							setToMiddleFollower(lastHitActor);
 							interactees.add(hitActor);
-							setToFollower(hitActor);
+							setToLastFollower(hitActor);
 						}
 						else {
 							invalidInteraction = true;
@@ -902,50 +896,53 @@ public class DemoGame extends ApplicationAdapter {
 		private boolean validInteraction(HeadSprite hitActor) {
 			
 			boolean isValid = false;
-			//Get lastHitActor's facing angle
-			float facingAngle = lastHitActor.getRotation();
-			int direction = lastHitActor.getDirection();
 			
-			//If facing towards the right
-			if(direction == 1) {
-				if(facingAngle == 0) {
-					if(lastHitActor.startingX < hitActor.startingX && lastHitActor.startingY ==  hitActor.startingY) {
-						isValid = true;
-						System.out.println("Follower hit to the right");
+			if(hitActor.status == 0) {
+				//Get lastHitActor's facing angle
+				float facingAngle = lastHitActor.getRotation();
+				int direction = lastHitActor.getDirection();
+				
+				//If facing towards the right
+				if(direction == 1) {
+					if(facingAngle == 0) {
+						if(lastHitActor.startingX < hitActor.startingX && lastHitActor.startingY ==  hitActor.startingY) {
+							isValid = true;
+							System.out.println("Follower hit to the right");
+						}
+					}
+					if(facingAngle == 90) {
+						if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY <  hitActor.startingY) {
+							isValid = true;
+							System.out.println("Follower hit above");
+						}
+					}
+					if(facingAngle == 270) {
+						if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY >  hitActor.startingY) {
+							isValid = true;
+							System.out.println("Follower hit below");
+						}
 					}
 				}
-				if(facingAngle == 90) {
-					if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY <  hitActor.startingY) {
-						isValid = true;
-						System.out.println("Follower hit above");
+				
+				//If facing towards the left
+				if(direction == 0) {
+					if(facingAngle == 0) {
+						if(lastHitActor.startingX > hitActor.startingX && lastHitActor.startingY ==  hitActor.startingY) {
+							isValid = true;
+							System.out.println("Follower hit to the left");
+						}
 					}
-				}
-				if(facingAngle == 270) {
-					if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY >  hitActor.startingY) {
-						isValid = true;
-						System.out.println("Follower hit below");
+					if(facingAngle == 90) {
+						if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY >  hitActor.startingY) {
+							isValid = true;
+							System.out.println("Follower hit above");
+						}
 					}
-				}
-			}
-			
-			//If facing towards the left
-			if(direction == 0) {
-				if(facingAngle == 0) {
-					if(lastHitActor.startingX > hitActor.startingX && lastHitActor.startingY ==  hitActor.startingY) {
-						isValid = true;
-						System.out.println("Follower hit to the left");
-					}
-				}
-				if(facingAngle == 90) {
-					if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY >  hitActor.startingY) {
-						isValid = true;
-						System.out.println("Follower hit above");
-					}
-				}
-				if(facingAngle == 270) {
-					if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY <  hitActor.startingY) {
-						isValid = true;
-						System.out.println("Follower hit below");
+					if(facingAngle == 270) {
+						if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY <  hitActor.startingY) {
+							isValid = true;
+							System.out.println("Follower hit below");
+						}
 					}
 				}
 			}
@@ -956,6 +953,16 @@ public class DemoGame extends ApplicationAdapter {
 		
 		private void setToFollower(HeadSprite hitActor) {
 			hitActor.setColor(Color.CYAN);
+			hitActor.status = 1;
+		}
+		
+		private void setToMiddleFollower(HeadSprite hitActor) {
+			hitActor.setColor(Color.CYAN);
+			hitActor.status = 2;
+		}
+		
+		private void setToLastFollower(HeadSprite hitActor) {
+			hitActor.setColor(Color.GREEN);
 			hitActor.status = 1;
 		}
 	}
@@ -1084,7 +1091,7 @@ public class DemoGame extends ApplicationAdapter {
 			if(interactee.status == 0) { // && interactee.isActive == true) {
 				if(rand.nextFloat() > interactor.argueSuccessP) {
 					interactee.status = 3;
-					interactee.setColor(Color.GREEN);
+					interactee.setColor(Color.DARK_GRAY);
 					System.out.println("Opposer influenced");
 				}
 			}
