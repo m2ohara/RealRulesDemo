@@ -41,7 +41,7 @@ public class DemoGame extends ApplicationAdapter {
 	public Stage stage;
 	OrthographicCamera camera;
 	private boolean isAndroid = false;
-//	Interaction interaction = new GossiperInteraction();
+	ManualInteraction interaction = new ManualInteraction();
 	
 	
 //	public ArrayList<Float> gameXCoords = new ArrayList<Float>(Arrays.asList(134f, 214f, 294f)); 
@@ -182,7 +182,7 @@ public class DemoGame extends ApplicationAdapter {
 	public HeadSprite getMemberFromCoords(int gameXPos, int gameYPos) {
 		
 		Actor neighbour = null;
-		System.out.println("Getting member at gameCoords "+gameXPos+", "+gameYPos);
+//		System.out.println("Getting member at gameCoords "+gameXPos+", "+gameYPos);
 		if(gameXPos != -1 && gameXPos < gameXCoords.size() && gameYPos != -1 && gameYPos < gameYCoords.size()) {
 			neighbour = stage.hit(gameXCoords.get(gameXPos), gameYCoords.get(gameYPos), true);
 		}
@@ -281,17 +281,17 @@ public class DemoGame extends ApplicationAdapter {
 		public int status = 0; //0 : neutral, 1 : for 2 : against
 		
 		public int getXGameCoord() {
-			System.out.println("member x is "+this.getX());
+//			System.out.println("member x is "+this.getX());
 			return gameXCoords.indexOf(this.getX());
 		}
 		
 		public int getYGameCoord() {
-			System.out.println("member y is "+this.getY());
+//			System.out.println("member y is "+this.getY());
 			return gameYCoords.indexOf(this.getY());
 		}
 
 		public int getDirection() {
-			return direction;
+			return behaviour.getDirection();
 		}
 
 		public float getStartingX() {
@@ -316,17 +316,22 @@ public class DemoGame extends ApplicationAdapter {
 			if(type == type.GOSSIPER) {
 				behaviour = new GossiperBehaviour(this,isActive);
 				interaction = new GossiperInteraction();
+				this.setPosition(startingX, startingY);
+				stage.addActor(this);
 
 			}
 			if(type == type.DECEIVER) {
 				behaviour = new DeceiverBehaviour(isActive, framesPath, this.startingX, this.startingY);
 				interaction = new DeceiverInteraction();
+				this.setPosition(startingX, startingY);
+				stage.addActor(this);
+				//Has to take place after HeadSprite creation
+				behaviour.setInteractSprite();
 			}
 			
 			setTouchAction();
 			
-			this.setPosition(startingX, startingY);
-			stage.addActor(this);
+
 			
 			if(type == type.GOSSIPER) {
 				//Set interact sprite
@@ -381,6 +386,7 @@ public class DemoGame extends ApplicationAdapter {
 		float TouchStateLength = 3.0f;
 		float TouchStateTime = 0;
 		private boolean isActive = false;
+		private int direction;
 		
 		//Skills
 		private int influenceAmount = 2;
@@ -455,7 +461,7 @@ public class DemoGame extends ApplicationAdapter {
 			//Based on rotation probability
 			if(rand.nextFloat() < gossiper.rotateP) {
 				//Set direction
-				int direction = rand.nextInt(2);
+				direction = rand.nextInt(2);
 				gossiper.direction = direction;
 				gossiper.currentFrame = gossiper.frames.get(direction);
 				//Set angle
@@ -496,6 +502,17 @@ public class DemoGame extends ApplicationAdapter {
 			this.onAct(delta);
 			
 		}
+
+		@Override
+		public void setInteractSprite() {
+			// TODO Refactor soundwave creation into here
+			
+		}
+
+		@Override
+		public int getDirection() {
+			return direction;
+		}
 		
 		
 	}
@@ -510,10 +527,12 @@ public class DemoGame extends ApplicationAdapter {
 		float TouchStateLength = 3.0f;
 		float TouchStateTime = 0;
 		private boolean isActive = true;
+		float x;
+		float y;
+		private int direction; //0 : right, 1 : left
 
 		private Array<AtlasRegion> frames;
 		private TextureRegion currentFrame;
-		private int direction = 0; //0 : right, 1 : left
 		private float movementP = 0.1f;
 		private float rotateP = 0.8f;
 		private float interactSuccessP = 0.2f;
@@ -530,8 +549,15 @@ public class DemoGame extends ApplicationAdapter {
 		public DeceiverBehaviour(boolean isActive, String framesPath, float x, float y) {
 			frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
 			currentFrame = frames.get(0);
+			this.direction = 0;
 			this.isActive = isActive;
+			this.x = x;
+			this.y = y;
 			
+
+		}
+		
+		public void setInteractSprite() {
 			//Set interact sprite
 			this.soundWave = new InteractSprite(x, y, "sprites//soundWaveFollower.pack"); 
 			this.soundWave.setTouchable(Touchable.disabled);
@@ -597,7 +623,7 @@ public class DemoGame extends ApplicationAdapter {
 			if(rand.nextFloat() < this.rotateP) {
 				
 				//Set direction
-				int direction = rand.nextInt(2);
+				direction = rand.nextInt(2);
 				this.currentFrame = this.frames.get(direction);
 				//Set angle
 				int angleSpread = 90;
@@ -622,6 +648,11 @@ public class DemoGame extends ApplicationAdapter {
 			else {
 				this.soundWave.setVisible(false);
 			}
+		}
+
+		@Override
+		public int getDirection() {
+			return direction;
 		}
 		
 	}
@@ -742,12 +773,16 @@ public class DemoGame extends ApplicationAdapter {
 		
 		int getInfluenceAmount();
 		
+		void setInteractSprite();
+		
+		int getDirection();
+		
 	}
 	
 	public class GameGestures implements GestureListener {
 		
 		boolean isFirstHit = true;
-		Interaction interaction = null;
+//		ManualInteraction interaction = new ManualInteraction();
 
 		@Override
 		public boolean touchDown(float x, float y, int pointer, int button) {
@@ -780,9 +815,9 @@ public class DemoGame extends ApplicationAdapter {
 			
 			if(actor != null && actor.getClass().equals(HeadSprite.class)) {
 				//TODO: Refector interaction into HeadSprite
-				//Pass actor into interactor
-				interaction = ((HeadSprite)actor).interaction;
-				this.interaction.interactHit((HeadSprite)actor, isFirstHit);
+//				//Pass actor into interactor
+//				interaction = ((HeadSprite)actor).interaction;
+				interaction.interactHit((HeadSprite)actor, isFirstHit);
 				isFirstHit = false;
 			}
 			
@@ -792,7 +827,7 @@ public class DemoGame extends ApplicationAdapter {
 		@Override
 		public boolean panStop(float x, float y, int pointer, int button) {
 			isFirstHit = true;
-			this.interaction.reset();
+			interaction.reset();
 			return false;
 		}
 
@@ -811,7 +846,7 @@ public class DemoGame extends ApplicationAdapter {
 		
 	}
 	
-	public class Interaction {
+	public class ManualInteraction {
 		
 		//Interacting
 		HeadSprite interactor;
@@ -819,9 +854,7 @@ public class DemoGame extends ApplicationAdapter {
 		HeadSprite lastHitActor = null;
 		boolean invalidInteraction = false;
 		
-		public IInteraction interactionBehaviour = null;
-		
-		public Interaction() {
+		public ManualInteraction() {
 			
 		}
 		
@@ -836,7 +869,7 @@ public class DemoGame extends ApplicationAdapter {
 						setToFollower(hitActor);
 						
 						float angle = hitActor.getRotation();
-						angle = hitActor.direction == 0 ? angle + 180f : angle;
+						angle = hitActor.getDirection() == 0 ? angle + 180f : angle;
 						
 						System.out.println("First follower hit facing "+angle);
 					}
@@ -925,6 +958,11 @@ public class DemoGame extends ApplicationAdapter {
 			hitActor.setColor(Color.CYAN);
 			hitActor.status = 1;
 		}
+	}
+	
+	public class Interaction {
+		
+		public IInteraction interactionBehaviour = null;
 		
 		public void interactAutonomous(HeadSprite interactor) {
 			
@@ -941,17 +979,17 @@ public class DemoGame extends ApplicationAdapter {
 					if(facingAngle == 0 && (interactor.getXGameCoord()+1) < gameXCoords.size()) {
 						//Get interactee by coordinates
 						interactee = getMemberFromCoords(interactor.getXGameCoord()+1, (interactor.getYGameCoord()));
-						System.out.println("Member type "+interactor.status+"  influencing to the right");
+						System.out.println("Member type "+interactor.status+"  influencing to the right at "+(interactor.getXGameCoord()+1)+", "+interactor.getYGameCoord());
 	
 					}
 					if(facingAngle == 90 && (interactor.getYGameCoord()-1) > -1) {
 						interactee = getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()-1));
-						System.out.println("Member type "+interactor.status+"  influencing above");
+						System.out.println("Member type "+interactor.status+"  influencing above at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()-1));
 	
 					}
 					if(facingAngle == 270 && (interactor.getYGameCoord()+1) < gameYCoords.size()) {
 						interactee = getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()+1));
-						System.out.println("Member type "+interactor.status+"  influencing below");
+						System.out.println("Member type "+interactor.status+"  influencing below at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()+1));
 					}
 				}
 				
@@ -959,15 +997,15 @@ public class DemoGame extends ApplicationAdapter {
 				if(direction == 0) {
 					if(facingAngle == 0 && (interactor.getXGameCoord()-1) > -1) {
 						interactee = getMemberFromCoords(interactor.getXGameCoord()-1, (interactor.getYGameCoord()));
-						System.out.println("Member type "+interactor.status+" influencing to the left");
+						System.out.println("Member type "+interactor.status+" influencing to the left at "+(interactor.getXGameCoord()+1)+", "+interactor.getYGameCoord());
 					}
 					if(facingAngle == 90 && (interactor.getYGameCoord()+1) < gameYCoords.size()) {
 						interactee = getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()+1));
-						System.out.println("Member type "+interactor.status+" influencing above");
+						System.out.println("Member type "+interactor.status+" influencing above at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()+1));
 					}
 					if(facingAngle == 270 && (interactor.getYGameCoord()-1) > -1) {
 						interactee = getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()-1));
-						System.out.println("Member type "+interactor.status+" influencing below");
+						System.out.println("Member type "+interactor.status+" influencing below at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()-1));
 					}
 				}
 				
@@ -1043,7 +1081,7 @@ public class DemoGame extends ApplicationAdapter {
 			
 			//TODO: Check interactee isn't hit
 			//Influence if interactee is neutral
-			if(interactee.status == 0 && interactee.isActive == true) {
+			if(interactee.status == 0) { // && interactee.isActive == true) {
 				if(rand.nextFloat() > interactor.argueSuccessP) {
 					interactee.status = 3;
 					interactee.setColor(Color.GREEN);
