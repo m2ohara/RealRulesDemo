@@ -372,7 +372,7 @@ public class DemoGame extends ApplicationAdapter {
 	public enum Head { GOSSIPER, DECEIVER, INFLUENCER}
 
 	
-	public class GossiperBehaviour implements IHeadBehaviour {
+	public class GossiperBehaviour implements IHeadBehaviour, ITouchActionBehaviour {
 		
 		HeadSprite gossiper;
 		float stateLength = 2.0f;
@@ -383,6 +383,7 @@ public class DemoGame extends ApplicationAdapter {
 		float TouchStateTime = 0;
 		private boolean isActive = false;
 		private int direction;
+		private TouchAction onTouch = new GossiperTouchAction();
 		
 		//Skills
 		private int influenceAmount = 2;
@@ -440,6 +441,7 @@ public class DemoGame extends ApplicationAdapter {
 			
 			
 		}
+		
 				
 		//Implement movement action
 		private void setMoveToAction() {
@@ -508,6 +510,23 @@ public class DemoGame extends ApplicationAdapter {
 		@Override
 		public int getDirection() {
 			return direction;
+		}
+		
+		private void generateValidInteractees() {
+			
+			
+		}
+
+		@Override
+		public int[] getValidInteractX() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public int[] getValidInteractY() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 		
 		
@@ -773,6 +792,13 @@ public class DemoGame extends ApplicationAdapter {
 		
 	}
 	
+	public interface ITouchActionBehaviour {
+		
+		int[] getValidInteractX();
+		
+		int[] getValidInteractY();
+	}
+	
 	public class GameGestures implements GestureListener {
 		
 		boolean isFirstHit = true;
@@ -1022,6 +1048,12 @@ public class DemoGame extends ApplicationAdapter {
 					interact(interactor, interactee);
 				}
 			}
+			
+		}
+		
+		public void validateInteraction(IHeadBehaviour interactor, IHeadBehaviour interactee) {
+			
+			//Determine if interactee has valid coordinates
 			
 		}
 		
