@@ -10,7 +10,7 @@ public abstract class TouchAction implements ITouchAction {
 	private int interactorY;
 	private Coordinates interactorDir;
 
-	public abstract void generateValidInteractees(ArrayList<Integer> xCoords, ArrayList<Integer>yCoords);
+	protected abstract void generateValidInteractees();
 
 	public int getInteractorX() {
 		return interactorX;
@@ -34,10 +34,6 @@ public abstract class TouchAction implements ITouchAction {
 
 	public void setInteractorDir(Coordinates interactorDir) {
 		this.interactorDir = interactorDir;
-	}
-	
-	public void isValidIntertee() {
-		
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.realrules.game.demo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -21,6 +20,7 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -32,7 +32,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class DemoGame extends ApplicationAdapter {
@@ -50,6 +49,7 @@ public class DemoGame extends ApplicationAdapter {
 	public final int yGrid = 4;
 	float headSpriteH = 72;
 	int headSpriteW = 72;
+	Group actorGroup = new Group();
 	
 
 	private void setGameCoords() {
@@ -69,7 +69,7 @@ public class DemoGame extends ApplicationAdapter {
 			gameYCoords.add(y);
 		}
 	}
-	
+
 	public boolean isAndroid() {
 		return isAndroid;
 	}
@@ -178,7 +178,6 @@ public class DemoGame extends ApplicationAdapter {
 	public HeadSprite getMemberFromCoords(int gameXPos, int gameYPos) {
 		
 		Actor neighbour = null;
-//		System.out.println("Getting member at gameCoords "+gameXPos+", "+gameYPos);
 		if(gameXPos != -1 && gameXPos < gameXCoords.size() && gameYPos != -1 && gameYPos < gameYCoords.size()) {
 			neighbour = stage.hit(gameXCoords.get(gameXPos), gameYCoords.get(gameYPos), true);
 		}
@@ -236,32 +235,40 @@ public class DemoGame extends ApplicationAdapter {
 		screen.setTouchable(Touchable.disabled);
 		setToStage(screen, 0, 0);
 		
-		new HeadSprite(Head.DECEIVER, gameXCoords.get(0), gameYCoords.get(0), "sprites//deceiverFollowerPack.pack", true);
+		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(0), gameYCoords.get(0), "sprites//deceiverFollowerPack.pack", true));
 		HeadSprite start =  new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(0), "sprites//gossiperFollowerPack.pack", true);
-		start.status = 1; start.setColor(Color.GREEN);
-		new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(0), "sprites//deceiverFollowerPack.pack", true);
+		start.status = 1; start.setColor(Color.GREEN); actorGroup.addActor(start);
+		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(0), "sprites//deceiverFollowerPack.pack", true));
 		
-		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(1), "sprites//gossiperFollowerPack.pack", true);
-		new HeadSprite(Head.DECEIVER, gameXCoords.get(1), gameYCoords.get(1), "sprites//deceiverFollowerPack.pack", true);
-		new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(1), "sprites//deceiverFollowerPack.pack", true);
+		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(1), "sprites//gossiperFollowerPack.pack", true));
+		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(1), gameYCoords.get(1), "sprites//deceiverFollowerPack.pack", true));
+		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(1), "sprites//deceiverFollowerPack.pack", true));
 		
-		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(2), "sprites//gossiperFollowerPack.pack", true);
-		new HeadSprite(Head.DECEIVER, gameXCoords.get(1), gameYCoords.get(2), "sprites//deceiverFollowerPack.pack", true);
-		new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(2), "sprites//deceiverFollowerPack.pack", true);
+		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(2), "sprites//gossiperFollowerPack.pack", true));
+		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(1), gameYCoords.get(2), "sprites//deceiverFollowerPack.pack", true));
+		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(2), "sprites//deceiverFollowerPack.pack", true));
 		
-		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(3), "sprites//gossiperFollowerPack.pack", true);
-		new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true);
-		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true);
+		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(3), "sprites//gossiperFollowerPack.pack", true));
+		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true));
+		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true));
+		
 		
 //		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(4), "sprites//gossiperFollowerPack.pack", true);
 //		new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
 //		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
+		
+		stage.addActor(actorGroup);
 	
 	}
 	
 	public class HeadSprite extends Image {
 		
 		private IHeadBehaviour behaviour;
+		
+		public IHeadBehaviour getBehaviour() {
+			return behaviour;
+		}
+
 		public Interaction interaction;
 		private float startingX;
 		private float startingY;
@@ -277,13 +284,13 @@ public class DemoGame extends ApplicationAdapter {
 		public int status = 0; //0 : neutral, 1 : for 2 : against
 		
 		public int getXGameCoord() {
-//			System.out.println("member x is "+this.getX());
-			return gameXCoords.indexOf(this.getX());
+			System.out.println("member x is "+this.startingX);
+			return gameXCoords.indexOf(this.startingX);
 		}
 		
 		public int getYGameCoord() {
 //			System.out.println("member y is "+this.getY());
-			return gameYCoords.indexOf(this.getY());
+			return gameYCoords.indexOf(this.startingY);
 		}
 
 		public int getDirection() {
@@ -344,8 +351,8 @@ public class DemoGame extends ApplicationAdapter {
 				
 				public void clicked(InputEvent event, float x, float y) 
 			    {
-					System.out.println("Hit at: x: "+x+", y: "+y+"");
-//					behaviour.onTouch();
+					System.out.println("Touched at: x: "+x+", y: "+y+"");
+					behaviour.onTouch();
 			    }
 				
 			});
@@ -382,8 +389,9 @@ public class DemoGame extends ApplicationAdapter {
 		float TouchStateLength = 3.0f;
 		float TouchStateTime = 0;
 		private boolean isActive = false;
-		private int direction;
-		private TouchAction onTouch = new GossiperTouchAction();
+		private int direction = 0;
+		private float rotateP = 0.8f;
+		private TouchAction onTouch = new GossiperTouchAction(actorGroup);
 		
 		//Skills
 		private int influenceAmount = 2;
@@ -397,6 +405,9 @@ public class DemoGame extends ApplicationAdapter {
 		public GossiperBehaviour(HeadSprite gossiper, boolean isActive) {
 			this.gossiper = gossiper;		
 			this.isActive = isActive;
+			this.onTouch.setInteractorX(gossiper.getXGameCoord());
+			this.onTouch.setInteractorY(gossiper.getYGameCoord());
+			this.onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(direction, 0));
 		}
 
 		@Override
@@ -436,7 +447,8 @@ public class DemoGame extends ApplicationAdapter {
 		public void onTouch() {
 			
 			if(isActive) {
-				isActive = false;
+//				isActive = false;
+				onTouch.interact();
 			}
 			
 			
@@ -478,6 +490,8 @@ public class DemoGame extends ApplicationAdapter {
 				gossiper.soundWave.setRotation(soundWaveAngle);
 				gossiper.soundWave.currentAngle = (int)gossiper.soundWave.getRotation();
 				
+				
+				onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(direction, finalAngle));
 			}
 			
 		}
@@ -507,14 +521,9 @@ public class DemoGame extends ApplicationAdapter {
 			
 		}
 
-		@Override
-		public int getDirection() {
-			return direction;
-		}
 		
-		private void generateValidInteractees() {
-			
-			
+		public int getDirection() {
+			return this.direction;
 		}
 
 		@Override
@@ -527,6 +536,15 @@ public class DemoGame extends ApplicationAdapter {
 		public int[] getValidInteractY() {
 			// TODO Auto-generated method stub
 			return null;
+		}
+		
+		public float getRotateProbability() {
+			return this.rotateP;
+		}
+
+		@Override
+		public HeadSprite getInteractSprite() {
+			return this.gossiper;
 		}
 		
 		
@@ -663,9 +681,20 @@ public class DemoGame extends ApplicationAdapter {
 			}
 		}
 
-		@Override
+		
 		public int getDirection() {
-			return direction;
+			return this.direction;
+		}
+
+		@Override
+		public float getRotateProbability() {
+			return this.rotateP;
+		}
+
+		@Override
+		public HeadSprite getInteractSprite() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 		
 	}
@@ -788,7 +817,11 @@ public class DemoGame extends ApplicationAdapter {
 		
 		void setInteractSprite();
 		
-		int getDirection();
+		HeadSprite getInteractSprite();
+		
+		int getDirection(); //Refactor out
+		
+		float getRotateProbability();
 		
 	}
 	
