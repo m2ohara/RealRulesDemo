@@ -119,7 +119,7 @@ public class CoordinateSystem {
 	}
 	
 	public static boolean isValidYCoordinate(int coordinate) {
-		if(coordinate > 0 &&  coordinate <= systemHeight)
+		if(coordinate >= 0 &&  coordinate <= systemHeight)
 		{	
 			return true;
 		}
@@ -128,7 +128,7 @@ public class CoordinateSystem {
 		
 	
 	public static boolean isValidXCoordinate(int coordinate) {
-		if(coordinate > 0 && coordinate <= systemWidth)
+		if(coordinate >= 0 && coordinate <= systemWidth)
 		{	
 			return true;
 		}

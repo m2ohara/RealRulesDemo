@@ -50,6 +50,7 @@ public class DemoGame extends ApplicationAdapter {
 	float headSpriteH = 72;
 	int headSpriteW = 72;
 	Group actorGroup = new Group();
+	Group soundWaveGroup = new Group();
 	
 
 	private void setGameCoords() {
@@ -258,6 +259,7 @@ public class DemoGame extends ApplicationAdapter {
 //		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
 		
 		stage.addActor(actorGroup);
+		stage.addActor(soundWaveGroup);
 	
 	}
 	
@@ -274,7 +276,7 @@ public class DemoGame extends ApplicationAdapter {
 		private float startingY;
 		private Array<AtlasRegion> frames;
 		private TextureRegion currentFrame;
-		private int direction; //0 : right, 1 : left
+		private int direction; //0 : left, 1 : right
 		private float movementP = 0.1f;
 		private float rotateP = 0.8f;
 		private float argueSuccessP = 0.2f;
@@ -284,7 +286,7 @@ public class DemoGame extends ApplicationAdapter {
 		public int status = 0; //0 : neutral, 1 : for 2 : against
 		
 		public int getXGameCoord() {
-			System.out.println("member x is "+this.startingX);
+//			System.out.println("member x is "+this.startingX);
 			return gameXCoords.indexOf(this.startingX);
 		}
 		
@@ -338,8 +340,9 @@ public class DemoGame extends ApplicationAdapter {
 			
 			if(type == type.GOSSIPER) {
 				//Set interact sprite
-				soundWave = new InteractSprite(this.startingX, this.startingY, "sprites//soundWaveFollower.pack"); 
+				soundWave = new InteractSprite(this.startingX, this.startingY, "sprites//soundWaveFollower.pack");
 				soundWave.setTouchable(Touchable.disabled);
+				soundWaveGroup.addActor(soundWave);
 			}
 			
 		}

@@ -33,7 +33,7 @@ public class GossiperTouchAction extends TouchAction{
 			//Determine direction
 			if(this.getInteractorDir() == Coordinates.N) {
 				//Set related coordinates for valid interactees
-				if(CoordinateSystem.isValidYCoordinate(origY+1)) {
+				if(CoordinateSystem.isValidYCoordinate(origY-1)) {
 					validYCoords.add(origY-1);
 					validXCoords.add(origX);
 				}
@@ -89,16 +89,18 @@ public class GossiperTouchAction extends TouchAction{
 		//Generate current crowd members that can be influenced
 		generateValidInteractees();
 		
-		setToMiddleFollower(interacter);
-		for(int i = 0; i < validXCoords.size(); i++) {
-			HeadSprite actor = CoordinateSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i), actorGroup);
-			if(i == validXCoords.size()-1) {
-				setToLastFollower(actor);
+		if(validXCoords.size() > 0) {
+			setToMiddleFollower(interacter);
+			for(int i = 0; i < validXCoords.size(); i++) {
+				HeadSprite actor = CoordinateSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i), actorGroup);
+				if(i == validXCoords.size()-1) {
+					setToLastFollower(actor);
+				}
+				else {
+					setToMiddleFollower(actor);
+				}
+				
 			}
-			else {
-				setToMiddleFollower(actor);
-			}
-			
 		}
 		
 	}
