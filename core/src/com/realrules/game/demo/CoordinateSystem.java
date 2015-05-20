@@ -11,7 +11,7 @@ import com.realrules.game.demo.DemoGame.HeadSprite;
 public class CoordinateSystem {
 	
 	private static int systemWidth = 3;
-	private static int systemHeight = 4;
+	private static int systemHeight = 5;
 	public static enum Coordinates {N, E, S, W}
 	private static CoordinateSystem instance;
 	//Properties related to setting sprites on game screen

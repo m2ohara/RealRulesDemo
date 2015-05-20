@@ -41,12 +41,13 @@ public class DemoGame extends ApplicationAdapter {
 	OrthographicCamera camera;
 	private boolean isAndroid = false;
 	ManualInteraction interaction = new ManualInteraction();
+	public static float universalTimeRatio = 0.7f;
 	
 	//Properties related to setting sprites on game screen
 	public ArrayList<Float> gameXCoords = new ArrayList<Float>();
 	public ArrayList<Float>  gameYCoords = new ArrayList<Float>();
-	public final int xGrid = 3;
-	public final int yGrid = 4;
+	public final int xGrid = CoordinateSystem.getSystemWidth();
+	public final int yGrid = CoordinateSystem.getSystemHeight();
 	float headSpriteH = 72;
 	int headSpriteW = 72;
 	Group actorGroup = new Group();
@@ -240,26 +241,48 @@ public class DemoGame extends ApplicationAdapter {
 		screen.setTouchable(Touchable.disabled);
 		setToStage(screen, 0, 0);
 		
-		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(0), gameYCoords.get(0), "sprites//deceiverFollowerPack.pack", true));
-		HeadSprite start =  new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(0), "sprites//gossiperFollowerPack.pack", true);
-		start.status = 1; start.setColor(Color.GREEN); actorGroup.addActor(start);
-		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(0), "sprites//deceiverFollowerPack.pack", true));
-		
-		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(1), "sprites//gossiperFollowerPack.pack", true));
-		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(1), gameYCoords.get(1), "sprites//deceiverFollowerPack.pack", true));
-		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(1), "sprites//deceiverFollowerPack.pack", true));
-		
-		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(2), "sprites//gossiperFollowerPack.pack", true));
-		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(1), gameYCoords.get(2), "sprites//deceiverFollowerPack.pack", true));
-		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(2), "sprites//deceiverFollowerPack.pack", true));
-		
-		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(3), "sprites//gossiperFollowerPack.pack", true));
-		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true));
-		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true));
+//		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(0), gameYCoords.get(0), "sprites//deceiverFollowerPack.pack", true));
+//		HeadSprite start =  new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(0), "sprites//gossiperFollowerPack.pack", true);
+//		start.status = 1; start.setColor(Color.GREEN); actorGroup.addActor(start);
+//		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(0), "sprites//deceiverFollowerPack.pack", true));
+//		
+//		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(1), "sprites//gossiperFollowerPack.pack", true));
+//		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(1), gameYCoords.get(1), "sprites//deceiverFollowerPack.pack", true));
+//		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(1), "sprites//deceiverFollowerPack.pack", true));
+//		
+//		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(2), "sprites//gossiperFollowerPack.pack", true));
+//		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(1), gameYCoords.get(2), "sprites//deceiverFollowerPack.pack", true));
+//		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(2), "sprites//deceiverFollowerPack.pack", true));
+//		
+//		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(3), "sprites//gossiperFollowerPack.pack", true));
+//		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true));
+//		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true));
 		
 //		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(4), "sprites//gossiperFollowerPack.pack", true);
 //		new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
 //		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
+		
+		Random crowdSetter = new Random();
+		int starterX = crowdSetter.nextInt(xGrid-1);
+		for(int x = 0; x < xGrid; x++) {
+			for(int y = 0; y < yGrid; y++) {
+				HeadSprite current = null;
+				float rand = crowdSetter.nextFloat();
+				if(rand < 0.33) {
+					current = new HeadSprite(Head.GOSSIPER, gameXCoords.get(x), gameYCoords.get(y), "sprites//gossiperFollowerPack.pack", true);
+				}
+				else if(rand >= 0.33 && rand < 0.66) {
+					current = new HeadSprite(Head.DECEIVER, gameXCoords.get(x), gameYCoords.get(y), "sprites//deceiverFollowerPack.pack", true);
+				}
+				else {
+					current = new HeadSprite(Head.GOSSIPER, gameXCoords.get(x), gameYCoords.get(y), "sprites//promoterFollowerPack.pack", true);
+				}
+				if(y == 0 && x == starterX) {
+					current.status = 1; current.setColor(Color.GREEN); 
+				}
+				actorGroup.addActor(current);
+			}
+		}
 		
 		ScoreState.setTotalPoints(actorGroup.getChildren().size);	
 		stage.addActor(actorGroup);
@@ -402,9 +425,9 @@ public class DemoGame extends ApplicationAdapter {
 	public class GossiperBehaviour implements IHeadBehaviour, ITouchActionBehaviour {
 		
 		HeadSprite gossiper;
-		float stateLength = 2.0f;
+		float stateLength = 2.0f * universalTimeRatio;
 		float stateTime = stateLength;
-		float InStateLength = 0.7f;
+		float InStateLength = 0.7f * universalTimeRatio;
 		float InStateTime = InStateLength;
 		float TouchStateLength = 3.0f;
 		float TouchStateTime = 0;
@@ -573,9 +596,9 @@ public class DemoGame extends ApplicationAdapter {
 	public class DeceiverBehaviour implements IHeadBehaviour {
 		
 		Random rand = new Random();
-		float stateLength = 2.0f;
+		float stateLength = 2.0f * universalTimeRatio;
 		float stateTime = stateLength;
-		float InStateLength = 0.7f;
+		float InStateLength = 0.7f * universalTimeRatio;
 		float InStateTime = InStateLength;
 		float TouchStateLength = 3.0f;
 		float TouchStateTime = 0;
@@ -588,7 +611,7 @@ public class DemoGame extends ApplicationAdapter {
 		private TextureRegion currentFrame;
 		private float movementP = 0.1f;
 		private float rotateP = 0.8f;
-		private float interactSuccessP = 0.2f;
+		private float interactSuccessP = 0.4f;
 		private InteractSprite soundWave;
 		
 		public int status = 0; //0 : neutral, 1 : for 2 : against

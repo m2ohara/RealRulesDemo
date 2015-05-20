@@ -37,18 +37,16 @@ public class ScoreState {
 			}
 		}
 		
-		if(forPoints + againstPoints == totalPoints) {
-			if(forPoints > againstPoints) {
-				return State.WIN;
-			}
-			else if(againstPoints > forPoints) {
-				//Loss
-				return State.LOSE;
-			}
-			else if(forPoints == againstPoints) {
-				//Draw
-				return State.DRAW;
-			}
+		if(forPoints > (againstPoints + (totalPoints - (forPoints + againstPoints)))) {
+			return State.WIN;
+		}
+		else if(againstPoints > (forPoints + (totalPoints - (forPoints + againstPoints)))) {
+			//Loss
+			return State.LOSE;
+		}
+		else if((forPoints + againstPoints == totalPoints) && forPoints == againstPoints) {
+			//Draw
+			return State.DRAW;
 		}
 		
 		//Playing
