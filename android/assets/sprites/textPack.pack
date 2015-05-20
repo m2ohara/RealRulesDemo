@@ -1,0 +1,31 @@
+
+textPack.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+LoseSprite
+  rotate: false
+  xy: 1, 1
+  size: 422, 600
+  orig: 422, 600
+  offset: 0, 0
+  index: -1
+DrawSprite
+  rotate: false
+  xy: 425, 1
+  size: 420, 600
+  orig: 420, 600
+  offset: 0, 0
+  index: -1
+
+textPack2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+WinSprite
+  rotate: false
+  xy: 1, 1
+  size: 420, 600
+  orig: 420, 600
+  offset: 0, 0
+  index: -1

@@ -118,6 +118,10 @@ public class DemoGame extends ApplicationAdapter {
 		stage.draw();
 		stage.act(Gdx.graphics.getDeltaTime());
 		batch.end();
+		
+		if(ScoreState.IsPlaying()) {
+			updateScoreState();
+		}
 	}
 	
 	@Override
@@ -253,14 +257,27 @@ public class DemoGame extends ApplicationAdapter {
 		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true));
 		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true));
 		
-		
 //		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(4), "sprites//gossiperFollowerPack.pack", true);
 //		new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
 //		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
 		
+		ScoreState.setTotalPoints(actorGroup.getChildren().size);	
 		stage.addActor(actorGroup);
 		stage.addActor(soundWaveGroup);
 	
+	}
+	
+	private void updateScoreState() {
+		ScoreState.State state = ScoreState.getScoreState(actorGroup);
+		if(state == ScoreState.State.WIN) {
+			setToStage(getImage("WinSprite", "sprites//textPack"), 0, 0);
+		}
+		else if(state == ScoreState.State.LOSE) {
+			setToStage(getImage("LoseSprite", "sprites//textPack"), 0, 0);
+		}
+		else if(state == ScoreState.State.DRAW) {
+			setToStage(getImage("DrawSprite", "sprites//textPack"), 0, 0);
+		}
 	}
 	
 	public class HeadSprite extends Image {
@@ -1048,17 +1065,17 @@ public class DemoGame extends ApplicationAdapter {
 					if(facingAngle == 0 && (interactor.getXGameCoord()+1) < gameXCoords.size()) {
 						//Get interactee by coordinates
 						interactee = getMemberFromCoords(interactor.getXGameCoord()+1, (interactor.getYGameCoord()));
-						System.out.println("Member type "+interactor.status+"  influencing to the right at "+(interactor.getXGameCoord()+1)+", "+interactor.getYGameCoord());
+//						System.out.println("Member type "+interactor.status+"  influencing to the right at "+(interactor.getXGameCoord()+1)+", "+interactor.getYGameCoord());
 	
 					}
 					if(facingAngle == 90 && (interactor.getYGameCoord()-1) > -1) {
 						interactee = getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()-1));
-						System.out.println("Member type "+interactor.status+"  influencing above at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()-1));
+//						System.out.println("Member type "+interactor.status+"  influencing above at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()-1));
 	
 					}
 					if(facingAngle == 270 && (interactor.getYGameCoord()+1) < gameYCoords.size()) {
 						interactee = getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()+1));
-						System.out.println("Member type "+interactor.status+"  influencing below at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()+1));
+//						System.out.println("Member type "+interactor.status+"  influencing below at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()+1));
 					}
 				}
 				
@@ -1066,23 +1083,24 @@ public class DemoGame extends ApplicationAdapter {
 				if(direction == 0) {
 					if(facingAngle == 0 && (interactor.getXGameCoord()-1) > -1) {
 						interactee = getMemberFromCoords(interactor.getXGameCoord()-1, (interactor.getYGameCoord()));
-						System.out.println("Member type "+interactor.status+" influencing to the left at "+(interactor.getXGameCoord()+1)+", "+interactor.getYGameCoord());
+//						System.out.println("Member type "+interactor.status+" influencing to the left at "+(interactor.getXGameCoord()+1)+", "+interactor.getYGameCoord());
 					}
 					if(facingAngle == 90 && (interactor.getYGameCoord()+1) < gameYCoords.size()) {
 						interactee = getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()+1));
-						System.out.println("Member type "+interactor.status+" influencing above at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()+1));
+//						System.out.println("Member type "+interactor.status+" influencing above at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()+1));
 					}
 					if(facingAngle == 270 && (interactor.getYGameCoord()-1) > -1) {
 						interactee = getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()-1));
-						System.out.println("Member type "+interactor.status+" influencing below at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()-1));
+//						System.out.println("Member type "+interactor.status+" influencing below at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()-1));
 					}
 				}
 				
 				//Perform interaction
 				if(interactee != null) {
-					System.out.println("Influencing type "+interactee.status+"");
+//					System.out.println("Influencing type "+interactee.status+"");
 					interact(interactor, interactee);
 				}
+				
 			}
 			
 		}
@@ -1135,12 +1153,12 @@ public class DemoGame extends ApplicationAdapter {
 				if(rand.nextFloat() > interactor.argueSuccessP) {
 					interactee.status = 3;
 					interactee.setColor(Color.GRAY);
-					System.out.println("Opposer influenced");
+//					System.out.println("Opposer influenced");
 				}
 				else {
 					interactee.status = 1;
 					interactee.setColor(Color.CYAN);
-					System.out.println("Follower influenced");
+//					System.out.println("Follower influenced");
 				}
 			}
 			
