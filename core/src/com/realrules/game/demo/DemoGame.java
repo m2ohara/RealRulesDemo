@@ -86,7 +86,7 @@ public class DemoGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		setView();
 		
-		GestureDetector gd = new GestureDetector(new GameGestures());
+		GestureDetector gd = new GestureDetector(new GameGestures(stage));
 		
 		InputMultiplexer im = new InputMultiplexer(gd, stage);
 		Gdx.input.setInputProcessor(im);
@@ -241,27 +241,6 @@ public class DemoGame extends ApplicationAdapter {
 		screen.setTouchable(Touchable.disabled);
 		setToStage(screen, 0, 0);
 		
-//		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(0), gameYCoords.get(0), "sprites//deceiverFollowerPack.pack", true));
-//		HeadSprite start =  new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(0), "sprites//gossiperFollowerPack.pack", true);
-//		start.status = 1; start.setColor(Color.GREEN); actorGroup.addActor(start);
-//		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(0), "sprites//deceiverFollowerPack.pack", true));
-//		
-//		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(1), "sprites//gossiperFollowerPack.pack", true));
-//		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(1), gameYCoords.get(1), "sprites//deceiverFollowerPack.pack", true));
-//		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(1), "sprites//deceiverFollowerPack.pack", true));
-//		
-//		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(2), "sprites//gossiperFollowerPack.pack", true));
-//		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(1), gameYCoords.get(2), "sprites//deceiverFollowerPack.pack", true));
-//		actorGroup.addActor(new HeadSprite(Head.DECEIVER, gameXCoords.get(2), gameYCoords.get(2), "sprites//deceiverFollowerPack.pack", true));
-//		
-//		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(3), "sprites//gossiperFollowerPack.pack", true));
-//		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true));
-//		actorGroup.addActor(new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(3), "sprites//promoterFollowerPack.pack", true));
-		
-//		new HeadSprite(Head.GOSSIPER, gameXCoords.get(0), gameYCoords.get(4), "sprites//gossiperFollowerPack.pack", true);
-//		new HeadSprite(Head.GOSSIPER, gameXCoords.get(1), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
-//		new HeadSprite(Head.GOSSIPER, gameXCoords.get(2), gameYCoords.get(4), "sprites//promoterFollowerPack.pack", true);
-		
 		Random crowdSetter = new Random();
 		int starterX = crowdSetter.nextInt(xGrid-1);
 		for(int x = 0; x < xGrid; x++) {
@@ -277,7 +256,7 @@ public class DemoGame extends ApplicationAdapter {
 				else {
 					current = new HeadSprite(Head.GOSSIPER, gameXCoords.get(x), gameYCoords.get(y), "sprites//promoterFollowerPack.pack", true);
 				}
-				if(y == 0 && x == starterX) {
+				if(y == yGrid-1 && x == starterX) {
 					current.status = 1; current.setColor(Color.GREEN); 
 				}
 				actorGroup.addActor(current);
@@ -305,15 +284,15 @@ public class DemoGame extends ApplicationAdapter {
 	
 	public class HeadSprite extends Image {
 		
-		private IHeadBehaviour behaviour;
+		IHeadBehaviour behaviour;
 		
 		public IHeadBehaviour getBehaviour() {
 			return behaviour;
 		}
 
 		public Interaction interaction;
-		private float startingX;
-		private float startingY;
+		float startingX;
+		float startingY;
 		private Array<AtlasRegion> frames;
 		private TextureRegion currentFrame;
 		private int direction; //0 : left, 1 : right
@@ -875,199 +854,199 @@ public class DemoGame extends ApplicationAdapter {
 		int[] getValidInteractY();
 	}
 	
-	public class GameGestures implements GestureListener {
-		
-		boolean isFirstHit = true;
-//		ManualInteraction interaction = new ManualInteraction();
-
-		@Override
-		public boolean touchDown(float x, float y, int pointer, int button) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean tap(float x, float y, int count, int button) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean longPress(float x, float y) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean fling(float velocityX, float velocityY, int button) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean pan(float x, float y, float deltaX, float deltaY) {
-			Vector2 coords = stage.screenToStageCoordinates(new Vector2(x, y));
-			Actor actor = stage.hit(coords.x, coords.y, true);
-			
-			if(actor != null && actor.getClass().equals(HeadSprite.class)) {
-				//TODO: Refector interaction into HeadSprite
-//				//Pass actor into interactor
-//				interaction = ((HeadSprite)actor).interaction;
-				interaction.interactHit((HeadSprite)actor, isFirstHit);
-				isFirstHit = false;
-			}
-			
-			return false;
-		}
-
-		@Override
-		public boolean panStop(float x, float y, int pointer, int button) {
-			isFirstHit = true;
-			interaction.reset();
-			return false;
-		}
-
-		@Override
-		public boolean zoom(float initialDistance, float distance) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2,
-				Vector2 pointer1, Vector2 pointer2) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-		
-	}
-	
-	public class ManualInteraction {
-		
-		//Interacting
-		HeadSprite interactor;
-		ArrayList<HeadSprite> interactees = new ArrayList<HeadSprite>();
-		HeadSprite lastHitActor = null;
-		boolean invalidInteraction = false;
-		
-		public ManualInteraction() {
-			
-		}
-		
-		public void interactHit(HeadSprite hitActor, boolean isFirst) {
-			//If new actor is hit
-			if((lastHitActor == null || !hitActor.equals(lastHitActor))) {
-					
-					//If first hit and is influenced actor
-					if(isFirst && hitActor.status == 1 && hitActor.isActive) {	
-						invalidInteraction =false;
-						interactor = hitActor;
-//						setToFollower(hitActor);
-						
-						float angle = hitActor.getRotation();
-						angle = hitActor.getDirection() == 0 ? angle + 180f : angle;
-						
-						System.out.println("First follower hit facing "+angle);
-					}
-					//Neutral interactee
-					else if(interactor != null && !invalidInteraction && !isFirst && interactor.behaviour.getInfluenceAmount() > interactees.size() && hitActor.status == 0) {
-						if(validInteraction(hitActor)) {
-							//Set previous hit actor to untouchable
-							setToMiddleFollower(lastHitActor);
-							interactees.add(hitActor);
-							setToLastFollower(hitActor);
-						}
-						else {
-							invalidInteraction = true;
-							System.out.println("Invalid hit");
-						}
-					}		
-					
-					hitActor.isActive = true;
-					
-					lastHitActor = hitActor;
-				}
-		}
-		
-		public void reset() {
-			interactor = null;
-			interactees.clear();
-			lastHitActor = null;
-		}
-		
-		private boolean validInteraction(HeadSprite hitActor) {
-			
-			boolean isValid = false;
-			
-			if(hitActor.status == 0) {
-				//Get lastHitActor's facing angle
-				float facingAngle = lastHitActor.getRotation();
-				int direction = lastHitActor.getDirection();
-				
-				//If facing towards the right
-				if(direction == 1) {
-					if(facingAngle == 0) {
-						if(lastHitActor.startingX < hitActor.startingX && lastHitActor.startingY ==  hitActor.startingY) {
-							isValid = true;
-							System.out.println("Follower hit to the right");
-						}
-					}
-					if(facingAngle == 90) {
-						if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY <  hitActor.startingY) {
-							isValid = true;
-							System.out.println("Follower hit above");
-						}
-					}
-					if(facingAngle == 270) {
-						if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY >  hitActor.startingY) {
-							isValid = true;
-							System.out.println("Follower hit below");
-						}
-					}
-				}
-				
-				//If facing towards the left
-				if(direction == 0) {
-					if(facingAngle == 0) {
-						if(lastHitActor.startingX > hitActor.startingX && lastHitActor.startingY ==  hitActor.startingY) {
-							isValid = true;
-							System.out.println("Follower hit to the left");
-						}
-					}
-					if(facingAngle == 90) {
-						if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY >  hitActor.startingY) {
-							isValid = true;
-							System.out.println("Follower hit above");
-						}
-					}
-					if(facingAngle == 270) {
-						if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY <  hitActor.startingY) {
-							isValid = true;
-							System.out.println("Follower hit below");
-						}
-					}
-				}
-			}
-			
-			return isValid;
-
-		}
-		
-		private void setToFollower(HeadSprite hitActor) {
-			hitActor.setColor(Color.CYAN);
-			hitActor.status = 1;
-		}
-		
-		private void setToMiddleFollower(HeadSprite hitActor) {
-			hitActor.setColor(Color.CYAN);
-			hitActor.status = 2;
-		}
-		
-		private void setToLastFollower(HeadSprite hitActor) {
-			hitActor.setColor(Color.GREEN);
-			hitActor.status = 1;
-		}
-	}
+//	public class GameGestures implements GestureListener {
+//		
+//		boolean isFirstHit = true;
+////		ManualInteraction interaction = new ManualInteraction();
+//
+//		@Override
+//		public boolean touchDown(float x, float y, int pointer, int button) {
+//			// TODO Auto-generated method stub
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean tap(float x, float y, int count, int button) {
+//			// TODO Auto-generated method stub
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean longPress(float x, float y) {
+//			// TODO Auto-generated method stub
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean fling(float velocityX, float velocityY, int button) {
+//			// TODO Auto-generated method stub
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean pan(float x, float y, float deltaX, float deltaY) {
+//			Vector2 coords = stage.screenToStageCoordinates(new Vector2(x, y));
+//			Actor actor = stage.hit(coords.x, coords.y, true);
+//			
+//			if(actor != null && actor.getClass().equals(HeadSprite.class)) {
+//				//TODO: Refector interaction into HeadSprite
+////				//Pass actor into interactor
+////				interaction = ((HeadSprite)actor).interaction;
+//				interaction.interactHit((HeadSprite)actor, isFirstHit);
+//				isFirstHit = false;
+//			}
+//			
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean panStop(float x, float y, int pointer, int button) {
+//			isFirstHit = true;
+//			interaction.reset();
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean zoom(float initialDistance, float distance) {
+//			// TODO Auto-generated method stub
+//			return false;
+//		}
+//
+//		@Override
+//		public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2,
+//				Vector2 pointer1, Vector2 pointer2) {
+//			// TODO Auto-generated method stub
+//			return false;
+//		}
+//		
+//	}
+//	
+//	public class ManualInteraction {
+//		
+//		//Interacting
+//		HeadSprite interactor;
+//		ArrayList<HeadSprite> interactees = new ArrayList<HeadSprite>();
+//		HeadSprite lastHitActor = null;
+//		boolean invalidInteraction = false;
+//		
+//		public ManualInteraction() {
+//			
+//		}
+//		
+//		public void interactHit(HeadSprite hitActor, boolean isFirst) {
+//			//If new actor is hit
+//			if((lastHitActor == null || !hitActor.equals(lastHitActor))) {
+//					
+//					//If first hit and is influenced actor
+//					if(isFirst && hitActor.status == 1 && hitActor.isActive) {	
+//						invalidInteraction =false;
+//						interactor = hitActor;
+////						setToFollower(hitActor);
+//						
+//						float angle = hitActor.getRotation();
+//						angle = hitActor.getDirection() == 0 ? angle + 180f : angle;
+//						
+//						System.out.println("First follower hit facing "+angle);
+//					}
+//					//Neutral interactee
+//					else if(interactor != null && !invalidInteraction && !isFirst && interactor.behaviour.getInfluenceAmount() > interactees.size() && hitActor.status == 0) {
+//						if(validInteraction(hitActor)) {
+//							//Set previous hit actor to untouchable
+//							setToMiddleFollower(lastHitActor);
+//							interactees.add(hitActor);
+//							setToLastFollower(hitActor);
+//						}
+//						else {
+//							invalidInteraction = true;
+//							System.out.println("Invalid hit");
+//						}
+//					}		
+//					
+//					hitActor.isActive = true;
+//					
+//					lastHitActor = hitActor;
+//				}
+//		}
+//		
+//		public void reset() {
+//			interactor = null;
+//			interactees.clear();
+//			lastHitActor = null;
+//		}
+//		
+//		private boolean validInteraction(HeadSprite hitActor) {
+//			
+//			boolean isValid = false;
+//			
+//			if(hitActor.status == 0) {
+//				//Get lastHitActor's facing angle
+//				float facingAngle = lastHitActor.getRotation();
+//				int direction = lastHitActor.getDirection();
+//				
+//				//If facing towards the right
+//				if(direction == 1) {
+//					if(facingAngle == 0) {
+//						if(lastHitActor.startingX < hitActor.startingX && lastHitActor.startingY ==  hitActor.startingY) {
+//							isValid = true;
+//							System.out.println("Follower hit to the right");
+//						}
+//					}
+//					if(facingAngle == 90) {
+//						if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY <  hitActor.startingY) {
+//							isValid = true;
+//							System.out.println("Follower hit above");
+//						}
+//					}
+//					if(facingAngle == 270) {
+//						if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY >  hitActor.startingY) {
+//							isValid = true;
+//							System.out.println("Follower hit below");
+//						}
+//					}
+//				}
+//				
+//				//If facing towards the left
+//				if(direction == 0) {
+//					if(facingAngle == 0) {
+//						if(lastHitActor.startingX > hitActor.startingX && lastHitActor.startingY ==  hitActor.startingY) {
+//							isValid = true;
+//							System.out.println("Follower hit to the left");
+//						}
+//					}
+//					if(facingAngle == 90) {
+//						if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY >  hitActor.startingY) {
+//							isValid = true;
+//							System.out.println("Follower hit above");
+//						}
+//					}
+//					if(facingAngle == 270) {
+//						if(lastHitActor.startingX == hitActor.startingX && lastHitActor.startingY <  hitActor.startingY) {
+//							isValid = true;
+//							System.out.println("Follower hit below");
+//						}
+//					}
+//				}
+//			}
+//			
+//			return isValid;
+//
+//		}
+//		
+//		private void setToFollower(HeadSprite hitActor) {
+//			hitActor.setColor(Color.CYAN);
+//			hitActor.status = 1;
+//		}
+//		
+//		private void setToMiddleFollower(HeadSprite hitActor) {
+//			hitActor.setColor(Color.CYAN);
+//			hitActor.status = 2;
+//		}
+//		
+//		private void setToLastFollower(HeadSprite hitActor) {
+//			hitActor.setColor(Color.GREEN);
+//			hitActor.status = 1;
+//		}
+//	}
 	
 	public class Interaction {
 		

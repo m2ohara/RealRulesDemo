@@ -15,16 +15,16 @@ public class CoordinateSystem {
 	public static enum Coordinates {N, E, S, W}
 	private static CoordinateSystem instance;
 	//Properties related to setting sprites on game screen
-	public static ArrayList<Float> gameXCoords = new ArrayList<Float>();
+	private ArrayList<Float> gameXCoords = new ArrayList<Float>();
 	public static ArrayList<Float>  gameYCoords = new ArrayList<Float>();
-	public final int xGrid = 3;
-	public final int yGrid = 4;
+	public final int xGrid = systemWidth;
+	public final int yGrid = systemHeight;
 	float headSpriteH = 72;
 	int headSpriteW = 72;
 	
 	public static CoordinateSystem get() {
 		if(instance == null) {
-			return new CoordinateSystem();
+			instance = new CoordinateSystem();
 		}
 		return instance;
 	}
@@ -39,7 +39,7 @@ public class CoordinateSystem {
 		float startX = centreX - (xSpan/2);
 		float spanLengthX = startX + xSpan;
 		for(float x = startX; x < spanLengthX; x+=headSpriteW) {
-			gameXCoords.add(x);
+			getGameXCoords().add(x);
 		}
 		
 		float centreY = (Gdx.graphics.getHeight()) / 2; 
@@ -51,6 +51,15 @@ public class CoordinateSystem {
 		}
 	}
 	
+	public ArrayList<Float> getGameXCoords() {
+		return gameXCoords;
+	}
+	
+	public ArrayList<Float> getGameYCoords() {
+		return gameYCoords;
+	}
+
+
 	public void setDirection(HeadSprite actor) {
 
 	}
@@ -90,7 +99,7 @@ public class CoordinateSystem {
 				Array<Actor> actors = group.getChildren();
 				for(Actor actor : actors) {
 						HeadSprite headSprite = (HeadSprite)actor;
-						if(gameXCoords.indexOf(headSprite.getStartingX()) == gameXPos && gameYCoords.indexOf(headSprite.getStartingY()) == gameYPos)
+						if(getGameXCoords().indexOf(headSprite.getStartingX()) == gameXPos && gameYCoords.indexOf(headSprite.getStartingY()) == gameYPos)
 							return headSprite;
 				}
 			}
