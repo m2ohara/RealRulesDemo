@@ -4,7 +4,6 @@ import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.realrules.game.demo.DemoGame.HeadSprite;
 
 public class GameGestures  implements GestureListener {
 		

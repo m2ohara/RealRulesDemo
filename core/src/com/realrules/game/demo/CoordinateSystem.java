@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
-import com.realrules.game.demo.DemoGame.HeadSprite;
 
 public class CoordinateSystem {
 	
@@ -19,8 +17,8 @@ public class CoordinateSystem {
 	public static ArrayList<Float>  gameYCoords = new ArrayList<Float>();
 	public final int xGrid = systemWidth;
 	public final int yGrid = systemHeight;
-	float headSpriteH = 72;
-	int headSpriteW = 72;
+	public static float headSpriteH = 72;
+	public static int headSpriteW = 72;
 	
 	public static CoordinateSystem get() {
 		if(instance == null) {
@@ -92,14 +90,14 @@ public class CoordinateSystem {
 		return null;
 	}
 	
-	public HeadSprite getMemberFromCoords(int gameXPos, int gameYPos, Group group) {
+	public HeadSprite getMemberFromCoords(int gameXPos, int gameYPos) {
 		
-		if(group != null) {
+		if(GameProperties.get().getActorGroup() != null) {
 			if(gameXPos != -1 && gameXPos < systemWidth && gameYPos != -1 && gameYPos < systemHeight){
-				Array<Actor> actors = group.getChildren();
+				Array<Actor> actors = GameProperties.get().getActorGroup().getChildren();
 				for(Actor actor : actors) {
 						HeadSprite headSprite = (HeadSprite)actor;
-						if(getGameXCoords().indexOf(headSprite.getStartingX()) == gameXPos && gameYCoords.indexOf(headSprite.getStartingY()) == gameYPos)
+						if(gameXCoords.indexOf(headSprite.getStartingX()) == gameXPos && gameYCoords.indexOf(headSprite.getStartingY()) == gameYPos)
 							return headSprite;
 				}
 			}
@@ -128,7 +126,7 @@ public class CoordinateSystem {
 	}
 	
 	public static boolean isValidYCoordinate(int coordinate) {
-		if(coordinate >= 0 &&  coordinate <= systemHeight)
+		if(coordinate >= 0 &&  coordinate < systemHeight)
 		{	
 			return true;
 		}
@@ -137,7 +135,7 @@ public class CoordinateSystem {
 		
 	
 	public static boolean isValidXCoordinate(int coordinate) {
-		if(coordinate >= 0 && coordinate <= systemWidth)
+		if(coordinate >= 0 && coordinate < systemWidth)
 		{	
 			return true;
 		}

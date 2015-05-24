@@ -2,7 +2,6 @@ package com.realrules.game.demo;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.realrules.game.demo.DemoGame.HeadSprite;
 
 public class ScoreState {
 	

@@ -3,21 +3,17 @@ package com.realrules.game.demo;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
-import com.realrules.game.demo.DemoGame.HeadSprite;
-import com.realrules.game.demo.DemoGame.IHeadBehaviour;
 
 public class GossiperTouchAction extends TouchAction{
 	
 	private ArrayList<Integer> validXCoords = new ArrayList<Integer>();
 	private ArrayList<Integer> validYCoords = new ArrayList<Integer>();
-	private Group actorGroup;
+//	private Group actorGroup;
 	ArrayList<HeadSprite> interactees = new ArrayList<HeadSprite>();
 	HeadSprite interacter;
 	
-	public GossiperTouchAction(Group actorGroup) {
-		this.actorGroup = actorGroup;
+	public GossiperTouchAction() {
 	}
 
 	//Two members ahead of interactor are valid
@@ -28,7 +24,7 @@ public class GossiperTouchAction extends TouchAction{
 			int origX = this.getInteractorX();
 			int origY = this.getInteractorY();
 			
-			interacter = CoordinateSystem.get().getMemberFromCoords(origX, origY, actorGroup);
+			interacter = CoordinateSystem.get().getMemberFromCoords(origX, origY);
 			
 			//Determine direction
 			if(this.getInteractorDir() == Coordinates.N) {
@@ -92,7 +88,7 @@ public class GossiperTouchAction extends TouchAction{
 		if(validXCoords.size() > 0) {
 			setToMiddleFollower(interacter);
 			for(int i = 0; i < validXCoords.size(); i++) {
-				HeadSprite actor = CoordinateSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i), actorGroup);
+				HeadSprite actor = CoordinateSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i));
 				if(i == validXCoords.size()-1) {
 					setToLastFollower(actor);
 				}

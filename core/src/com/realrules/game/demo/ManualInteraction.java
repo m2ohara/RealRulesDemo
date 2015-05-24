@@ -3,7 +3,6 @@ package com.realrules.game.demo;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
-import com.realrules.game.demo.DemoGame.HeadSprite;
 
 public class ManualInteraction {
 	//Interacting
