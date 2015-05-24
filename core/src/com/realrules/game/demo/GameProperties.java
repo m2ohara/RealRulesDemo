@@ -56,6 +56,10 @@ public class GameProperties {
 	public void addActorToStage(Actor actor) {
 		this.stage.addActor(actor);
 	}
+	
+	public void dispose() {
+		stage.dispose();
+	}
 
 	
 

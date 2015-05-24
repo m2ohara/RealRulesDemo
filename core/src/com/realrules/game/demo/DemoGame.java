@@ -96,6 +96,11 @@ public class DemoGame extends ApplicationAdapter {
 	public void resize(int width, int heigth) {
 		GameProperties.get().getStage().getViewport().update(width, heigth, true);
 	}
+	@Override
+	public void dispose() {
+		GameProperties.get().dispose();
+		this.dispose();
+	}
 	
 	
 	private Actor getButton(String type) {
