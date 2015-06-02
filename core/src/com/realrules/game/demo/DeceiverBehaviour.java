@@ -21,13 +21,11 @@ public class DeceiverBehaviour  implements IHeadBehaviour {
 	float TouchStateLength = 3.0f;
 	float TouchStateTime = 0;
 	private boolean isActive = true;
-	float x;
-	float y;
 	private int direction; //0 : right, 1 : left
+	private TouchAction onTouch;
 
 	private Array<AtlasRegion> frames;
 	private TextureRegion currentFrame;
-	private float movementP = 0.1f;
 	private float rotateP = 0.8f;
 	private float interactSuccessP = 0.4f;
 	private InteractSprite soundWave;
@@ -39,18 +37,21 @@ public class DeceiverBehaviour  implements IHeadBehaviour {
 	int deceiverAngle = 0;
 	int soundWaveAngle = 0;
 	
-	public DeceiverBehaviour(boolean isActive, String framesPath, float x, float y) {
+	public DeceiverBehaviour(boolean isActive, String framesPath, int x, int y) {
 		frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
 		currentFrame = frames.get(0);
 		this.direction = 0;
 		this.isActive = isActive;
-		this.x = x;
-		this.y = y;
+		
+		onTouch = new DeceiverTouchAction();
+		this.onTouch.setInteractorX(x);
+		this.onTouch.setInteractorY(y);
+		this.onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(direction, 0));
 		
 
 	}
 	
-	public void setInteractSprite() {
+	public void setInteractSprite(float x, float y) {
 		//Set interact sprite
 		this.soundWave = new InteractSprite(x, y, "sprites//soundWaveFollower.pack"); 
 		this.soundWave.setTouchable(Touchable.disabled);
@@ -71,7 +72,10 @@ public class DeceiverBehaviour  implements IHeadBehaviour {
 
 	@Override
 	public void onTouch() {
-		// TODO Auto-generated method stub
+		
+		if(isActive) {
+			onTouch.interact();
+		}
 		
 	}
 
@@ -127,6 +131,8 @@ public class DeceiverBehaviour  implements IHeadBehaviour {
 			
 			//Rotate soundwave
 			soundWaveAngle = direction == 1 ? deceiverAngle : (deceiverAngle + 180) % 360;
+			
+			onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(direction, deceiverAngle));
 			
 		}
 	}

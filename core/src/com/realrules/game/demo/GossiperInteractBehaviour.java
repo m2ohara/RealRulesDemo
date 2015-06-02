@@ -4,7 +4,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.graphics.Color;
 
-public class GossiperInteractBehaviourD implements IInteraction {
+public class GossiperInteractBehaviour implements IInteraction {
 
 	@Override
 	public void interact(HeadSprite interactor, HeadSprite interactee) {

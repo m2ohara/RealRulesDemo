@@ -8,6 +8,8 @@ public class ScoreState {
 	public enum State {PLAYING, WIN, LOSE, DRAW}
 	
 	static int totalPoints = 0;
+	private static int userPoints = 6;
+	private static int touchActionPoints = 0;
 	
 	public static boolean IsPlaying () {
 		return totalPoints == 0 ? false : true;
@@ -50,6 +52,25 @@ public class ScoreState {
 		
 		//Playing
 		return State.PLAYING;
+	}
+
+	public static boolean validTouchAction() {
+		if(userPoints >= touchActionPoints) {
+			return true;
+		}
+		return false;
+	}
+
+	public static void addUserPoints(int _userPoints) {
+		userPoints += _userPoints;
+	}
+	
+	public static int getUserPoints() {
+		return userPoints;
+	}
+	
+	public static void resetUserPoints() {
+		userPoints = 0;
 	}
 
 }

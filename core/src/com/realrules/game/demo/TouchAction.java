@@ -1,7 +1,5 @@
 package com.realrules.game.demo;
 
-import java.util.ArrayList;
-
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
 
 public abstract class TouchAction implements ITouchAction {

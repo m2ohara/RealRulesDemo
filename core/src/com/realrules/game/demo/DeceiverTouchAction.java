@@ -5,15 +5,13 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Color;
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
 
-public class GossiperTouchAction extends TouchAction{
-	
+public class DeceiverTouchAction extends TouchAction {
+
 	private ArrayList<Integer> validXCoords = new ArrayList<Integer>();
 	private ArrayList<Integer> validYCoords = new ArrayList<Integer>();
-//	private ArrayList<HeadSprite> interactees = new ArrayList<HeadSprite>();
 	private HeadSprite interacter;
 	
-	public GossiperTouchAction() {
-	}
+	public DeceiverTouchAction() {}
 
 	//Two members ahead of interactor are valid
 	@Override
@@ -101,16 +99,13 @@ public class GossiperTouchAction extends TouchAction{
 	}
 	
 	private void setToMiddleFollower(HeadSprite actor) {
-		actor.setColor(Color.CYAN);
-		actor.status = 2;
+		actor.setColor(Color.BLACK);
+		actor.status = 3;
 	}
 	
 	private void setToLastFollower(HeadSprite actor) {
 		actor.setColor(Color.GREEN);
 		actor.status = 1;
 	}
-	
-	
-	
 
 }

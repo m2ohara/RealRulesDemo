@@ -25,7 +25,6 @@ public class HeadSprite  extends Image  {
 	Array<AtlasRegion> frames;
 	TextureRegion currentFrame;
 	int direction; //0 : left, 1 : right
-	private float movementP = 0.1f;
 	float rotateP = 0.8f;
 	float argueSuccessP = 0.2f;
 	float interactSuccessP = 0.2f;
@@ -34,12 +33,10 @@ public class HeadSprite  extends Image  {
 	public int status = 0; //0 : neutral, 1 : for 2 : against
 	
 	public int getXGameCoord() {
-//		System.out.println("member x is "+this.startingX);
 		return CoordinateSystem.get().getGameXCoords().indexOf(this.startingX);
 	}
 	
 	public int getYGameCoord() {
-//		System.out.println("member y is "+this.getY());
 		return CoordinateSystem.get().getGameYCoords().indexOf(this.startingY);
 	}
 
@@ -68,18 +65,18 @@ public class HeadSprite  extends Image  {
 		
 		if(type == type.GOSSIPER) {
 			behaviour = new GossiperBehaviour(this,isActive);
-			interaction = new GossiperInteractionD();
+			interaction = new GossiperInteraction();
 			this.setPosition(startingX, startingY);
 			GameProperties.get().addActorToStage(this);
 
 		}
 		if(type == type.DECEIVER) {
-			behaviour = new DeceiverBehaviour(isActive, framesPath, this.startingX, this.startingY);
+			behaviour = new DeceiverBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord());
 			interaction = new DeceiverInteraction();
 			this.setPosition(startingX, startingY);
 			GameProperties.get().addActorToStage(this);
-			//Refactor into beaviour
-			behaviour.setInteractSprite();
+			//Refactor into behaviour
+			behaviour.setInteractSprite(startingX, startingY);
 		}
 		
 		setTouchAction();
@@ -102,8 +99,11 @@ public class HeadSprite  extends Image  {
 			
 			public void clicked(InputEvent event, float x, float y) 
 		    {
-				System.out.println("Touched at: x: "+x+", y: "+y+"");
-				behaviour.onTouch();
+				if(ScoreState.validTouchAction()) {
+					System.out.println("Touched at: x: "+x+", y: "+y+"");
+					behaviour.onTouch();
+					ScoreState.resetUserPoints();
+				}
 		    }
 			
 		});

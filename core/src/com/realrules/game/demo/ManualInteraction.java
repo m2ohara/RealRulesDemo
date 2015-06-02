@@ -1,13 +1,12 @@
 package com.realrules.game.demo;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.Color;
 
+//TODO: Test ManualInteraction
 public class ManualInteraction {
 	//Interacting
 	HeadSprite interactor;
-	ArrayList<HeadSprite> interactees = new ArrayList<HeadSprite>();
+	private int hitCount = 0;
 	HeadSprite lastHitActor = null;
 	boolean invalidInteraction = false;
 	
@@ -19,11 +18,15 @@ public class ManualInteraction {
 		//If new actor is hit
 		if((lastHitActor == null || !hitActor.equals(lastHitActor))) {
 				
+			if(hitActor.isActive) {
+				
+				//Flag actor as inactive for other interactions
+				hitActor.isActive = false;
+				
 				//If first hit and is influenced actor
-				if(isFirst && hitActor.status == 1 && hitActor.isActive) {	
-					invalidInteraction =false;
+				if(isFirst && hitActor.status == 1) {	
+					invalidInteraction = false;
 					interactor = hitActor;
-//					setToFollower(hitActor);
 					
 					float angle = hitActor.getRotation();
 					angle = hitActor.getDirection() == 0 ? angle + 180f : angle;
@@ -31,28 +34,33 @@ public class ManualInteraction {
 					System.out.println("First follower hit facing "+angle);
 				}
 				//Neutral interactee
-				else if(interactor != null && !invalidInteraction && !isFirst && interactor.behaviour.getInfluenceAmount() > interactees.size() && hitActor.status == 0) {
+				else if(interactor != null && !isFirst && !invalidInteraction && interactor.behaviour.getInfluenceAmount() > hitCount && hitActor.status == 0) {
 					if(validInteraction(hitActor)) {
-						//Set previous hit actor to untouchable
+						//Set previous hit actor to passive follower
 						setToMiddleFollower(lastHitActor);
-						interactees.add(hitActor);
+						hitCount += 1;
 						setToLastFollower(hitActor);
+						//Update hit count
+						ScoreState.addUserPoints(1);
 					}
 					else {
 						invalidInteraction = true;
-						System.out.println("Invalid hit");
 					}
-				}		
-				
+				}	
+				else {
+					invalidInteraction = true;
+				}
+
 				hitActor.isActive = true;
 				
 				lastHitActor = hitActor;
 			}
+		}
 	}
 	
 	public void reset() {
 		interactor = null;
-		interactees.clear();
+		hitCount = 0;
 		lastHitActor = null;
 	}
 	
@@ -69,21 +77,21 @@ public class ManualInteraction {
 			if(direction == 1) {
 				if(facingAngle == 0) {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX)-1) 
-							&& CoordinateSystem.get().gameYCoords.indexOf(lastHitActor.startingY) ==  CoordinateSystem.get().gameYCoords.indexOf(hitActor.startingY)) {
+							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)) {
 						isValid = true;
 						System.out.println("Follower hit to the right");
 					}
 				}
 				if(facingAngle == 90) {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
-							&& CoordinateSystem.get().gameYCoords.indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().gameYCoords.indexOf(hitActor.startingY)+1)) {
+							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)+1)) {
 						isValid = true;
 						System.out.println("Follower hit above");
 					}
 				}
 				if(facingAngle == 270) {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
-							&& CoordinateSystem.get().gameYCoords.indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().gameYCoords.indexOf(hitActor.startingY)-1)) {
+							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)-1)) {
 						isValid = true;
 						System.out.println("Follower hit below");
 					}
@@ -94,21 +102,21 @@ public class ManualInteraction {
 			if(direction == 0) {
 				if(facingAngle == 0) {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX)+1) 
-							&& CoordinateSystem.get().gameYCoords.indexOf(lastHitActor.startingY) ==  CoordinateSystem.get().gameYCoords.indexOf(hitActor.startingY)) {
+							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)) {
 						isValid = true;
 						System.out.println("Follower hit to the left");
 					}
 				}
 				if(facingAngle == 90) {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
-							&& CoordinateSystem.get().gameYCoords.indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().gameYCoords.indexOf(hitActor.startingY)-1)) {
+							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)-1)) {
 						isValid = true;
 						System.out.println("Follower hit below");
 					}
 				}
 				if(facingAngle == 270) {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
-							&& CoordinateSystem.get().gameYCoords.indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().gameYCoords.indexOf(hitActor.startingY)+1)) {
+							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)+1)) {
 						isValid = true;
 						System.out.println("Follower hit above");
 					}
@@ -118,11 +126,6 @@ public class ManualInteraction {
 		
 		return isValid;
 
-	}
-	
-	private void setToFollower(HeadSprite hitActor) {
-		hitActor.setColor(Color.CYAN);
-		hitActor.status = 1;
 	}
 	
 	private void setToMiddleFollower(HeadSprite hitActor) {

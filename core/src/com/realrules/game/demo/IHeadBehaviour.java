@@ -18,7 +18,7 @@ public interface IHeadBehaviour {
 	
 	int getInfluenceAmount();
 	
-	void setInteractSprite();
+	void setInteractSprite(float x, float y);
 	
 	HeadSprite getInteractSprite();
 	

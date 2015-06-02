@@ -56,16 +56,6 @@ public class GossiperBehaviour implements IHeadBehaviour, ITouchActionBehaviour 
 			}
 			InStateTime += delta;
 		}
-//		else if(!isActive) {
-//			if(TouchStateTime >= TouchStateLength) {
-//				gossiper.soundWave.remove();
-//				gossiper.setColor(Color.GRAY);
-//			}
-//			boolean newVisible = gossiper.soundWave.isVisible() ? false : true;
-//			gossiper.soundWave.setVisible(newVisible);
-//			
-//			TouchStateTime += delta;
-//		}
 	}
 
 	@Override
@@ -76,22 +66,9 @@ public class GossiperBehaviour implements IHeadBehaviour, ITouchActionBehaviour 
 	public void onTouch() {
 		
 		if(isActive) {
-//			isActive = false;
 			onTouch.interact();
 		}
 		
-		
-	}
-	
-			
-	//Implement movement action
-	private void setMoveToAction() {
-		
-		Random rand = new Random();
-		int xCoord = rand.nextInt(((int)gossiper.getStartingX()) - 20) + 20;
-		int yCoord = rand.nextInt(140) + 180;   
-
-		gossiper.addAction(Actions.moveTo(xCoord, yCoord, 0.5f));
 		
 	}
 	
@@ -145,7 +122,7 @@ public class GossiperBehaviour implements IHeadBehaviour, ITouchActionBehaviour 
 	}
 
 	@Override
-	public void setInteractSprite() {
+	public void setInteractSprite(float x, float y) {
 		// TODO Refactor soundwave creation into here
 		
 	}
