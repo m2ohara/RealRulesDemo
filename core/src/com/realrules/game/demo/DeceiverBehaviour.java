@@ -20,22 +20,25 @@ public class DeceiverBehaviour  implements IHeadBehaviour {
 	float InStateTime = InStateLength;
 	float TouchStateLength = 3.0f;
 	float TouchStateTime = 0;
-	private boolean isActive = true;
-	private int direction; //0 : right, 1 : left
 	private TouchAction onTouch;
 
 	private Array<AtlasRegion> frames;
 	private TextureRegion currentFrame;
 	private float rotateP = 0.8f;
 	private float interactSuccessP = 0.4f;
-	private InteractSprite soundWave;
-	
-	public int status = 0; //0 : neutral, 1 : for 2 : against
-	private int influenceAmount = 3;
-	public float argueSuccessP = 0.2f;
 	//Current angles
 	int deceiverAngle = 0;
 	int soundWaveAngle = 0;
+	private InteractSprite soundWave;
+	
+	//Members
+	public int status = 0; //0 : neutral, 1 : for 2 : against
+	private int influenceAmount = 3;
+	public float argueSuccessP = 0.2f;
+	private boolean isActive = true;
+	
+	private int direction; //0 : right, 1 : left
+
 	
 	public DeceiverBehaviour(boolean isActive, String framesPath, int x, int y) {
 		frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();

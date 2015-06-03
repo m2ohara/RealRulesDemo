@@ -8,8 +8,8 @@ public class ScoreState {
 	public enum State {PLAYING, WIN, LOSE, DRAW}
 	
 	static int totalPoints = 0;
-	private static int userPoints = 6;
-	private static int touchActionPoints = 0;
+	private static int touchActionPoints = 4;
+	private static int userPoints = touchActionPoints;
 	
 	public static boolean IsPlaying () {
 		return totalPoints == 0 ? false : true;

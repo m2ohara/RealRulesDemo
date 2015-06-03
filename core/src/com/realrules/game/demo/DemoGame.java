@@ -211,7 +211,7 @@ public class DemoGame extends ApplicationAdapter {
 				HeadSprite current = null;
 				float rand = crowdSetter.nextFloat();
 				if(rand < 0.33) {
-					current = new HeadSprite(Head.GOSSIPER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//gossiperFollowerPack.pack", true);
+					current = new HeadSprite(Head.GOSSIPER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//CellA.pack", true);
 				}
 				else if(rand >= 0.33 && rand < 0.66) {
 					current = new HeadSprite(Head.DECEIVER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//deceiverFollowerPack.pack", true);
