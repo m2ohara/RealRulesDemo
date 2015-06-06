@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.realrules.game.demo.DemoGame.Head;
+import com.realrules.game.interact.InfluencerInteraction;
 
 public class HeadSprite  extends Image  {
 	IHeadBehaviour behaviour;
@@ -26,7 +27,7 @@ public class HeadSprite  extends Image  {
 	TextureRegion currentFrame;
 	int direction; //0 : left, 1 : right
 	float rotateP = 0.8f;
-	float argueSuccessP = 0.2f;
+	public float argueSuccessP = 0.2f;
 	float interactSuccessP = 0.2f;
 	InteractSprite soundWave;
 	public boolean isActive = true;
@@ -59,6 +60,7 @@ public class HeadSprite  extends Image  {
 		direction = 0;
 		//Centre origin in frame for rotation;
 		this.setOrigin(this.currentFrame.getRegionWidth()/2, this.currentFrame.getRegionHeight()/2);
+		this.setPosition(x, y);
 		
 		startingX = x;
 		startingY = y;
@@ -66,19 +68,23 @@ public class HeadSprite  extends Image  {
 		if(type == type.GOSSIPER) {
 			behaviour = new GossiperBehaviour(this,isActive);
 			interaction = new GossiperInteraction();
-			this.setPosition(startingX, startingY);
 			GameProperties.get().addActorToStage(this);
 
 		}
 		if(type == type.DECEIVER) {
 			behaviour = new DeceiverBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord());
 			interaction = new DeceiverInteraction();
-			this.setPosition(startingX, startingY);
 			GameProperties.get().addActorToStage(this);
 			//Refactor into behaviour
 			behaviour.setInteractSprite(startingX, startingY);
 		}
+		if(type == type.INFLUENCER) {
+			behaviour = new InfluencerBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord());
+			interaction = new InfluencerInteraction();
+			GameProperties.get().addActorToStage(this);
+		}
 		
+		//Refactor into Behaviour
 		setTouchAction();
 		
 

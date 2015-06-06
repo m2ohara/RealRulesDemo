@@ -21,13 +21,15 @@ public class OnAct implements IOnAct {
 	
 	private Array<AtlasRegion> frames;
 	
+	private float interactP;
 	private float rotateP;
 	private int direction;
 	private int angle;
 	
-	public OnAct(float rotateProbability, String framesPath) 
+	public OnAct(float rotateProbability, float interactProbability, String framesPath) 
 	{
-		rotateP = rotateProbability;		
+		rotateP = rotateProbability;
+		interactP = interactProbability;
 		frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
 		
 	}
@@ -72,7 +74,15 @@ public class OnAct implements IOnAct {
 	}
 	
 	private void performAutonomousInteraction(HeadSprite actor) {
-		
+		Random rand = new Random();
+		if(rand.nextFloat() < this.interactP) {
+//			this.soundWave.setVisible(true);
+			actor.interaction.interactAutonomous(actor, GameProperties.get().getActorGroup());
+			
+		}
+		else {
+//			this.soundWave.setVisible(false);
+		}
 	}
 
 	@Override

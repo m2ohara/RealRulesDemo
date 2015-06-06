@@ -2,12 +2,7 @@ package com.realrules.game.demo;
 
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.utils.Array;
 import com.realrules.game.act.IOnAct;
 import com.realrules.game.act.OnAct;
 
@@ -27,7 +22,7 @@ public class InfluencerBehaviour implements IHeadBehaviour {
 	public float argueSuccessP = 0.2f;
 	private float rotateP = 0.8f;
 	private int influenceAmount = 3;
-	private float interactSuccessP = 0.4f;
+	private float interactP = 0.4f;
 	private boolean isActive = true;
 	private TouchAction onTouch;
 	private IOnAct onAct;
@@ -37,8 +32,8 @@ public class InfluencerBehaviour implements IHeadBehaviour {
 		this.direction = 0;
 		this.isActive = isActive;
 		
-		onTouch = new DeceiverTouchAction();
-		onAct = new OnAct(rotateP, framesPath);
+		onTouch = new InfluencerTouchAction();
+		onAct = new OnAct(rotateP, interactP, framesPath);
 		
 	}
 
@@ -95,8 +90,7 @@ public class InfluencerBehaviour implements IHeadBehaviour {
 
 	@Override
 	public int getDirection() {
-		// TODO Auto-generated method stub
-		return 0;
+		return onAct.getCurrentDirection();
 	}
 
 	@Override

@@ -210,14 +210,15 @@ public class DemoGame extends ApplicationAdapter {
 			for(int y = 0; y < CoordinateSystem.getSystemHeight(); y++) {
 				HeadSprite current = null;
 				float rand = crowdSetter.nextFloat();
+				rand = 0.99f;
 				if(rand < 0.33) {
-					current = new HeadSprite(Head.GOSSIPER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//CellA.pack", true);
+					current = new HeadSprite(Head.GOSSIPER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//gossiperFollowerPack.pack", true);
 				}
 				else if(rand >= 0.33 && rand < 0.66) {
 					current = new HeadSprite(Head.DECEIVER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//deceiverFollowerPack.pack", true);
 				}
 				else {
-					current = new HeadSprite(Head.GOSSIPER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//promoterFollowerPack.pack", true);
+					current = new HeadSprite(Head.INFLUENCER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//promoterFollowerPack.pack", true);
 				}
 				if(y == CoordinateSystem.getSystemHeight()-1 && x == starterX) {
 					current.status = 1; current.setColor(Color.GREEN); 

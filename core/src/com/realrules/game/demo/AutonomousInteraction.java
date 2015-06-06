@@ -21,17 +21,17 @@ public class AutonomousInteraction {
 				if(facingAngle == 0 && (interactor.getXGameCoord()+1) < CoordinateSystem.get().getGameXCoords().size()) {
 					//Get interactee by coordinates
 					interactee = CoordinateSystem.get().getMemberFromCoords(interactor.getXGameCoord()+1, (interactor.getYGameCoord()));
-//					System.out.println("Member type "+interactor.status+"  influencing to the right at "+(interactor.getXGameCoord()+1)+", "+interactor.getYGameCoord());
+					System.out.println("Member type "+interactor.status+"  influencing to the right at "+(interactor.getXGameCoord()+1)+", "+interactor.getYGameCoord());
 
 				}
 				if(facingAngle == 90 && (interactor.getYGameCoord()-1) > -1) {
 					interactee = CoordinateSystem.get().getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()-1));
-//					System.out.println("Member type "+interactor.status+"  influencing above at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()-1));
+					System.out.println("Member type "+interactor.status+"  influencing above at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()-1));
 
 				}
 				if(facingAngle == 270 && (interactor.getYGameCoord()+1) < CoordinateSystem.get().getGameYCoords().size()) {
 					interactee = CoordinateSystem.get().getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()+1));
-//					System.out.println("Member type "+interactor.status+"  influencing below at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()+1));
+					System.out.println("Member type "+interactor.status+"  influencing below at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()+1));
 				}
 			}
 			
@@ -39,15 +39,15 @@ public class AutonomousInteraction {
 			if(direction == 0) {
 				if(facingAngle == 0 && (interactor.getXGameCoord()-1) > -1) {
 					interactee = CoordinateSystem.get().getMemberFromCoords(interactor.getXGameCoord()-1, (interactor.getYGameCoord()));
-//					System.out.println("Member type "+interactor.status+" influencing to the left at "+(interactor.getXGameCoord()+1)+", "+interactor.getYGameCoord());
+					System.out.println("Member type "+interactor.status+" influencing to the left at "+(interactor.getXGameCoord()+1)+", "+interactor.getYGameCoord());
 				}
 				if(facingAngle == 90 && (interactor.getYGameCoord()+1) < CoordinateSystem.get().getGameYCoords().size()) {
 					interactee = CoordinateSystem.get().getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()+1));
-//					System.out.println("Member type "+interactor.status+" influencing above at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()+1));
+					System.out.println("Member type "+interactor.status+" influencing above at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()+1));
 				}
 				if(facingAngle == 270 && (interactor.getYGameCoord()-1) > -1) {
 					interactee = CoordinateSystem.get().getMemberFromCoords(interactor.getXGameCoord(), (interactor.getYGameCoord()-1));
-//					System.out.println("Member type "+interactor.status+" influencing below at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()-1));
+					System.out.println("Member type "+interactor.status+" influencing below at "+interactor.getXGameCoord()+", "+(interactor.getYGameCoord()-1));
 				}
 			}
 			
