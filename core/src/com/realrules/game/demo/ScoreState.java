@@ -11,6 +11,10 @@ public class ScoreState {
 	private static int touchActionPoints = 4;
 	private static int userPoints = touchActionPoints;
 	
+	public static int getTouchActionPoints() {
+		return touchActionPoints;
+	}
+
 	public static boolean IsPlaying () {
 		return totalPoints == 0 ? false : true;
 	}

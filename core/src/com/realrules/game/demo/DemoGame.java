@@ -210,7 +210,6 @@ public class DemoGame extends ApplicationAdapter {
 			for(int y = 0; y < CoordinateSystem.getSystemHeight(); y++) {
 				HeadSprite current = null;
 				float rand = crowdSetter.nextFloat();
-				rand = 0.99f;
 				if(rand < 0.33) {
 					current = new HeadSprite(Head.GOSSIPER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//gossiperFollowerPack.pack", true);
 				}
@@ -221,7 +220,7 @@ public class DemoGame extends ApplicationAdapter {
 					current = new HeadSprite(Head.INFLUENCER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//promoterFollowerPack.pack", true);
 				}
 				if(y == CoordinateSystem.getSystemHeight()-1 && x == starterX) {
-					current.status = 1; current.setColor(Color.GREEN); 
+					current.status = 1; current.setColor(Color.YELLOW); 
 				}
 				GameProperties.get().addToActorGroup(current);
 			}

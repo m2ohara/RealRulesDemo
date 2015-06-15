@@ -9,7 +9,6 @@ public class GossiperTouchAction extends TouchAction{
 	
 	private ArrayList<Integer> validXCoords = new ArrayList<Integer>();
 	private ArrayList<Integer> validYCoords = new ArrayList<Integer>();
-//	private ArrayList<HeadSprite> interactees = new ArrayList<HeadSprite>();
 	private HeadSprite interacter;
 	
 	public GossiperTouchAction() {
@@ -106,6 +105,7 @@ public class GossiperTouchAction extends TouchAction{
 	}
 	
 	private void setToLastFollower(HeadSprite actor) {
+
 		actor.setColor(Color.GREEN);
 		actor.status = 1;
 	}

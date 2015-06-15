@@ -9,13 +9,13 @@ import com.realrules.game.demo.CoordinateSystem.Coordinates;
 import com.realrules.game.demo.HeadSprite;
 import com.realrules.game.demo.TouchAction;
 
-public class InfluencerTouchAction extends TouchAction {
+public class InfluencerTouchActionNOTUSED extends TouchAction {
 
 	private ArrayList<Integer> validXCoords = new ArrayList<Integer>();
 	private ArrayList<Integer> validYCoords = new ArrayList<Integer>();
 	private HeadSprite interacter;
 	
-	public InfluencerTouchAction() {}
+	public InfluencerTouchActionNOTUSED() {}
 	
 	@Override
 	protected void generateValidInteractees() {

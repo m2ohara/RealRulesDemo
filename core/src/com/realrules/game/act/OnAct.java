@@ -32,6 +32,8 @@ public class OnAct implements IOnAct {
 		interactP = interactProbability;
 		frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
 		
+		updateCurrentAngle();
+		
 	}
 
 	@Override
@@ -39,7 +41,7 @@ public class OnAct implements IOnAct {
 		
 		if(stateTime >= stateLength) {
 			stateTime = 0.0f;
-			updateCurrentAngle();
+			setFrame();
 		}
 		
 		else if( interactStateTime >= interactStateLength) {
@@ -56,11 +58,16 @@ public class OnAct implements IOnAct {
 		
 	}
 	
-	private void updateCurrentAngle() {
-		
+	private void setFrame() {
 		//Based on rotation probability
 		if(rand.nextFloat() < this.rotateP) {
-			
+			updateCurrentAngle();
+		}
+		
+	}
+	
+	private void updateCurrentAngle() {
+
 			//Set direction
 			direction = rand.nextInt(2);
 			//Set angle
@@ -69,8 +76,6 @@ public class OnAct implements IOnAct {
 			int angleMultiple = angleSpread * rand.nextInt((180/angleSpread)-1);
 			int startingAngle = angleSector == 0 ? 0 : 270;
 			angle = startingAngle + angleMultiple;
-		}
-		
 	}
 	
 	private void performAutonomousInteraction(HeadSprite actor) {

@@ -3,18 +3,20 @@ package com.realrules.game.demo;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.realrules.game.act.IOnAct;
 import com.realrules.game.act.OnAct;
 
 public class InfluencerBehaviour implements IHeadBehaviour {
 	
-	private Random rand = new Random();
-	
-	private float touchStateLength = 3.0f;
-	private float touchStateTime = 0;
-	
+//	private Random rand = new Random();
+//	
+//	private float touchStateLength = 3.0f;
+//	private float touchStateTime = 0;
+//	
 	private int interactSpriteAngle = 0;
-	private int direction; //0 : right, 1 : left
+	private InteractSprite soundWave;
+//	private int direction; //0 : right, 1 : left
 
 	
 	//Members
@@ -29,11 +31,12 @@ public class InfluencerBehaviour implements IHeadBehaviour {
 	
 	
 	public InfluencerBehaviour(boolean isActive, String framesPath, int x, int y) {
-		this.direction = 0;
+//		this.direction = 0;
 		this.isActive = isActive;
 		
-		onTouch = new InfluencerTouchAction();
 		onAct = new OnAct(rotateP, interactP, framesPath);
+		
+		onTouch = new InfluencerTouchAction(x, y);
 		
 	}
 
@@ -51,7 +54,10 @@ public class InfluencerBehaviour implements IHeadBehaviour {
 
 	@Override
 	public void onTouch() {
-		// TODO Auto-generated method stub
+		
+		if(isActive) {
+			onTouch.interact();
+		}
 		
 	}
 
@@ -72,13 +78,15 @@ public class InfluencerBehaviour implements IHeadBehaviour {
 
 	@Override
 	public int getInfluenceAmount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return influenceAmount;
 	}
 
 	@Override
 	public void setInteractSprite(float x, float y) {
-		// TODO Auto-generated method stub
+		//Set interact sprite
+		this.soundWave = new InteractSprite(x, y, "sprites//soundWaveFollower.pack"); 
+		this.soundWave.setTouchable(Touchable.disabled);
+		GameProperties.get().addToSoundWaveGroup(this.soundWave);
 		
 	}
 

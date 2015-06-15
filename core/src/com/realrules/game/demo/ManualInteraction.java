@@ -134,7 +134,12 @@ public class ManualInteraction {
 	}
 	
 	private void setToLastFollower(HeadSprite hitActor) {
-		hitActor.setColor(Color.GREEN);
+		if(ScoreState.validTouchAction()) {
+			hitActor.setColor(Color.YELLOW);
+		}
+		else {
+			hitActor.setColor(Color.GREEN);
+		}
 		hitActor.status = 1;
 	}
 }
