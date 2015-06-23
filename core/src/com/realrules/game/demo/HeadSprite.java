@@ -32,6 +32,7 @@ public class HeadSprite  extends Image  {
 	InteractSprite soundWave;
 	public boolean isActive = true;
 	public int status = 0; //0 : neutral, 1 : for 2 : against
+	private float orientation = 0f;
 	
 	public int getXGameCoord() {
 		return CoordinateSystem.get().getGameXCoords().indexOf(this.startingX);
