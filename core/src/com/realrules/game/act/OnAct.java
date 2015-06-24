@@ -31,10 +31,10 @@ public class OnAct implements IOnAct {
 	private int angle;
 	
 	private int frameCount = 0;
-	private TextureAtlas Up = new TextureAtlas(Gdx.files.internal("sprites//Donal//Up.pack"));
-	private TextureAtlas Left = new TextureAtlas(Gdx.files.internal("sprites//Donal//Left.pack"));
-	private TextureAtlas Right = new TextureAtlas(Gdx.files.internal("sprites//Donal//Right.pack"));
-	private TextureAtlas Down = new TextureAtlas(Gdx.files.internal("sprites//Donal//Down.pack"));
+	private TextureAtlas Up = new TextureAtlas(Gdx.files.internal("sprites//Brendan//Up.pack"));
+	private TextureAtlas Left = new TextureAtlas(Gdx.files.internal("sprites//Brendan//Left.pack"));
+	private TextureAtlas Right = new TextureAtlas(Gdx.files.internal("sprites//Brendan//Right.pack"));
+	private TextureAtlas Down = new TextureAtlas(Gdx.files.internal("sprites//Brendan//Down.pack"));
 	
 	public OnAct(float rotateProbability, float interactProbability, String framesPath) 
 	{
@@ -42,7 +42,13 @@ public class OnAct implements IOnAct {
 		interactP = interactProbability;
 		frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
 		
-		updateCurrentAngle();
+//		Up = new TextureAtlas(Gdx.files.internal(framesPath+"//Up.pack"));
+//		Left = new TextureAtlas(Gdx.files.internal(framesPath+"//Left.pack"));
+//		Right = new TextureAtlas(Gdx.files.internal(framesPath+"//Right.pack"));
+//		Down = new TextureAtlas(Gdx.files.internal(framesPath+"//Down.pack"));
+		
+//		updateCurrentAngle();
+		changeSpriteOrientation();
 		
 	}
 
