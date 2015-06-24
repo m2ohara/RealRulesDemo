@@ -44,7 +44,7 @@ public class GameGestures  implements GestureListener {
 			Vector2 coords = stage.screenToStageCoordinates(new Vector2(x, y));
 			Actor actor = stage.hit(coords.x, coords.y, true);
 			
-			if(actor != null && actor.getClass().equals(HeadSprite.class)) {
+			if(actor != null && actor.getClass().equals(HeadSprite.class) && ((HeadSprite)actor).isActing()) {
 				//TODO: Refector interaction into HeadSprite
 				interaction.interactHit((HeadSprite)actor, isFirstHit);
 				isFirstHit = false;

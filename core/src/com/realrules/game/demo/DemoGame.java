@@ -210,10 +210,10 @@ public class DemoGame extends ApplicationAdapter {
 			for(int y = 0; y < CoordinateSystem.getSystemHeight(); y++) {
 				HeadSprite current = null;
 				float rand = crowdSetter.nextFloat();
-				if(rand < -0.33) {
+				if(rand < 0.33) {
 					current = new HeadSprite(Head.GOSSIPER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//gossiperFollowerPack.pack", true);
 				}
-				else if(rand >= 0.33 && rand < -0.66) {
+				else if(rand >= 0.33 && rand < 0.66) {
 					current = new HeadSprite(Head.DECEIVER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//deceiverFollowerPack.pack", true);
 				}
 				else {
@@ -230,6 +230,18 @@ public class DemoGame extends ApplicationAdapter {
 		GameProperties.get().getStage().addActor(GameProperties.get().getActorGroup());
 		GameProperties.get().getStage().addActor(GameProperties.get().getSoundWaveGroup());
 	
+	}
+	
+	private void setFollowerScreen() {
+		Actor screen = getImage("CrowdScreen", "screens//screensPack");
+		screen.setTouchable(Touchable.disabled);
+		setToStage(screen, 0, 0);	
+		
+		for(int x = 0; x < CoordinateSystem.get().getHudXCoords().size(); x++) {
+			for(int y = 0; y < CoordinateSystem.get().getHudYCoords().size(); y++) {
+				//Set follower types
+			}
+		}
 	}
 	
 	private void updateScoreState() {

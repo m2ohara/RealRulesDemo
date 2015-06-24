@@ -34,6 +34,11 @@ public class HeadSprite  extends Image  {
 	public int status = 0; //0 : neutral, 1 : for 2 : against
 	private float orientation = 0f;
 	
+	
+	private boolean isActing = false;
+	private String framesPath = null;
+	private Head type = null;
+	
 	public int getXGameCoord() {
 		return CoordinateSystem.get().getGameXCoords().indexOf(this.startingX);
 	}
@@ -54,6 +59,10 @@ public class HeadSprite  extends Image  {
 		return startingY;
 	}
 	
+	public boolean isActing() {
+		return isActing;
+	}
+	
 	public HeadSprite(Head type, float x, float y, String framesPath, boolean isActive) {
 		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 		frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
@@ -66,27 +75,33 @@ public class HeadSprite  extends Image  {
 		startingX = x;
 		startingY = y;
 		
+		this.framesPath = framesPath;
+		this.type = type;
+		
+	}
+	
+	private void setBehaviour(Head type) {
+		
 		if(type == type.GOSSIPER) {
 			behaviour = new GossiperBehaviour(this,isActive);
 			interaction = new GossiperInteraction();
-			GameProperties.get().addActorToStage(this);
 
 		}
 		if(type == type.DECEIVER) {
 			behaviour = new DeceiverBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord());
 			interaction = new DeceiverInteraction();
-			GameProperties.get().addActorToStage(this);
 			//Refactor into behaviour
-			behaviour.setInteractSprite(startingX, startingY);
+//			behaviour.setInteractSprite(startingX, startingY);
 		}
 		if(type == type.INFLUENCER) {
 			behaviour = new InfluencerBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord());
 			interaction = new InfluencerInteraction();
-			GameProperties.get().addActorToStage(this);
 		}
 		
 		//Refactor into Behaviour
 		setTouchAction();
+		
+//		GameProperties.get().addActorToStage(this);
 		
 
 		
@@ -94,9 +109,8 @@ public class HeadSprite  extends Image  {
 			//Set interact sprite
 			soundWave = new InteractSprite(this.startingX, this.startingY, "sprites//soundWaveFollower.pack");
 			soundWave.setTouchable(Touchable.disabled);
-			GameProperties.get().addToSoundWaveGroup(soundWave);
+//			GameProperties.get().addToSoundWaveGroup(soundWave);
 		}
-		
 	}
 	
 	//Implement onTouch action
@@ -120,14 +134,17 @@ public class HeadSprite  extends Image  {
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		
-		behaviour.onDraw(batch, parentAlpha);
+		if(isActing) {
+			behaviour.onDraw(batch, parentAlpha);
+		}
 	}
 
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		if(isActive)
+		if(isActive && isActing){
 			behaviour.onAct(delta, this);
+		}
 	}
 	
 	

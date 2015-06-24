@@ -31,10 +31,10 @@ public class OnAct implements IOnAct {
 	private int angle;
 	
 	private int frameCount = 0;
-	private TextureAtlas Up = new TextureAtlas(Gdx.files.internal("sprites//Brendan//Up.pack"));
-	private TextureAtlas Left = new TextureAtlas(Gdx.files.internal("sprites//Brendan//Left.pack"));
-	private TextureAtlas Right = new TextureAtlas(Gdx.files.internal("sprites//Brendan//Right.pack"));
-	private TextureAtlas Down = new TextureAtlas(Gdx.files.internal("sprites//Brendan//Down.pack"));
+	private TextureAtlas Up = new TextureAtlas(Gdx.files.internal("sprites//Donal//Up.pack"));
+	private TextureAtlas Left = new TextureAtlas(Gdx.files.internal("sprites//Donal//Left.pack"));
+	private TextureAtlas Right = new TextureAtlas(Gdx.files.internal("sprites//Donal//Right.pack"));
+	private TextureAtlas Down = new TextureAtlas(Gdx.files.internal("sprites//Donal//Down.pack"));
 	
 	public OnAct(float rotateProbability, float interactProbability, String framesPath) 
 	{

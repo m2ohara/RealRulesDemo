@@ -13,12 +13,16 @@ public class CoordinateSystem {
 	public static enum Coordinates {N, E, S, W}
 	private static CoordinateSystem instance;
 	//Properties related to setting sprites on game screen
-	private ArrayList<Float> gameXCoords = new ArrayList<Float>();
-	public static ArrayList<Float>  gameYCoords = new ArrayList<Float>();
 	public final int xGrid = systemWidth;
 	public final int yGrid = systemHeight;
 	public static float headSpriteH = 72;
 	public static int headSpriteW = 72;
+	
+	private ArrayList<Float> gameXCoords = new ArrayList<Float>();
+	public static ArrayList<Float>  gameYCoords = new ArrayList<Float>();
+	
+	private ArrayList<Float> hudXCoords = new ArrayList<Float>();
+	private ArrayList<Float> hudYCoords = new ArrayList<Float>();
 	
 	public static CoordinateSystem get() {
 		if(instance == null) {
@@ -29,6 +33,7 @@ public class CoordinateSystem {
 	
 	private CoordinateSystem() {
 		setGameCoords();
+		setHudCoords();
 	}
 	
 	private void setGameCoords() {
@@ -56,10 +61,22 @@ public class CoordinateSystem {
 	public ArrayList<Float> getGameYCoords() {
 		return gameYCoords;
 	}
+	
+	private void setHudCoords() {
+		//Set coordinates for followers in HUD
+	}
+	
+	public ArrayList<Float> getHudXCoords() {
+		return hudXCoords;
+	}
+	
+	public ArrayList<Float> getHudYCoords() {
+		return hudYCoords;
+	}
 
 
 	public void setDirection(HeadSprite actor) {
-
+		//TODO: Implement
 	}
 	
 	public static Coordinates getCoordDirection(int direction, int angle ) {
