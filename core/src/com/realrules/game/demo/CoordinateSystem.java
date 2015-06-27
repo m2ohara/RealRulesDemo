@@ -17,6 +17,7 @@ public class CoordinateSystem {
 	public final int yGrid = systemHeight;
 	public static float headSpriteH = 72;
 	public static int headSpriteW = 72;
+	private float hudYCoord;
 	
 	private ArrayList<Float> gameXCoords = new ArrayList<Float>();
 	public static ArrayList<Float>  gameYCoords = new ArrayList<Float>();
@@ -33,6 +34,7 @@ public class CoordinateSystem {
 	
 	private CoordinateSystem() {
 		setGameCoords();
+		
 		setHudCoords();
 	}
 	
@@ -63,7 +65,26 @@ public class CoordinateSystem {
 	}
 	
 	private void setHudCoords() {
+		
+		setYHudCoord();
 		//Set coordinates for followers in HUD
+		int spriteTypeCount = GameProperties.get().getSpritePaths().size();	
+		
+		float centreX = (Gdx.graphics.getWidth()) / 2; 
+		float xSpan = headSpriteW*spriteTypeCount;
+		float startX = centreX - (xSpan/2);
+		float spanLengthX = startX + xSpan;
+		for(float x = startX; x < spanLengthX; x+=headSpriteW) {
+			hudXCoords.add(x);
+			hudYCoords.add(hudYCoord);
+		}
+		
+		
+	}
+	
+	private void setYHudCoord() {
+		int fraction = 8;
+		hudYCoord = Gdx.graphics.getHeight() - ((Gdx.graphics.getHeight()/fraction) * (fraction - 1));
 	}
 	
 	public ArrayList<Float> getHudXCoords() {

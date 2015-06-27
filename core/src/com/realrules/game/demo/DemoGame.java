@@ -1,5 +1,6 @@
 package com.realrules.game.demo;
 
+import java.util.List;
 import java.util.Random;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -23,6 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.realrules.gestures.GameGestures;
 
 public class DemoGame extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -233,18 +235,16 @@ public class DemoGame extends ApplicationAdapter {
 		ScoreState.setTotalPoints(GameProperties.get().getActorGroup().getChildren().size);	
 		GameProperties.get().getStage().addActor(GameProperties.get().getActorGroup());
 		GameProperties.get().getStage().addActor(GameProperties.get().getSoundWaveGroup());
+		
+		setFollowerScreen();
 	
 	}
 	
-	private void setFollowerScreen() {
-		Actor screen = getImage("CrowdScreen", "screens//screensPack");
-		screen.setTouchable(Touchable.disabled);
-		setToStage(screen, 0, 0);	
+	private void setFollowerScreen() {	
 		
-		for(int x = 0; x < CoordinateSystem.get().getHudXCoords().size(); x++) {
-			for(int y = 0; y < CoordinateSystem.get().getHudYCoords().size(); y++) {
-				//Create Moveable sprite
-			}
+		List<String> paths = GameProperties.get().getSpritePaths();
+		for(int i = 0; i < paths.size(); i++) {
+			new MoveableSprite(paths.get(i), CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i));
 		}
 	}
 	

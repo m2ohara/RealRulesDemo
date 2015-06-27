@@ -1,5 +1,8 @@
 package com.realrules.game.demo;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -17,6 +20,12 @@ public class GameProperties {
 		
 		return instance;
 	}
+	
+	private List<String> spritePaths = Arrays.asList( "sprites//gossiperFollowerPack.pack", "sprites//deceiverFollowerPack.pack", "sprites//promoterFollowerPack.pack" );
+	public List<String> getSpritePaths() {
+		return spritePaths;
+	}
+	
 	
 	private float universalTimeRatio = 0.7f;
 	

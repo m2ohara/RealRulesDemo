@@ -80,7 +80,7 @@ public class HeadSprite  extends Image  {
 		
 	}
 	
-	private void setBehaviour(Head type) {
+	private void setBehaviour() {
 		
 		if(type == type.GOSSIPER) {
 			behaviour = new GossiperBehaviour(this,isActive);
@@ -91,7 +91,7 @@ public class HeadSprite  extends Image  {
 			behaviour = new DeceiverBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord());
 			interaction = new DeceiverInteraction();
 			//Refactor into behaviour
-//			behaviour.setInteractSprite(startingX, startingY);
+			behaviour.setInteractSprite(startingX, startingY);
 		}
 		if(type == type.INFLUENCER) {
 			behaviour = new InfluencerBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord());
