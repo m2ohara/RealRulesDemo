@@ -29,6 +29,8 @@ public class DemoGame extends ApplicationAdapter {
 	Texture background;
 	OrthographicCamera camera;
 	private boolean isAndroid = false;
+	public InputMultiplexer im = null;
+	public Stage stage;
 	
 	public static float universalTimeRatio = 0.7f;
 
@@ -44,16 +46,18 @@ public class DemoGame extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		
-		Stage stage = setView();
+		stage = setView();
 		
-		GestureDetector gd = new GestureDetector(new GameGestures(stage));
-		
-		InputMultiplexer im = new InputMultiplexer(gd, stage);
-		Gdx.input.setInputProcessor(im);
+		setGestureDetector(new GestureDetector(new GameGestures(stage)));
 		
 		GameProperties.get().setStage(stage);
 		
 		setTitleScreen();
+	}
+	
+	private void setGestureDetector(GestureDetector gd) {
+		im = new InputMultiplexer(gd, stage);
+		Gdx.input.setInputProcessor(im);
 	}
 	
 	private Stage setView() {
@@ -239,7 +243,7 @@ public class DemoGame extends ApplicationAdapter {
 		
 		for(int x = 0; x < CoordinateSystem.get().getHudXCoords().size(); x++) {
 			for(int y = 0; y < CoordinateSystem.get().getHudYCoords().size(); y++) {
-				//Set follower types
+				//Create Moveable sprite
 			}
 		}
 	}
