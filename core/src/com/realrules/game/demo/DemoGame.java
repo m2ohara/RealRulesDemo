@@ -232,7 +232,6 @@ public class DemoGame extends ApplicationAdapter {
 			}
 		}
 		
-		ScoreState.setTotalPoints(GameProperties.get().getActorGroup().getChildren().size);	
 		GameProperties.get().getStage().addActor(GameProperties.get().getActorGroup());
 		GameProperties.get().getStage().addActor(GameProperties.get().getSoundWaveGroup());
 		
@@ -244,8 +243,23 @@ public class DemoGame extends ApplicationAdapter {
 		
 		List<String> paths = GameProperties.get().getSpritePaths();
 		for(int i = 0; i < paths.size(); i++) {
-			new MoveableSprite(paths.get(i), CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i));
+			for(int amount = 0; amount < GameProperties.get().getfollowerTypeAmount().get(i); amount++) {
+				new MoveableSprite(paths.get(i), CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i));
+			}
 		}
+		
+		Actor btn = getButton("PlayGameBtn");
+		setToStage(btn, 0, -260);
+		
+		btn.addListener(new ClickListener() {
+			 public void clicked(InputEvent event, float x, float y) {
+				 activateGame();
+			 }
+		});
+	}
+	
+	private void activateGame() {
+		ScoreState.setTotalPoints(GameProperties.get().getActorGroup().getChildren().size);	
 	}
 	
 	private void updateScoreState() {
