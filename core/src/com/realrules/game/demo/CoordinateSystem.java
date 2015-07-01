@@ -76,14 +76,14 @@ public class CoordinateSystem {
 		float spanLengthX = startX + xSpan;
 		for(float x = startX; x < spanLengthX; x+=headSpriteW) {
 			hudXCoords.add(x);
-			hudYCoords.add(hudYCoord);
+			hudYCoords.add(750f); //TODO: Resolve screen dependent yCoord
 		}
 		
 		
 	}
 	
 	private void setYHudCoord() {
-		int fraction = 8;
+		int fraction = 5;
 		hudYCoord = Gdx.graphics.getHeight() - ((Gdx.graphics.getHeight()/fraction) * (fraction - 1));
 	}
 	

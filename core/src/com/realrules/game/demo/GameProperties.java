@@ -3,10 +3,12 @@ package com.realrules.game.demo;
 import java.util.Arrays;
 import java.util.List;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.realrules.game.demo.DemoGame.Head;
 
 public class GameProperties {
 	
@@ -20,6 +22,14 @@ public class GameProperties {
 		}
 		
 		return instance;
+	}
+	
+	
+	//TODO: Refactor into separate followers class
+	private List<Head> followerType = Arrays.asList(Head.GOSSIPER, Head.DECEIVER, Head.INFLUENCER);
+	public List<Head> getFollowerType() {
+		return followerType;
+		
 	}
 	
 	private List<Integer> followerTypeAmount = Arrays.asList(1, 2, 1);
@@ -48,13 +58,27 @@ public class GameProperties {
 		this.actorGroup.addActor(actor);
 	}
 	
-	public void replaceActorInGroup(Actor actor) {
-		Actor actorToRemove = stage.hit(actor.getX(), actor.getY(), true);
+	public List<MoveableSprite> actorsToReplace = Arrays.asList();
+	
+	public void replaceActorInGroup(MoveableSprite actor) {
+		//Ensure HeadSprite actor gets hit
+		actor.setTouchable(Touchable.disabled);
+		actor.getInstance().setTouchable(Touchable.disabled);
+		Actor actorToRemove = stage.hit(actor.getCurrentX(), actor.getCurrentY(), true);
 		try {
+			//Remove current actor at coordinates
 			actorGroup.removeActor(actorToRemove);
-			actorGroup.addActor(actor);
 			actorToRemove.remove();
-			actor.setTouchable(Touchable.enabled);
+			
+			HeadSprite actorToAdd = new HeadSprite(actor.getType(), actor.getCurrentX(), actor.getCurrentY(), actor.getFramesPath(), false);
+			if(((HeadSprite)actorToRemove).status == 1) {
+				actorToAdd.status = 1;
+				actorToAdd.setColor(Color.YELLOW);
+			}
+			actorGroup.addActor(actorToAdd);
+			//Remove placeholder
+			actor.getInstance().remove();
+			actor.remove();
 		}
 		catch(Exception ex) {
 			System.out.println("Exception replacing actor on stage "+ex);

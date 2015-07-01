@@ -18,9 +18,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Array;
+import com.realrules.game.demo.DemoGame.Head;
 
 public class MoveableSprite extends Image {
 	
+	private Head type = null;
 	private String framesPath = null;
 	private Array<AtlasRegion> frames;
 	private TextureRegion currentFrame;
@@ -31,11 +33,13 @@ public class MoveableSprite extends Image {
 	private boolean isActive = false;
 	
 	
-	public MoveableSprite(String framesPath, float x, float y) {
-		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
+	public MoveableSprite(Head type, String framesPath, float x, float y) {
+		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0)); //TODO : Set instance as sprite only
 		
+		this.type = type;
 		this.setColor(Color.CYAN);
 		
+		this.type = type;
 		this.origX = x;
 		this.origY = y;
 		this.framesPath = framesPath;
@@ -52,9 +56,11 @@ public class MoveableSprite extends Image {
 		GameProperties.get().getStage().addActor(this);
 	}
 	
-	private MoveableSprite(String framesPath, float x, float y, float origX, float origY) {
+	//Constructor when dropped
+	private MoveableSprite(Head type, String framesPath, float x, float y, float origX, float origY) {
 		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 		
+		this.type = type;
 		this.setColor(Color.CYAN);
 		
 		this.framesPath = framesPath;
@@ -80,8 +86,6 @@ public class MoveableSprite extends Image {
 	}
 	
 	private DragAndDrop dragAndDrop;
-	
-	
 	private void setDragAndDrop() {	
 		
 		setDragSource();
@@ -93,13 +97,13 @@ public class MoveableSprite extends Image {
 		}
 	}
 	
-	public void resetLocation(float x, float y) {
+	public void resetLocation(float x, float y, boolean isActive) {
 		dragAndDrop.clear();
 		this.clear();
 		this.remove();
 		dragSprite.remove();
-		instance = new MoveableSprite(framesPath, x, y, origX, origY);
-		this.isActive = true;
+		instance = new MoveableSprite(this.type, framesPath, x, y, origX, origY);
+		this.isActive = isActive;
 	}
 	
 	public void setDragSource() {
@@ -118,14 +122,17 @@ public class MoveableSprite extends Image {
 	private void addDropTarget(Actor target) {
 		
 		
-		dragAndDrop.addTarget(new Target(target) {
-			public boolean drag (Source source, Payload payload, float x, float y, int pointer) {
+		dragAndDrop.addTarget(new Target(target) {			
+			public boolean drag (Source source, Payload payload, float x, float y, int pointer) {			
 				getActor().setColor(Color.RED);
 				return true;
 			}
 
 			public void reset (Source source, Payload payload) {
-				getActor().setColor(Color.WHITE);
+				if(((HeadSprite)getActor()).status == 1)
+					getActor().setColor(Color.YELLOW);
+				else
+					getActor().setColor(Color.WHITE);
 			}
 
 			public void drop (Source source, Payload payload, float x, float y, int pointer) {
@@ -133,7 +140,7 @@ public class MoveableSprite extends Image {
 				System.out.println("Accepted: " + payload.getObject() + " " + x + ", " + y);
 
 				//Set dragActor new source coordinates
-				resetLocation(getActor().getX(), getActor().getY());
+				resetLocation(getActor().getX(), getActor().getY(), true);
 			}
 		});
 	}
@@ -155,11 +162,38 @@ public class MoveableSprite extends Image {
 				
 				System.out.println("Accepted: " + payload.getObject() + " " + x + ", " + y);
 				
-				//TODO: Resolve target implementation
 				getActor().remove();
-				resetLocation(getActor().getX(), getActor().getY());
+				resetLocation(getActor().getX(), getActor().getY(), false);
 			}
 		});
+	}
+	
+	public void setAsActive() {
+		this.isActive = true;
+	}
+	
+	public boolean isActive() {
+		return this.isActive;
+	}
+	
+	public MoveableSprite getInstance() {
+		return this.instance;
+	}
+	
+	public Head getType() {
+		return this.type;
+	}
+	
+	public float getCurrentX() {
+		return instance.getX();
+	}
+	
+	public float getCurrentY() {
+		return instance.getY();
+	}
+	
+	public String getFramesPath() {
+		return this.framesPath;
 	}
 	
 

@@ -32,7 +32,6 @@ public class HeadSprite  extends Image  {
 	InteractSprite soundWave;
 	public boolean isActive = true;
 	public int status = 0; //0 : neutral, 1 : for 2 : against
-	private float orientation = 0f;
 	
 	
 	private boolean isActing = false;
@@ -80,7 +79,7 @@ public class HeadSprite  extends Image  {
 		
 	}
 	
-	private void setBehaviour() {
+	public void setBehaviour() {
 		
 		if(type == type.GOSSIPER) {
 			behaviour = new GossiperBehaviour(this,isActive);
@@ -111,6 +110,8 @@ public class HeadSprite  extends Image  {
 			soundWave.setTouchable(Touchable.disabled);
 //			GameProperties.get().addToSoundWaveGroup(soundWave);
 		}
+		
+		this.isActing = true;
 	}
 	
 	//Implement onTouch action

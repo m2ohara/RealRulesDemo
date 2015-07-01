@@ -1,5 +1,6 @@
 package com.realrules.game.demo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -241,25 +242,43 @@ public class DemoGame extends ApplicationAdapter {
 	
 	private void setFollowerScreen() {	
 		
+		final ArrayList<MoveableSprite> followers = new ArrayList<MoveableSprite>();
 		List<String> paths = GameProperties.get().getSpritePaths();
 		for(int i = 0; i < paths.size(); i++) {
 			for(int amount = 0; amount < GameProperties.get().getfollowerTypeAmount().get(i); amount++) {
-				new MoveableSprite(paths.get(i), CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i));
+				MoveableSprite follower = new MoveableSprite(GameProperties.get().getFollowerType().get(i), paths.get(i), CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i));
+				followers.add(follower);
 			}
 		}
 		
-		Actor btn = getButton("PlayGameBtn");
+		final Actor btn = getButton("PlayGameBtn");
 		setToStage(btn, 0, -260);
 		
 		btn.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
-				 activateGame();
+				 activateGame(followers);
+				 btn.remove();
 			 }
 		});
 	}
 	
-	private void activateGame() {
+	private void activateGame(List<MoveableSprite> followers) {
 		ScoreState.setTotalPoints(GameProperties.get().getActorGroup().getChildren().size);	
+		
+		//Set dropped followers into game
+		for(MoveableSprite follower : followers) {
+			if(follower.isActive()) {
+				GameProperties.get().replaceActorInGroup(follower);
+			}
+			//Remove remaining followers
+			follower.getInstance().remove();
+			follower.remove();
+		}
+		
+		//Activate crowd members
+		for(Actor actor : GameProperties.get().getActorGroup().getChildren()) {
+			((HeadSprite)actor).setBehaviour();
+		}
 	}
 	
 	private void updateScoreState() {
