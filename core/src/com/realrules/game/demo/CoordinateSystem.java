@@ -76,15 +76,19 @@ public class CoordinateSystem {
 		float spanLengthX = startX + xSpan;
 		for(float x = startX; x < spanLengthX; x+=headSpriteW) {
 			hudXCoords.add(x);
-			hudYCoords.add(750f); //TODO: Resolve screen dependent yCoord
+			hudYCoords.add(hudYCoord); 
 		}
 		
 		
 	}
 	
 	private void setYHudCoord() {
-		int fraction = 5;
-		hudYCoord = Gdx.graphics.getHeight() - ((Gdx.graphics.getHeight()/fraction) * (fraction - 1));
+		//Start from centre
+		float centreY = (Gdx.graphics.getHeight()) / 2; 
+		float ySpan = headSpriteH*yGrid;
+		float startY = centreY + (ySpan/2);
+		float spanLengthY = startY - ySpan;
+		hudYCoord = (float) (spanLengthY - (headSpriteH*0.5));
 	}
 	
 	public ArrayList<Float> getHudXCoords() {
@@ -178,6 +182,21 @@ public class CoordinateSystem {
 			return true;
 		}
 		return false;
+	}
+	
+	protected void setPositionFromCentre(Actor actorToSet, float _xCentreOffset, float _yCentreOffset) {
+		
+		//Centre actor
+		float x = (Gdx.graphics.getWidth() - actorToSet.getWidth()) /2 ;
+		float y = (Gdx.graphics.getHeight()  - actorToSet.getHeight()) / 2;
+		
+		x += _xCentreOffset;
+		y += _yCentreOffset;
+		
+		actorToSet.setPosition(x, y);
+		
+		_xCentreOffset = actorToSet.getX();
+		_yCentreOffset = actorToSet.getY();
 	}
 
 }

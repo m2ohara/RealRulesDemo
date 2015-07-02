@@ -60,6 +60,7 @@ public class MoveableSprite extends Image {
 	private MoveableSprite(Head type, String framesPath, float x, float y, float origX, float origY) {
 		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 		
+		this.isActive = true;
 		this.type = type;
 		this.setColor(Color.CYAN);
 		
@@ -101,6 +102,7 @@ public class MoveableSprite extends Image {
 		dragAndDrop.clear();
 		this.clear();
 		this.remove();
+		instance.remove();
 		dragSprite.remove();
 		instance = new MoveableSprite(this.type, framesPath, x, y, origX, origY);
 		this.isActive = isActive;

@@ -270,9 +270,11 @@ public class DemoGame extends ApplicationAdapter {
 			if(follower.isActive()) {
 				GameProperties.get().replaceActorInGroup(follower);
 			}
-			//Remove remaining followers
-			follower.getInstance().remove();
-			follower.remove();
+			else {
+				//Remove remaining followers
+				follower.getInstance().remove();
+				follower.remove();
+			}
 		}
 		
 		//Activate crowd members
