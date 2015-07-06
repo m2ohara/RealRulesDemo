@@ -32,7 +32,7 @@ public class GameProperties {
 		
 	}
 	
-	private List<Integer> followerTypeAmount = Arrays.asList(1, 0, 0);
+	private List<Integer> followerTypeAmount = Arrays.asList(2, 0, 0);
 	public List<Integer> getfollowerTypeAmount() {
 		return followerTypeAmount;
 	}
@@ -62,8 +62,7 @@ public class GameProperties {
 	
 	public void replaceActorInGroup(MoveableSprite actor) {
 		//Ensure HeadSprite actor gets hit
-		actor.setTouchable(Touchable.disabled);
-		actor.getInstance().setTouchable(Touchable.disabled);
+		actor.getSourceSprite().setTouchable(Touchable.disabled);
 		Actor actorToRemove = stage.hit(actor.getCurrentX(), actor.getCurrentY(), true);
 		try {
 			//Remove current actor at coordinates
@@ -77,8 +76,8 @@ public class GameProperties {
 			}
 			actorGroup.addActor(actorToAdd);
 			//Remove placeholder
-			actor.getInstance().remove();
-			actor.remove();
+			actor.getSourceSprite().remove();
+			actor.getTargetImage().remove();
 		}
 		catch(Exception ex) {
 			System.out.println("Exception replacing actor on stage "+ex);

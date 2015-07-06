@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -20,74 +21,52 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Array;
 import com.realrules.game.demo.DemoGame.Head;
 
-public class MoveableSprite extends Image {
+public class MoveableSprite 
+//extends Image 
+{
 	
 	private Head type = null;
 	private String framesPath = null;
 	private Array<AtlasRegion> frames;
 	private TextureRegion currentFrame;
-	private final Actor dragSprite;
-	private MoveableSprite instance;
+	private Actor dragSprite;
+	private Actor sourceSprite;
 	private float origX;
 	private float origY;
 	private boolean isActive = false;
+	private Image targetImage;
 	
 	
-	public MoveableSprite(Head type, String framesPath, float x, float y) {
-		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0)); //TODO : Set instance as sprite only
-		
-		this.type = type;
-		this.setColor(Color.CYAN);
+	public MoveableSprite(Head type, String framesPath, float x, float y, Image sourceTargetImage) {
 		
 		this.type = type;
 		this.origX = x;
 		this.origY = y;
 		this.framesPath = framesPath;
-		setSprite(framesPath, x, y);
-		
-		instance = this;
-		dragSprite = new Image(currentFrame);
-		
-		dragAndDrop = new DragAndDrop();
-		dragAndDrop.setDragActorPosition(-dragSprite.getWidth()/2, dragSprite.getHeight()/2+(dragSprite.getHeight()/8));	
-		
-		setDragAndDrop();
-		
-		GameProperties.get().getStage().addActor(this);
-	}
-	
-	//Constructor when dropped
-	private MoveableSprite(Head type, String framesPath, float x, float y, float origX, float origY) {
-		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
-		
-		this.isActive = true;
-		this.type = type;
-		this.setColor(Color.CYAN);
-		
-		this.framesPath = framesPath;
-		setSprite(framesPath, x, y);
-		
-		instance = this;
-		dragSprite = new Image(currentFrame);
-		
-		dragAndDrop = new DragAndDrop();
-		dragAndDrop.setDragActorPosition(-dragSprite.getWidth()/2, dragSprite.getHeight()/2+(dragSprite.getHeight()/8));	
-		
-		setDragAndDrop();
-		addOriginalDropTarget(); 
-		
-		GameProperties.get().getStage().addActor(this);
-	}
-	
-	private void setSprite(String framesPath, float x, float y) {
-		frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
+		this.frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
 		currentFrame = frames.get(0);
-		this.setOrigin(this.currentFrame.getRegionWidth()/2, this.currentFrame.getRegionHeight()/2);
-		this.setPosition(x, y);
+		
+		this.targetImage = sourceTargetImage;
+		
+		setSourceSprite(x, y);
+		
+		setDragAndDrop(false);
+	}
+	
+	private void setSourceSprite(float x, float y) {
+		sourceSprite = new Image(currentFrame);
+		sourceSprite.setPosition(x, y);
+		sourceSprite.setColor(Color.CYAN);
+		
+		GameProperties.get().getStage().addActor(sourceSprite);
 	}
 	
 	private DragAndDrop dragAndDrop;
-	private void setDragAndDrop() {	
+	private void setDragAndDrop(boolean addOrigSource) {	
+		
+		dragSprite = new Image(currentFrame);	
+		dragAndDrop = new DragAndDrop();
+		dragAndDrop.setDragActorPosition(-dragSprite.getWidth()/2, dragSprite.getHeight()/2+(dragSprite.getHeight()/8));	
 		
 		setDragSource();
 		
@@ -96,20 +75,28 @@ public class MoveableSprite extends Image {
 			
 			addDropTarget(actor);
 		}
+		
+		if(addOrigSource) {
+			this.isActive = true;
+			addOriginalDropTarget();
+		}
 	}
 	
 	public void resetLocation(float x, float y, boolean isActive) {
+		
 		dragAndDrop.clear();
-		this.clear();
-		this.remove();
-		instance.remove();
+		sourceSprite.remove();
 		dragSprite.remove();
-		instance = new MoveableSprite(this.type, framesPath, x, y, origX, origY);
+		
+		setSourceSprite(x, y);
+		
+		setDragAndDrop(isActive);
+		
 		this.isActive = isActive;
 	}
 	
 	public void setDragSource() {
-		dragAndDrop.addSource(new Source(instance) {
+		dragAndDrop.addSource(new Source(sourceSprite) {
 			public Payload dragStart (InputEvent event, float x, float y, int pointer) {
 				Payload payload = new Payload();
 				payload.setObject(dragSprite);
@@ -148,9 +135,8 @@ public class MoveableSprite extends Image {
 	}
 	
 	private void addOriginalDropTarget() {
-		Image targetImage = new Image();
-		targetImage.setPosition(origX, origY);
-		GameProperties.get().getStage().addActor(targetImage);
+
+//		setPlaceHolder();
 		
 		dragAndDrop.addTarget(new Target(targetImage) {
 			public boolean drag (Source source, Payload payload, float x, float y, int pointer) {
@@ -164,11 +150,22 @@ public class MoveableSprite extends Image {
 				
 				System.out.println("Accepted: " + payload.getObject() + " " + x + ", " + y);
 				
-				getActor().remove();
-				resetLocation(getActor().getX(), getActor().getY(), false);
+//				getActor().remove();
+				resetLocation(origX, origY, false);
 			}
 		});
 	}
+	
+//	private void setPlaceHolder() {
+//		targetImage.setColor(Color.LIGHT_GRAY);
+//		targetImage.setPosition(origX, origY);
+//		GameProperties.get().getStage().addActor(targetImage);
+//		targetImage.setTouchable(Touchable.disabled);
+//	}
+//	
+//	private void setDropTarget() {
+//		targetImage = (Image) GameProperties.get().getStage().hit(origX, origY, true);
+//	}
 	
 	public void setAsActive() {
 		this.isActive = true;
@@ -178,8 +175,8 @@ public class MoveableSprite extends Image {
 		return this.isActive;
 	}
 	
-	public MoveableSprite getInstance() {
-		return this.instance;
+	public Actor getSourceSprite() {
+		return this.sourceSprite;
 	}
 	
 	public Head getType() {
@@ -187,15 +184,19 @@ public class MoveableSprite extends Image {
 	}
 	
 	public float getCurrentX() {
-		return instance.getX();
+		return sourceSprite.getX();
 	}
 	
 	public float getCurrentY() {
-		return instance.getY();
+		return sourceSprite.getY();
 	}
 	
 	public String getFramesPath() {
 		return this.framesPath;
+	}
+	
+	public Actor getTargetImage() {
+		return this.targetImage;
 	}
 	
 

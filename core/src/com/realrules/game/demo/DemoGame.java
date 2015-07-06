@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -244,9 +245,11 @@ public class DemoGame extends ApplicationAdapter {
 		
 		final ArrayList<MoveableSprite> followers = new ArrayList<MoveableSprite>();
 		List<String> paths = GameProperties.get().getSpritePaths();
+		
 		for(int i = 0; i < paths.size(); i++) {
+			Image targetImage = getTargetImage(paths.get(i),CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i));
 			for(int amount = 0; amount < GameProperties.get().getfollowerTypeAmount().get(i); amount++) {
-				MoveableSprite follower = new MoveableSprite(GameProperties.get().getFollowerType().get(i), paths.get(i), CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i));
+				MoveableSprite follower = new MoveableSprite(GameProperties.get().getFollowerType().get(i), paths.get(i), CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i), targetImage);
 				followers.add(follower);
 			}
 		}
@@ -262,6 +265,16 @@ public class DemoGame extends ApplicationAdapter {
 		});
 	}
 	
+	private Image getTargetImage(String framesPath, float origX, float origY) {
+		Image targetImage = new Image(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
+		targetImage.setColor(Color.LIGHT_GRAY);
+		targetImage.setPosition(origX, origY);
+		GameProperties.get().getStage().addActor(targetImage);
+		targetImage.setTouchable(Touchable.disabled);
+		
+		return targetImage;
+	}
+	
 	private void activateGame(List<MoveableSprite> followers) {
 		ScoreState.setTotalPoints(GameProperties.get().getActorGroup().getChildren().size);	
 		
@@ -272,8 +285,7 @@ public class DemoGame extends ApplicationAdapter {
 			}
 			else {
 				//Remove remaining followers
-				follower.getInstance().remove();
-				follower.remove();
+				follower.getSourceSprite().remove();
 			}
 		}
 		
