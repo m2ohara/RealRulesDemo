@@ -244,12 +244,14 @@ public class DemoGame extends ApplicationAdapter {
 	private void setFollowerScreen() {	
 		
 		final ArrayList<MoveableSprite> followers = new ArrayList<MoveableSprite>();
+		final ArrayList<Image> placeHolders = new ArrayList<Image>();
 		List<String> paths = GameProperties.get().getSpritePaths();
 		
 		for(int i = 0; i < paths.size(); i++) {
-			Image targetImage = getTargetImage(paths.get(i),CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i));
+			Image placeHolder = createTargetImage(paths.get(i),CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i));
+			placeHolders.add(placeHolder);
 			for(int amount = 0; amount < GameProperties.get().getfollowerTypeAmount().get(i); amount++) {
-				MoveableSprite follower = new MoveableSprite(GameProperties.get().getFollowerType().get(i), paths.get(i), CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i), targetImage);
+				MoveableSprite follower = new MoveableSprite(GameProperties.get().getFollowerType().get(i), paths.get(i), CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i), placeHolder);
 				followers.add(follower);
 			}
 		}
@@ -259,13 +261,13 @@ public class DemoGame extends ApplicationAdapter {
 		
 		btn.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
-				 activateGame(followers);
+				 activateGame(followers, placeHolders);
 				 btn.remove();
 			 }
 		});
 	}
 	
-	private Image getTargetImage(String framesPath, float origX, float origY) {
+	private Image createTargetImage(String framesPath, float origX, float origY) {
 		Image targetImage = new Image(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 		targetImage.setColor(Color.LIGHT_GRAY);
 		targetImage.setPosition(origX, origY);
@@ -275,7 +277,7 @@ public class DemoGame extends ApplicationAdapter {
 		return targetImage;
 	}
 	
-	private void activateGame(List<MoveableSprite> followers) {
+	private void activateGame(List<MoveableSprite> followers, ArrayList<Image> placeHolders) {
 		ScoreState.setTotalPoints(GameProperties.get().getActorGroup().getChildren().size);	
 		
 		//Set dropped followers into game
@@ -287,6 +289,11 @@ public class DemoGame extends ApplicationAdapter {
 				//Remove remaining followers
 				follower.getSourceSprite().remove();
 			}
+		}
+		
+		//Remove placeholders
+		for(Image placeHolder : placeHolders) {
+			placeHolder.remove();
 		}
 		
 		//Activate crowd members

@@ -33,8 +33,8 @@ public class MoveableSprite
 	private Actor sourceSprite;
 	private float origX;
 	private float origY;
-	private boolean isActive = false;
-	private Image targetImage;
+	private boolean isPlaceholderActive = false;
+	private Image placeholderImage;
 	
 	
 	public MoveableSprite(Head type, String framesPath, float x, float y, Image sourceTargetImage) {
@@ -46,7 +46,7 @@ public class MoveableSprite
 		this.frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
 		currentFrame = frames.get(0);
 		
-		this.targetImage = sourceTargetImage;
+		this.placeholderImage = sourceTargetImage;
 		
 		setSourceSprite(x, y);
 		
@@ -77,12 +77,12 @@ public class MoveableSprite
 		}
 		
 		if(addOrigSource) {
-			this.isActive = true;
-			addOriginalDropTarget();
+			this.isPlaceholderActive = true;
+			addPlaceholderTarget();
 		}
 	}
 	
-	public void resetLocation(float x, float y, boolean isActive) {
+	public void resetLocation(float x, float y, boolean isPlaceholderActive) {
 		
 		dragAndDrop.clear();
 		sourceSprite.remove();
@@ -90,9 +90,9 @@ public class MoveableSprite
 		
 		setSourceSprite(x, y);
 		
-		setDragAndDrop(isActive);
+		setDragAndDrop(isPlaceholderActive);
 		
-		this.isActive = isActive;
+		this.isPlaceholderActive = isPlaceholderActive;
 	}
 	
 	public void setDragSource() {
@@ -100,8 +100,13 @@ public class MoveableSprite
 			public Payload dragStart (InputEvent event, float x, float y, int pointer) {
 				Payload payload = new Payload();
 				payload.setObject(dragSprite);
-
 				payload.setDragActor(dragSprite);
+				
+				//Set placeholder visible if dragging and is active
+				if(isPlaceholderActive) {
+					placeholderImage.toFront();
+					placeholderImage.setTouchable(Touchable.enabled);
+				}
 
 				return payload;
 			}
@@ -128,17 +133,20 @@ public class MoveableSprite
 				
 				System.out.println("Accepted: " + payload.getObject() + " " + x + ", " + y);
 
+				//Hide original drop target if displayed
+				hidePlaceholderTarget();
+				
 				//Set dragActor new source coordinates
 				resetLocation(getActor().getX(), getActor().getY(), true);
 			}
 		});
 	}
 	
-	private void addOriginalDropTarget() {
+	private void addPlaceholderTarget() {
 
-//		setPlaceHolder();
 		
-		dragAndDrop.addTarget(new Target(targetImage) {
+		dragAndDrop.addTarget(new Target(placeholderImage) {
+			
 			public boolean drag (Source source, Payload payload, float x, float y, int pointer) {
 				return true;
 			}
@@ -150,29 +158,26 @@ public class MoveableSprite
 				
 				System.out.println("Accepted: " + payload.getObject() + " " + x + ", " + y);
 				
-//				getActor().remove();
+				hidePlaceholderTarget();
+				
 				resetLocation(origX, origY, false);
 			}
 		});
 	}
 	
-//	private void setPlaceHolder() {
-//		targetImage.setColor(Color.LIGHT_GRAY);
-//		targetImage.setPosition(origX, origY);
-//		GameProperties.get().getStage().addActor(targetImage);
-//		targetImage.setTouchable(Touchable.disabled);
-//	}
-//	
-//	private void setDropTarget() {
-//		targetImage = (Image) GameProperties.get().getStage().hit(origX, origY, true);
-//	}
+	private void hidePlaceholderTarget() {
+		if(isPlaceholderActive) {
+			placeholderImage.toBack();
+			placeholderImage.setTouchable(Touchable.disabled);
+		}
+	}
 	
 	public void setAsActive() {
-		this.isActive = true;
+		this.isPlaceholderActive = true;
 	}
 	
 	public boolean isActive() {
-		return this.isActive;
+		return this.isPlaceholderActive;
 	}
 	
 	public Actor getSourceSprite() {
@@ -196,7 +201,7 @@ public class MoveableSprite
 	}
 	
 	public Actor getTargetImage() {
-		return this.targetImage;
+		return this.placeholderImage;
 	}
 	
 
