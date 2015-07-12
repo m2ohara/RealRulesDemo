@@ -14,18 +14,20 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.realrules.game.demo.ScoreState.State;
 import com.realrules.gestures.GameGestures;
 
 public class DemoGame extends ApplicationAdapter {
@@ -35,6 +37,9 @@ public class DemoGame extends ApplicationAdapter {
 	private boolean isAndroid = false;
 	public InputMultiplexer im = null;
 	public Stage stage;
+	private ScoreState scoreState = null;
+	int winAmount = 0;
+	State winState = null;
 	
 	public static float universalTimeRatio = 0.7f;
 
@@ -95,7 +100,7 @@ public class DemoGame extends ApplicationAdapter {
 		GameProperties.get().getStage().act(Gdx.graphics.getDeltaTime());
 		batch.end();
 		
-		if(ScoreState.IsPlaying()) {
+		if(scoreState != null) {
 			updateScoreState();
 		}
 	}
@@ -199,11 +204,42 @@ public class DemoGame extends ApplicationAdapter {
 		Actor btn = getButton("PlayGameBtn");
 		setToStage(btn, 0, -260);
 		
+		setGameVoteRules();
+		
 		btn.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
 				 setCrowdScreen();
 			 }
 		});
+	}
+	
+	private void setGameVoteRules() {
+		Random rand = new Random();
+		
+		String voteType = "";
+		int vType = rand.nextInt(1);
+		if(vType == 0) {
+			voteType = "pass";
+			winState = State.WIN;
+		}
+		else {
+			voteType = "defeat";
+			winState = State.LOSE;
+		}
+		
+		
+		int amount = CoordinateSystem.getSystemWidth() * CoordinateSystem.getSystemHeight();
+		winAmount = rand.nextInt(amount-4)+3;
+		
+		
+		final Skin skin = new Skin();
+		BitmapFont font = new BitmapFont();
+		font.scale(1f);
+		skin.add("default", new LabelStyle(font, Color.BLACK));
+		Label label = new Label("You need to "+voteType, skin);
+		setToStage(label, 0, 0);
+		Label label2 = new Label("the bill by "+winAmount+" to win", skin);
+		setToStage(label2, 0, -90);
 	}
 	
 	private void setCrowdScreen() {
@@ -278,7 +314,9 @@ public class DemoGame extends ApplicationAdapter {
 	}
 	
 	private void activateGame(List<MoveableSprite> followers, ArrayList<Image> placeHolders) {
-		ScoreState.setTotalPoints(GameProperties.get().getActorGroup().getChildren().size);	
+		
+//		ScoreState.setTotalPoints(GameProperties.get().getActorGroup().getChildren().size);	
+		scoreState = new ScoreState(winAmount, winState, GameProperties.get().getActorGroup().getChildren().size);
 		
 		//Set dropped followers into game
 		for(MoveableSprite follower : followers) {
@@ -303,14 +341,16 @@ public class DemoGame extends ApplicationAdapter {
 	}
 	
 	private void updateScoreState() {
-		ScoreState.State state = ScoreState.getScoreState(GameProperties.get().getActorGroup());
-		if(state == ScoreState.State.WIN) {
+//		ScoreState.State state = ScoreState.getZeroSumScoreState(GameProperties.get().getActorGroup());
+		scoreState.update();
+		
+		if(scoreState.getCurrentState() == ScoreState.State.WIN) {
 			setToStage(getImage("WinSprite", "sprites//textPack"), 0, 0);
 		}
-		else if(state == ScoreState.State.LOSE) {
+		else if(scoreState.getCurrentState() == ScoreState.State.LOSE) {
 			setToStage(getImage("LoseSprite", "sprites//textPack"), 0, 0);
 		}
-		else if(state == ScoreState.State.DRAW) {
+		else if(scoreState.getCurrentState() == ScoreState.State.DRAW) {
 			setToStage(getImage("DrawSprite", "sprites//textPack"), 0, 0);
 		}
 	}
