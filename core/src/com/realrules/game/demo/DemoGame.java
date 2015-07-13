@@ -28,6 +28,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.realrules.game.demo.ScoreState.State;
+import com.realrules.game.interact.IManualInteraction;
+import com.realrules.game.interact.ManualOpposerInteraction;
+import com.realrules.game.interact.ManualSupporterInteraction;
 import com.realrules.gestures.GameGestures;
 
 public class DemoGame extends ApplicationAdapter {
@@ -37,9 +40,12 @@ public class DemoGame extends ApplicationAdapter {
 	private boolean isAndroid = false;
 	public InputMultiplexer im = null;
 	public Stage stage;
+	
+	//Refactor to GameSetup
 	private ScoreState scoreState = null;
 	int winAmount = 0;
 	State winState = null;
+	IManualInteraction manualInteraction = null;
 	
 	public static float universalTimeRatio = 0.7f;
 
@@ -57,9 +63,9 @@ public class DemoGame extends ApplicationAdapter {
 		
 		stage = setView();
 		
-		setGestureDetector(new GestureDetector(new GameGestures(stage)));
-		
 		GameProperties.get().setStage(stage);
+		
+		setGestureDetector(new GestureDetector(new GameGestures(stage)));
 		
 		setTitleScreen();
 	}
@@ -213,33 +219,38 @@ public class DemoGame extends ApplicationAdapter {
 		});
 	}
 	
+	//Refactor into GameSetup
 	private void setGameVoteRules() {
 		Random rand = new Random();
 		
 		String voteType = "";
-		int vType = rand.nextInt(1);
+		int vType = rand.nextInt(2);
 		if(vType == 0) {
 			voteType = "pass";
 			winState = State.WIN;
+			manualInteraction = new ManualSupporterInteraction();
 		}
 		else {
 			voteType = "defeat";
 			winState = State.LOSE;
+			manualInteraction = new ManualOpposerInteraction();
 		}
 		
 		
 		int amount = CoordinateSystem.getSystemWidth() * CoordinateSystem.getSystemHeight();
-		winAmount = rand.nextInt(amount-4)+3;
+		winAmount = rand.nextInt(amount-8)+7;
 		
 		
 		final Skin skin = new Skin();
 		BitmapFont font = new BitmapFont();
 		font.scale(1f);
 		skin.add("default", new LabelStyle(font, Color.BLACK));
-		Label label = new Label("You need to "+voteType, skin);
+		Label label = new Label(""+voteType+" the bill", skin);
 		setToStage(label, 0, 0);
-		Label label2 = new Label("the bill by "+winAmount+" to win", skin);
+		Label label2 = new Label("by "+winAmount+" votes to win", skin);
 		setToStage(label2, 0, -90);
+		
+		setGestureDetector(new GestureDetector(new GameGestures(stage, manualInteraction)));
 	}
 	
 	private void setCrowdScreen() {
@@ -336,7 +347,7 @@ public class DemoGame extends ApplicationAdapter {
 		
 		//Activate crowd members
 		for(Actor actor : GameProperties.get().getActorGroup().getChildren()) {
-			((HeadSprite)actor).setBehaviour();
+			((HeadSprite)actor).setBehaviour(manualInteraction);
 		}
 	}
 	

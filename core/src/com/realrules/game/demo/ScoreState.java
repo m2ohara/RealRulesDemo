@@ -2,8 +2,8 @@ package com.realrules.game.demo;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.realrules.game.rules.IGameRules;
-import com.realrules.game.rules.VoteGameRules;
+import com.realrules.game.setup.IGameRules;
+import com.realrules.game.setup.VoteGameRules;
 
 public class ScoreState {
 	
@@ -34,34 +34,6 @@ public class ScoreState {
 	
 	public static int getTotalPoints() {
 		return totalPoints;
-	}
-	//**************************
-
-	public static boolean validTouchAction() {
-		if(userPoints >= touchActionPoints) {
-			return true;
-		}
-		return false;
-	}
-
-	public static void addUserPoints(int _userPoints) {
-		userPoints += _userPoints;
-	}
-	
-	public static int getUserPoints() {
-		return userPoints;
-	}
-	
-	public static void resetUserPoints() {
-		userPoints = 0;
-	}
-	
-	public void update() {
-		scoreSystem.update();
-	}
-	
-	public State getCurrentState() {
-		return scoreSystem.getCurrentState();
 	}
 	
 	public static State getZeroSumScoreState(Group actors) {
@@ -97,6 +69,34 @@ public class ScoreState {
 		}
 		return State.PLAYING;
 		
+	}
+	//**************************
+
+	public static boolean validTouchAction() {
+		if(userPoints >= touchActionPoints) {
+			return true;
+		}
+		return false;
+	}
+
+	public static void addUserPoints(int _userPoints) {
+		userPoints += _userPoints;
+	}
+	
+	public static int getUserPoints() {
+		return userPoints;
+	}
+	
+	public static void resetUserPoints() {
+		userPoints = 0;
+	}
+	
+	public void update() {
+		scoreSystem.update();
+	}
+	
+	public State getCurrentState() {
+		return scoreSystem.getCurrentState();
 	}
 
 }

@@ -1,22 +1,15 @@
 package com.realrules.game.demo;
 
-import java.util.Random;
-
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.realrules.game.act.IOnAct;
 import com.realrules.game.act.OnAct;
+import com.realrules.game.interact.IManualInteraction;
 
 public class InfluencerBehaviour implements IHeadBehaviour {
 	
-//	private Random rand = new Random();
-//	
-//	private float touchStateLength = 3.0f;
-//	private float touchStateTime = 0;
-//	
 	private int interactSpriteAngle = 0;
 	private InteractSprite soundWave;
-//	private int direction; //0 : right, 1 : left
 
 	
 	//Members
@@ -30,13 +23,12 @@ public class InfluencerBehaviour implements IHeadBehaviour {
 	private IOnAct onAct;
 	
 	
-	public InfluencerBehaviour(boolean isActive, String framesPath, int x, int y) {
-//		this.direction = 0;
+	public InfluencerBehaviour(boolean isActive, String framesPath, int x, int y, IManualInteraction manInteraction) {
 		this.isActive = isActive;
 		
 		onAct = new OnAct(rotateP, interactP, framesPath);
 		
-		onTouch = new InfluencerTouchAction(x, y);
+		onTouch = new InfluencerTouchAction(x, y, manInteraction);
 		
 	}
 

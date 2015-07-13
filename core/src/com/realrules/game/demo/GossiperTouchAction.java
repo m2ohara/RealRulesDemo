@@ -4,14 +4,17 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
+import com.realrules.game.interact.IManualInteraction;
 
 public class GossiperTouchAction extends TouchAction{
 	
 	private ArrayList<Integer> validXCoords = new ArrayList<Integer>();
 	private ArrayList<Integer> validYCoords = new ArrayList<Integer>();
 	private HeadSprite interacter;
+	private IManualInteraction manInteraction = null;
 	
-	public GossiperTouchAction() {
+	public GossiperTouchAction(IManualInteraction manInteraction) {
+		this.manInteraction = manInteraction;
 	}
 
 	//Two members ahead of interactor are valid
@@ -84,14 +87,14 @@ public class GossiperTouchAction extends TouchAction{
 		generateValidInteractees();
 		
 		if(validXCoords.size() > 0) {
-			setToMiddleFollower(interacter);
+			manInteraction.setToMiddleFollower(interacter);
 			for(int i = 0; i < validXCoords.size(); i++) {
 				HeadSprite actor = CoordinateSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i));
 				if(i == validXCoords.size()-1) {
 					setToLastFollower(actor);
 				}
 				else {
-					setToMiddleFollower(actor);
+					manInteraction.setToMiddleFollower(actor);
 				}
 				
 			}
@@ -99,6 +102,7 @@ public class GossiperTouchAction extends TouchAction{
 		
 	}
 	
+	//TODO: Use static class
 	private void setToMiddleFollower(HeadSprite actor) {
 		actor.setColor(Color.CYAN);
 		actor.status = 2;

@@ -1,4 +1,4 @@
-package com.realrules.game.rules;
+package com.realrules.game.setup;
 
 import com.realrules.game.demo.ScoreState.State;
 

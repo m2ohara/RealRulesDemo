@@ -6,15 +6,21 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.realrules.game.demo.HeadSprite;
 import com.realrules.game.demo.ManualInteraction;
+import com.realrules.game.interact.IManualInteraction;
 
 public class GameGestures  implements GestureListener {
 		
 		boolean isFirstHit = true;
 		private Stage stage = null;
-		ManualInteraction interaction = new ManualInteraction();
+		ManualInteraction interaction = null;
 		
 		public GameGestures(Stage stage) {
 			this.stage = stage;
+		}
+		
+		public GameGestures(Stage stage, IManualInteraction followerInteractAction) {
+			this.stage = stage;
+			this.interaction = new ManualInteraction(followerInteractAction);
 		}
 
 		@Override

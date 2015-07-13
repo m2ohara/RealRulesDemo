@@ -32,7 +32,7 @@ public class GameProperties {
 		
 	}
 	
-	private List<Integer> followerTypeAmount = Arrays.asList(2, 0, 0);
+	private List<Integer> followerTypeAmount = Arrays.asList(2, 1, 0);
 	public List<Integer> getfollowerTypeAmount() {
 		return followerTypeAmount;
 	}

@@ -5,14 +5,18 @@ import java.util.Random;
 
 import com.badlogic.gdx.graphics.Color;
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
+import com.realrules.game.interact.IManualInteraction;
+import com.realrules.game.interact.ManualSupporterInteraction;
 
 public class InfluencerTouchAction extends TouchAction {
 
 	private ArrayList<Integer> validXCoords = new ArrayList<Integer>();
 	private ArrayList<Integer> validYCoords = new ArrayList<Integer>();
 	private HeadSprite interacter;
+	private IManualInteraction manInteraction = null;
 	
-	public InfluencerTouchAction(int x, int y) {
+	public InfluencerTouchAction(int x, int y, IManualInteraction manInteraction) {
+		this.manInteraction = new ManualSupporterInteraction();
 		this.setInteractorX(x);
 		this.setInteractorY(y);
 		this.setInteractorDir(CoordinateSystem.getCoordDirection(0, 0));
@@ -155,7 +159,7 @@ public class InfluencerTouchAction extends TouchAction {
 					setToLastFollower(actor);
 				}
 				else {
-					setToMiddleFollower(actor);
+					manInteraction.setToMiddleFollower(actor);
 				}
 				
 			}

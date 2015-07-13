@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.realrules.game.demo.DemoGame.Head;
+import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.interact.InfluencerInteraction;
 
 public class HeadSprite  extends Image  {
@@ -79,21 +80,21 @@ public class HeadSprite  extends Image  {
 		
 	}
 	
-	public void setBehaviour() {
+	public void setBehaviour(IManualInteraction manInteraction) {
 		
 		if(type == type.GOSSIPER) {
-			behaviour = new GossiperBehaviour(this,isActive);
+			behaviour = new GossiperBehaviour(this,isActive, manInteraction);
 			interaction = new GossiperInteraction();
 
 		}
 		if(type == type.DECEIVER) {
-			behaviour = new DeceiverBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord());
+			behaviour = new DeceiverBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord(), manInteraction);
 			interaction = new DeceiverInteraction();
 			//Refactor into behaviour
 			behaviour.setInteractSprite(startingX, startingY);
 		}
 		if(type == type.INFLUENCER) {
-			behaviour = new InfluencerBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord());
+			behaviour = new InfluencerBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord(), manInteraction);
 			interaction = new InfluencerInteraction();
 		}
 		

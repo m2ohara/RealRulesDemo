@@ -4,8 +4,8 @@ import java.util.Random;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.realrules.game.interact.IManualInteraction;
 
 public class GossiperBehaviour implements IHeadBehaviour, ITouchActionBehaviour {
 	
@@ -30,10 +30,10 @@ public class GossiperBehaviour implements IHeadBehaviour, ITouchActionBehaviour 
 		return influenceAmount;
 	}
 
-	public GossiperBehaviour(HeadSprite gossiper, boolean isActive) {
+	public GossiperBehaviour(HeadSprite gossiper, boolean isActive, IManualInteraction manInteraction) {
 		this.gossiper = gossiper;		
 		this.isActive = isActive;
-		onTouch = new GossiperTouchAction();
+		onTouch = new GossiperTouchAction(manInteraction);
 		this.onTouch.setInteractorX(gossiper.getXGameCoord());
 		this.onTouch.setInteractorY(gossiper.getYGameCoord());
 		this.onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(direction, 0));

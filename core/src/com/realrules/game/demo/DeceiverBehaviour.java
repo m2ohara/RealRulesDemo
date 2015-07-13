@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.realrules.game.interact.IManualInteraction;
 
 public class DeceiverBehaviour  implements IHeadBehaviour {
 	
@@ -40,13 +41,13 @@ public class DeceiverBehaviour  implements IHeadBehaviour {
 	private int direction; //0 : right, 1 : left
 
 	
-	public DeceiverBehaviour(boolean isActive, String framesPath, int x, int y) {
+	public DeceiverBehaviour(boolean isActive, String framesPath, int x, int y, IManualInteraction manInteraction) {
 		frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
 		currentFrame = frames.get(0);
 		this.direction = 0;
 		this.isActive = isActive;
 		
-		onTouch = new DeceiverTouchAction();
+		onTouch = new DeceiverTouchAction(manInteraction);
 		this.onTouch.setInteractorX(x);
 		this.onTouch.setInteractorY(y);
 		this.onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(direction, 0));

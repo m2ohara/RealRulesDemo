@@ -4,14 +4,19 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
+import com.realrules.game.interact.IManualInteraction;
+import com.realrules.game.interact.ManualOpposerInteraction;
 
 public class DeceiverTouchAction extends TouchAction {
 
 	private ArrayList<Integer> validXCoords = new ArrayList<Integer>();
 	private ArrayList<Integer> validYCoords = new ArrayList<Integer>();
 	private HeadSprite interacter;
+	private IManualInteraction manInteraction = null;
 	
-	public DeceiverTouchAction() {}
+	public DeceiverTouchAction(IManualInteraction manInteraction) {
+		this.manInteraction = new ManualOpposerInteraction();
+	}
 
 	//Two members ahead of interactor are valid
 	@Override
@@ -90,7 +95,7 @@ public class DeceiverTouchAction extends TouchAction {
 					setToLastFollower(actor);
 				}
 				else {
-					setToMiddleFollower(actor);
+					manInteraction.setToMiddleFollower(actor);
 				}
 				
 			}

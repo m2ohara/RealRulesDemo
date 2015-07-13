@@ -1,6 +1,7 @@
 package com.realrules.game.demo;
 
 import com.badlogic.gdx.graphics.Color;
+import com.realrules.game.interact.IManualInteraction;
 
 //TODO: Test ManualInteraction
 public class ManualInteraction {
@@ -9,9 +10,10 @@ public class ManualInteraction {
 	private int hitCount = 0;
 	HeadSprite lastHitActor = null;
 	boolean invalidInteraction = false;
+	private IManualInteraction manualInteraction = null;
 	
-	public ManualInteraction() {
-		
+	public ManualInteraction(IManualInteraction manualInteraction) {
+		this.manualInteraction = manualInteraction;
 	}
 	
 	public void interactHit(HeadSprite hitActor, boolean isFirst) {
@@ -37,7 +39,8 @@ public class ManualInteraction {
 				else if(interactor != null && !isFirst && !invalidInteraction && interactor.behaviour.getInfluenceAmount() > hitCount && hitActor.status == 0) {
 					if(validInteraction(hitActor)) {
 						//Set previous hit actor to passive follower
-						setToMiddleFollower(lastHitActor);
+//						setToMiddleFollower(lastHitActor);
+						manualInteraction.setToMiddleFollower(lastHitActor);
 						hitCount += 1;
 						setToLastFollower(hitActor);
 						//Update hit count
