@@ -39,7 +39,6 @@ public class ManualInteraction {
 				else if(interactor != null && !isFirst && !invalidInteraction && interactor.behaviour.getInfluenceAmount() > hitCount && hitActor.status == 0) {
 					if(validInteraction(hitActor)) {
 						//Set previous hit actor to passive follower
-//						setToMiddleFollower(lastHitActor);
 						manualInteraction.setToMiddleFollower(lastHitActor);
 						hitCount += 1;
 						setToLastFollower(hitActor);
@@ -129,11 +128,6 @@ public class ManualInteraction {
 		
 		return isValid;
 
-	}
-	
-	private void setToMiddleFollower(HeadSprite hitActor) {
-		hitActor.setColor(Color.CYAN);
-		hitActor.status = 2;
 	}
 	
 	private void setToLastFollower(HeadSprite hitActor) {

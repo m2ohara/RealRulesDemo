@@ -72,4 +72,10 @@ public class DefaultGameRules implements IGameRules {
 		
 	}
 
+	@Override
+	public int getRemainingPoints() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

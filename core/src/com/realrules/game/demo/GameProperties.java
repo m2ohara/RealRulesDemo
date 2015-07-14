@@ -9,12 +9,22 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.realrules.game.demo.DemoGame.Head;
+import com.realrules.game.state.PlayerState;
 
 public class GameProperties {
 	
 	private static GameProperties instance;
+	private List<Head> followerType = null;
+	private List<Integer> followerTypeAmount = null;
 	
-	private GameProperties() {}
+	private GameProperties() {
+		followerType = Arrays.asList(Head.GOSSIPER, Head.DECEIVER, Head.INFLUENCER);
+		followerTypeAmount = Arrays.asList(2, 1, 0);
+	}
+	
+	private GameProperties(PlayerState plState) {
+		
+	}
 	
 	public static GameProperties get() {
 		if(instance == null) {
@@ -26,13 +36,10 @@ public class GameProperties {
 	
 	
 	//TODO: Refactor into separate followers class
-	private List<Head> followerType = Arrays.asList(Head.GOSSIPER, Head.DECEIVER, Head.INFLUENCER);
 	public List<Head> getFollowerType() {
 		return followerType;
-		
 	}
 	
-	private List<Integer> followerTypeAmount = Arrays.asList(2, 1, 0);
 	public List<Integer> getfollowerTypeAmount() {
 		return followerTypeAmount;
 	}

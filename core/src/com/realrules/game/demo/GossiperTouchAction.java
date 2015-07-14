@@ -102,12 +102,6 @@ public class GossiperTouchAction extends TouchAction{
 		
 	}
 	
-	//TODO: Use static class
-	private void setToMiddleFollower(HeadSprite actor) {
-		actor.setColor(Color.CYAN);
-		actor.status = 2;
-	}
-	
 	private void setToLastFollower(HeadSprite actor) {
 
 		actor.setColor(Color.GREEN);

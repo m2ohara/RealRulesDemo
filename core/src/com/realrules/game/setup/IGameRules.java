@@ -10,8 +10,9 @@ public interface IGameRules {
 	//Update game score
 	void update();
 	
-	//Do action on game completion
 	State getCurrentState();
+	
+	int getRemainingPoints();
 	
 	void reset();
 

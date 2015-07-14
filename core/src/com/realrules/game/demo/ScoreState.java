@@ -13,8 +13,7 @@ public class ScoreState {
 	private static int touchActionPoints = 4;
 	private static int userPoints = touchActionPoints;
 	private IGameRules scoreSystem = null;
-	private boolean isPlaying = false;
-	
+
 	public ScoreState(int winVotes, State winState, int totalVotes) {
 		scoreSystem = new VoteGameRules(winState, winVotes, totalVotes);
 	}
@@ -97,6 +96,10 @@ public class ScoreState {
 	
 	public State getCurrentState() {
 		return scoreSystem.getCurrentState();
+	}
+	
+	public int getRemaingVotes() {
+		return scoreSystem.getRemainingPoints();
 	}
 
 }

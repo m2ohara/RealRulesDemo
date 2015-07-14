@@ -31,6 +31,7 @@ import com.realrules.game.demo.ScoreState.State;
 import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.interact.ManualOpposerInteraction;
 import com.realrules.game.interact.ManualSupporterInteraction;
+import com.realrules.game.state.PlayerState;
 import com.realrules.gestures.GameGestures;
 
 public class DemoGame extends ApplicationAdapter {
@@ -41,11 +42,15 @@ public class DemoGame extends ApplicationAdapter {
 	public InputMultiplexer im = null;
 	public Stage stage;
 	
+	//Make easier to access
+	PlayerState plState = null;
+	
 	//Refactor to GameSetup
 	private ScoreState scoreState = null;
 	int winAmount = 0;
 	State winState = null;
 	IManualInteraction manualInteraction = null;
+	Label scoreCounter = null;
 	
 	public static float universalTimeRatio = 0.7f;
 
@@ -68,6 +73,9 @@ public class DemoGame extends ApplicationAdapter {
 		setGestureDetector(new GestureDetector(new GameGestures(stage)));
 		
 		setTitleScreen();
+		
+		plState = new PlayerState();
+		plState.load();
 	}
 	
 	private void setGestureDetector(GestureDetector gd) {
@@ -226,12 +234,12 @@ public class DemoGame extends ApplicationAdapter {
 		String voteType = "";
 		int vType = rand.nextInt(2);
 		if(vType == 0) {
-			voteType = "pass";
+			voteType = "PASS";
 			winState = State.WIN;
 			manualInteraction = new ManualSupporterInteraction();
 		}
 		else {
-			voteType = "defeat";
+			voteType = "DEFEAT";
 			winState = State.LOSE;
 			manualInteraction = new ManualOpposerInteraction();
 		}
@@ -245,9 +253,9 @@ public class DemoGame extends ApplicationAdapter {
 		BitmapFont font = new BitmapFont();
 		font.scale(1f);
 		skin.add("default", new LabelStyle(font, Color.BLACK));
-		Label label = new Label(""+voteType+" the bill", skin);
+		Label label = new Label(""+voteType+" THE BILL", skin);
 		setToStage(label, 0, 0);
-		Label label2 = new Label("by "+winAmount+" votes to win", skin);
+		Label label2 = new Label("BY "+winAmount+" VOTES TO WIN", skin);
 		setToStage(label2, 0, -90);
 		
 		setGestureDetector(new GestureDetector(new GameGestures(stage, manualInteraction)));
@@ -326,7 +334,6 @@ public class DemoGame extends ApplicationAdapter {
 	
 	private void activateGame(List<MoveableSprite> followers, ArrayList<Image> placeHolders) {
 		
-//		ScoreState.setTotalPoints(GameProperties.get().getActorGroup().getChildren().size);	
 		scoreState = new ScoreState(winAmount, winState, GameProperties.get().getActorGroup().getChildren().size);
 		
 		//Set dropped followers into game
@@ -349,11 +356,29 @@ public class DemoGame extends ApplicationAdapter {
 		for(Actor actor : GameProperties.get().getActorGroup().getChildren()) {
 			((HeadSprite)actor).setBehaviour(manualInteraction);
 		}
+		
+		//Set remaining votes icon
+		setVoteCount();
+		
+	}
+	
+	private void setVoteCount() {
+		final Skin skin = new Skin();
+		BitmapFont font = new BitmapFont();
+		font.scale(3.5f);
+		skin.add("default", new LabelStyle(font, Color.YELLOW));
+		scoreCounter = new Label(Integer.toString(scoreState.getRemaingVotes()), skin);
+//		setToStage(scoreCounter, (Gdx.graphics.getHeight()/3) - (Gdx.graphics.getHeight()/18), (Gdx.graphics.getHeight()/3) - (Gdx.graphics.getHeight()/16));
+		setToStage(scoreCounter, 288, 288);
 	}
 	
 	private void updateScoreState() {
-//		ScoreState.State state = ScoreState.getZeroSumScoreState(GameProperties.get().getActorGroup());
 		scoreState.update();
+		
+		//Update remaining votes icon
+		if(scoreState.getRemaingVotes() >= 0) {
+			scoreCounter.setText(Integer.toString(scoreState.getRemaingVotes()));
+		}
 		
 		if(scoreState.getCurrentState() == ScoreState.State.WIN) {
 			setToStage(getImage("WinSprite", "sprites//textPack"), 0, 0);

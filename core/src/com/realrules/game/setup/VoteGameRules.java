@@ -13,11 +13,13 @@ public class VoteGameRules implements IGameRules {
 	private int winVotes;
 	private State winState;
 	private int totalVotes = 0;
+	private int remainingVotes = 0;
 	
 	public VoteGameRules(State winState, int winVotes, int totalVotes) {
 		this.winVotes = winVotes;
 		this.winState = winState;
 		this.totalVotes = totalVotes;
+		this.remainingVotes = winVotes;
 		setup();
 	}
 
@@ -41,7 +43,15 @@ public class VoteGameRules implements IGameRules {
 		
 		for(Actor a : actors.getChildren()) {
 			HeadSprite actor = (HeadSprite) a;
-			if(actor.status == 1 || actor.status == 2) {
+			if(actor.status == 1) {
+				if(winState == State.WIN) {
+					forVotes+=1;
+				}
+				if(winState == State.LOSE) {
+					againstVotes+=1;
+				}			
+			}
+			if(actor.status == 2) {
 				forVotes+=1;
 			}
 			else if(actor.status == 3) {
@@ -50,6 +60,8 @@ public class VoteGameRules implements IGameRules {
 		}
 		
 		setGameState(forVotes, againstVotes);
+		
+		updateRemainingVotes(forVotes, againstVotes);
 	}
 	
 	private void setGameState(int forVotes, int againstVotes) {
@@ -74,6 +86,20 @@ public class VoteGameRules implements IGameRules {
 			currentState =  State.PLAYING;
 		}
 		
+	}
+	
+	private void updateRemainingVotes(int forVotes, int againstVotes) {
+		if(winState == State.WIN) {
+			remainingVotes = winVotes - forVotes;
+		}
+		else if(winState == State.LOSE) {
+			remainingVotes = winVotes - againstVotes;
+		}
+	}
+	
+	@Override
+	public int getRemainingPoints() {
+		return remainingVotes;
 	}
 
 	@Override
