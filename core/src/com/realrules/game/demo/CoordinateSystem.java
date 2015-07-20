@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
+import com.realrules.game.state.PlayerState;
 
 public class CoordinateSystem {
 	
@@ -68,7 +69,8 @@ public class CoordinateSystem {
 		
 		setYHudCoord();
 		//Set coordinates for followers in HUD
-		int spriteTypeCount = GameProperties.get().getSpritePaths().size();	
+//		int spriteTypeCount = GameProperties.get().getSpritePaths().size();	
+		int spriteTypeCount = PlayerState.get().getFollowerTypes().size();
 		
 		float centreX = (Gdx.graphics.getWidth()) / 2; 
 		float xSpan = headSpriteW*spriteTypeCount;

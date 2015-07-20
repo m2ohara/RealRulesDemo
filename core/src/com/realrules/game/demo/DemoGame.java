@@ -31,6 +31,8 @@ import com.realrules.game.demo.ScoreState.State;
 import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.interact.ManualOpposerInteraction;
 import com.realrules.game.interact.ManualSupporterInteraction;
+import com.realrules.game.state.Follower;
+import com.realrules.game.state.FollowerType;
 import com.realrules.game.state.PlayerState;
 import com.realrules.gestures.GameGestures;
 
@@ -74,7 +76,7 @@ public class DemoGame extends ApplicationAdapter {
 		
 		setTitleScreen();
 		
-		plState = new PlayerState();
+		plState = PlayerState.get();
 		plState.load();
 	}
 	
@@ -300,14 +302,18 @@ public class DemoGame extends ApplicationAdapter {
 		
 		final ArrayList<MoveableSprite> followers = new ArrayList<MoveableSprite>();
 		final ArrayList<Image> placeHolders = new ArrayList<Image>();
-		List<String> paths = GameProperties.get().getSpritePaths();
 		
-		for(int i = 0; i < paths.size(); i++) {
-			Image placeHolder = createTargetImage(paths.get(i),CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i));
+		final List<Follower> plFollowers = plState.getFollowers();
+		List<FollowerType> types = plState.getFollowerTypes();
+		
+		for(int i = 0; i < types.size(); i++) {
+			Image placeHolder = createTargetImage(types.get(i).spritePath,CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i));
 			placeHolders.add(placeHolder);
-			for(int amount = 0; amount < GameProperties.get().getfollowerTypeAmount().get(i); amount++) {
-				MoveableSprite follower = new MoveableSprite(GameProperties.get().getFollowerType().get(i), paths.get(i), CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i), placeHolder);
-				followers.add(follower);
+			for(Follower follower : plFollowers) {
+				if(follower.type.head == types.get(i).head) {
+					MoveableSprite followerInstance = new MoveableSprite(follower, CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i), placeHolder);
+					followers.add(followerInstance);
+				}
 			}
 		}
 		
@@ -367,9 +373,11 @@ public class DemoGame extends ApplicationAdapter {
 		BitmapFont font = new BitmapFont();
 		font.scale(3.5f);
 		skin.add("default", new LabelStyle(font, Color.YELLOW));
-		scoreCounter = new Label(Integer.toString(scoreState.getRemaingVotes()), skin);
+		String value = scoreState.getRemaingVotes() < 10 ? "0"+Integer.toString(scoreState.getRemaingVotes()) : Integer.toString(scoreState.getRemaingVotes());
+		scoreCounter = new Label(value, skin);
+		//TODO: Resolve coordinated between devices
 //		setToStage(scoreCounter, (Gdx.graphics.getHeight()/3) - (Gdx.graphics.getHeight()/18), (Gdx.graphics.getHeight()/3) - (Gdx.graphics.getHeight()/16));
-		setToStage(scoreCounter, 288, 288);
+		setToStage(scoreCounter, 160, 180);
 	}
 	
 	private void updateScoreState() {
@@ -377,7 +385,8 @@ public class DemoGame extends ApplicationAdapter {
 		
 		//Update remaining votes icon
 		if(scoreState.getRemaingVotes() >= 0) {
-			scoreCounter.setText(Integer.toString(scoreState.getRemaingVotes()));
+			String value = scoreState.getRemaingVotes() < 10 ? "0"+Integer.toString(scoreState.getRemaingVotes()) : Integer.toString(scoreState.getRemaingVotes());
+			scoreCounter.setText(value);
 		}
 		
 		if(scoreState.getCurrentState() == ScoreState.State.WIN) {

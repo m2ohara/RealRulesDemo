@@ -2,7 +2,6 @@ package com.realrules.game.demo;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,15 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Array;
 import com.realrules.game.demo.DemoGame.Head;
+import com.realrules.game.state.Follower;
 
 public class MoveableSprite 
 //extends Image 
@@ -36,13 +33,28 @@ public class MoveableSprite
 	private boolean isPlaceholderActive = false;
 	private Image placeholderImage;
 	
-	
+	//TODO: Remove redundant constructor
 	public MoveableSprite(Head type, String framesPath, float x, float y, Image sourceTargetImage) {
 		
 		this.type = type;
 		this.origX = x;
 		this.origY = y;
 		this.framesPath = framesPath;
+		this.frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
+		currentFrame = frames.get(0);
+		
+		this.placeholderImage = sourceTargetImage;
+		
+		setSourceSprite(x, y);
+		
+		setDragAndDrop(false);
+	}
+	
+	public MoveableSprite(Follower follower, float x, float y, Image sourceTargetImage) {
+		this.type = follower.type.head;
+		this.origX = x;
+		this.origY = y;
+		this.framesPath = follower.type.spritePath;
 		this.frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
 		currentFrame = frames.get(0);
 		

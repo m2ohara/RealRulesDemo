@@ -4,14 +4,14 @@ import com.realrules.game.demo.DemoGame.Head;
 
 public class Follower {
 	
-	Head type = null;
-	int id = 0;
-	String spritePath = "";
+	public FollowerType type = null;
+	public int id = 0;
+//	public String spritePath = "";
 	
 	public Follower(Head type, int id, String spritePath) {
-		this.type = type;
 		this.id = id;
-		this.spritePath = spritePath;
+//		this.spritePath = spritePath;
+		this.type = new FollowerType(spritePath, type);
 	}
 
 }

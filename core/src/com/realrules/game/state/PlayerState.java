@@ -7,19 +7,28 @@ import com.realrules.game.demo.DemoGame.Head;
 
 public class PlayerState {
 	
-	private ArrayList<Head> followerTypes = null;
+	private ArrayList<FollowerType> followerTypes = null;
 	private ArrayList<Follower> followers = null;
 	private int level = 0;
+	private static PlayerState instance;
 	
-	public PlayerState() {
+	public static PlayerState get() {
+		
+		if(instance == null) {
+			instance = new PlayerState();
+		}
+		return instance;
+	}
+	
+	private PlayerState() {
 	}
 	
 	public void generateDummyProperties() {
 		
-		followerTypes = new ArrayList<Head>();
-		followerTypes.add(Head.GOSSIPER);
-		followerTypes.add(Head.GOSSIPER);
-		followerTypes.add(Head.DECEIVER);
+		followerTypes = new ArrayList<FollowerType>();
+		followerTypes.add(new FollowerType("sprites//gossiperFollowerPack.pack", Head.GOSSIPER));
+		followerTypes.add(new FollowerType("sprites//promoterFollowerPack.pack", Head.INFLUENCER));
+		followerTypes.add(new FollowerType("sprites//deceiverFollowerPack.pack", Head.DECEIVER));
 		
 		followers = new ArrayList<Follower>();
 		followers.add(new Follower(Head.GOSSIPER, 1, "sprites//gossiperFollowerPack.pack"));
@@ -46,18 +55,7 @@ public class PlayerState {
 		return followers;
 	}
 	
-	public int getAmountOfFollowerType(Head type) {
-		int count = 0;
-		
-		for(Follower follower : followers) {
-			if(follower.type == type) {
-				count++;
-			}
-		}
-		return count;
-	}
-	
-	public List<Head> getFollowerTypes() {
+	public List<FollowerType> getFollowerTypes() {
 		return followerTypes;
 	}
 	
