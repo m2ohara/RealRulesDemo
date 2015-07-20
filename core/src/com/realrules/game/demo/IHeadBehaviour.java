@@ -1,6 +1,9 @@
 package com.realrules.game.demo;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.realrules.game.demo.CoordinateSystem.Coordinates;
 
 public interface IHeadBehaviour {
 	
@@ -14,7 +17,7 @@ public interface IHeadBehaviour {
 	void onTouch();
 	
 	//New act behaviour
-	void onAct(float delta, HeadSprite actor);
+	void onAct(float delta, HeadSprite actor, ArrayList<Coordinates> invalidDirections);
 	
 	int getInfluenceAmount();
 	

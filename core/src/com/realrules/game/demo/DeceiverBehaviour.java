@@ -1,5 +1,6 @@
 package com.realrules.game.demo;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.realrules.game.demo.CoordinateSystem.Coordinates;
 import com.realrules.game.interact.IManualInteraction;
 
 public class DeceiverBehaviour  implements IHeadBehaviour {
@@ -89,7 +91,7 @@ public class DeceiverBehaviour  implements IHeadBehaviour {
 	}
 
 	@Override
-	public void onAct(float delta, HeadSprite actor) {
+	public void onAct(float delta, HeadSprite actor, ArrayList<Coordinates> invalidDirections) {
 		
 		if(isActive) {
 			if(stateTime >= stateLength) {

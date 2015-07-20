@@ -11,7 +11,7 @@ public class CoordinateSystem {
 	
 	private static int systemWidth = 3;
 	private static int systemHeight = 5;
-	public static enum Coordinates {N, E, S, W}
+	public static enum Coordinates {N, NE, E, SE, S, SW, W, NW}
 	private static CoordinateSystem instance;
 	//Properties related to setting sprites on game screen
 	public final int xGrid = systemWidth;
@@ -69,7 +69,6 @@ public class CoordinateSystem {
 		
 		setYHudCoord();
 		//Set coordinates for followers in HUD
-//		int spriteTypeCount = GameProperties.get().getSpritePaths().size();	
 		int spriteTypeCount = PlayerState.get().getFollowerTypes().size();
 		
 		float centreX = (Gdx.graphics.getWidth()) / 2; 

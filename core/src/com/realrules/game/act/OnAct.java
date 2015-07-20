@@ -1,11 +1,12 @@
 package com.realrules.game.act;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.realrules.game.demo.CoordinateSystem;
@@ -52,11 +53,11 @@ public class OnAct implements IOnAct {
 	}
 
 	@Override
-	public void performActing(float delta, HeadSprite actor) {
+	public void performActing(float delta, HeadSprite actor, ArrayList<Coordinates> invalidDirections) {
 		
 		if(stateTime >= stateLength) {
 			stateTime = 0.0f;		
-			setFrame(actor);
+			setFrame(actor, invalidDirections);
 		}
 		
 		else if( interactStateTime >= interactStateLength) {
@@ -103,17 +104,17 @@ public class OnAct implements IOnAct {
 		frameTime += delta;
 	}
 	
-	private void setFrame(HeadSprite actor) {
+	private void setFrame(HeadSprite actor, ArrayList<Coordinates> invalidDirections) {
 		//Based on rotation probability
 		if(rand.nextFloat() < this.rotateP) {
-			updateCurrentAngle();
+			updateCurrentAngle(invalidDirections);
 //			changeSpriteOrientation();
 			changeRotation(actor); //Temp
 		}
 		
 	}
 	
-	private void updateCurrentAngle() {
+	private void updateCurrentAngle( ArrayList<Coordinates> invalidDirections) {
 
 			//Set direction
 			direction = rand.nextInt(2);

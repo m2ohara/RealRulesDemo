@@ -1,9 +1,12 @@
 package com.realrules.game.demo;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.realrules.game.act.IOnAct;
 import com.realrules.game.act.OnAct;
+import com.realrules.game.demo.CoordinateSystem.Coordinates;
 import com.realrules.game.interact.IManualInteraction;
 
 public class InfluencerBehaviour implements IHeadBehaviour {
@@ -54,10 +57,10 @@ public class InfluencerBehaviour implements IHeadBehaviour {
 	}
 
 	@Override
-	public void onAct(float delta, HeadSprite actor) {
+	public void onAct(float delta, HeadSprite actor, ArrayList<Coordinates> invalidDirections) {
 		
 		if(isActive) {
-			onAct.performActing(delta, actor);
+			onAct.performActing(delta, actor, invalidDirections);
 		
 			//Rotate interact sprite
 			interactSpriteAngle = onAct.getCurrentDirection() == 1 ? onAct.getCurrentAngle() : (onAct.getCurrentAngle() + 180) % 360;

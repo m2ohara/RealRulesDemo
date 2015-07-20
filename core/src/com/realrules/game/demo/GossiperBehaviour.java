@@ -1,10 +1,12 @@
 package com.realrules.game.demo;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.realrules.game.demo.CoordinateSystem.Coordinates;
 import com.realrules.game.interact.IManualInteraction;
 
 public class GossiperBehaviour implements IHeadBehaviour, ITouchActionBehaviour {
@@ -115,7 +117,7 @@ public class GossiperBehaviour implements IHeadBehaviour, ITouchActionBehaviour 
 	}
 
 	@Override
-	public void onAct(float delta, HeadSprite actor) {
+	public void onAct(float delta, HeadSprite actor, ArrayList<Coordinates> invalidDirections) {
 		// TODO Refactor acting into this method
 		this.onAct(delta);
 		

@@ -1,5 +1,7 @@
 package com.realrules.game.demo;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -10,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.realrules.game.demo.CoordinateSystem.Coordinates;
 import com.realrules.game.demo.DemoGame.Head;
 import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.interact.InfluencerInteraction;
@@ -33,6 +36,7 @@ public class HeadSprite  extends Image  {
 	InteractSprite soundWave;
 	public boolean isActive = true;
 	public int status = 0; //0 : neutral, 1 : for 2 : against
+	private ArrayList<Coordinates> invalidDirections;
 	
 	
 	private boolean isActing = false;
@@ -145,7 +149,25 @@ public class HeadSprite  extends Image  {
 	public void act(float delta) {
 		super.act(delta);
 		if(isActive && isActing){
-			behaviour.onAct(delta, this);
+			behaviour.onAct(delta, this, invalidDirections);
+		}
+	}
+	
+	private void setInvalidDirections() {
+		
+		invalidDirections = new ArrayList<Coordinates>();
+		
+		if(getXGameCoord() == CoordinateSystem.getSystemWidth()) {
+			invalidDirections.add(Coordinates.E);
+		}
+		if(getXGameCoord() == 0) {
+			invalidDirections.add(Coordinates.W);
+		}
+		if(getYGameCoord() == CoordinateSystem.getSystemHeight()) {
+			invalidDirections.add(Coordinates.N);
+		}
+		if(getYGameCoord() == 0) {
+			invalidDirections.add(Coordinates.S);
 		}
 	}
 	

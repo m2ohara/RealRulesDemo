@@ -33,23 +33,6 @@ public class MoveableSprite
 	private boolean isPlaceholderActive = false;
 	private Image placeholderImage;
 	
-	//TODO: Remove redundant constructor
-	public MoveableSprite(Head type, String framesPath, float x, float y, Image sourceTargetImage) {
-		
-		this.type = type;
-		this.origX = x;
-		this.origY = y;
-		this.framesPath = framesPath;
-		this.frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
-		currentFrame = frames.get(0);
-		
-		this.placeholderImage = sourceTargetImage;
-		
-		setSourceSprite(x, y);
-		
-		setDragAndDrop(false);
-	}
-	
 	public MoveableSprite(Follower follower, float x, float y, Image sourceTargetImage) {
 		this.type = follower.type.head;
 		this.origX = x;
