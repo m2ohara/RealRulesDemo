@@ -117,6 +117,7 @@ public class GameProperties {
 	
 	public void dispose() {
 		stage.dispose();
+		instance = null;
 	}
 
 	

@@ -66,6 +66,16 @@ public class DemoGame extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+
+		plState = PlayerState.get();
+		plState.load();
+		
+		createNewGame();
+		
+		setTitleScreen();
+	}
+	
+	private void createNewGame() {
 		batch = new SpriteBatch();
 		
 		stage = setView();
@@ -73,11 +83,6 @@ public class DemoGame extends ApplicationAdapter {
 		GameProperties.get().setStage(stage);
 		
 		setGestureDetector(new GestureDetector(new GameGestures(stage)));
-		
-		setTitleScreen();
-		
-		plState = PlayerState.get();
-		plState.load();
 	}
 	
 	private void setGestureDetector(GestureDetector gd) {
@@ -375,9 +380,34 @@ public class DemoGame extends ApplicationAdapter {
 		skin.add("default", new LabelStyle(font, Color.YELLOW));
 		String value = scoreState.getRemaingVotes() < 10 ? "0"+Integer.toString(scoreState.getRemaingVotes()) : Integer.toString(scoreState.getRemaingVotes());
 		scoreCounter = new Label(value, skin);
-		//TODO: Resolve coordinated between devices
-//		setToStage(scoreCounter, (Gdx.graphics.getHeight()/3) - (Gdx.graphics.getHeight()/18), (Gdx.graphics.getHeight()/3) - (Gdx.graphics.getHeight()/16));
 		setToStage(scoreCounter, 160, 180);
+	}
+	
+	private void disposeGame() {
+		scoreState = null;
+		GameProperties.get().dispose();
+		createNewGame();
+	}
+	
+	private void setEndGameScreen() {
+		setToStage(getImage("EndScreen", "screens//screensPack"), 0, 0);
+		
+		
+		Actor btn = getButton("PlayGameBtn");
+		setToStage(btn, 0, -260);	
+		btn.addListener(new ClickListener() {
+			 public void clicked(InputEvent event, float x, float y) {
+				 setSpeechScreen();
+			 }
+		});
+	}
+	
+	private void setReputationPoints() {
+		
+	}
+	
+	private void setNewFollowers() {
+		
 	}
 	
 	private void updateScoreState() {
@@ -397,6 +427,10 @@ public class DemoGame extends ApplicationAdapter {
 		}
 		else if(scoreState.getCurrentState() == ScoreState.State.DRAW) {
 			setToStage(getImage("DrawSprite", "sprites//textPack"), 0, 0);
+		}
+		else if(scoreState.getCurrentState() == ScoreState.State.FINISHED) {	
+			disposeGame();
+			setEndGameScreen();
 		}
 	}
 

@@ -7,7 +7,7 @@ import com.realrules.game.setup.VoteGameRules;
 
 public class ScoreState {
 	
-	public enum State {PLAYING, WIN, LOSE, DRAW}
+	public enum State {PLAYING, WIN, LOSE, DRAW, NOTPLAYING, FINISHED}
 	
 	static int totalPoints = 0;
 	private static int touchActionPoints = 4;

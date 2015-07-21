@@ -22,16 +22,28 @@ screensPack2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-TitleScreen
+EndScreen
   rotate: false
   xy: 1, 1
   size: 420, 600
   orig: 420, 600
   offset: 0, 0
   index: -1
-SpeechScreen
+TitleScreen
   rotate: false
   xy: 423, 1
+  size: 420, 600
+  orig: 420, 600
+  offset: 0, 0
+  index: -1
+
+screensPack3.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+SpeechScreen
+  rotate: false
+  xy: 1, 1
   size: 420, 600
   orig: 420, 600
   offset: 0, 0

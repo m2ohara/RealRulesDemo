@@ -32,7 +32,12 @@ public class VoteGameRules implements IGameRules {
 	@Override
 	public void update() {
 		
-		calculateVotes();
+		if(currentState != State.FINISHED) {
+			calculateVotes();
+		}
+		else if(currentState == State.WIN || currentState == State.LOSE || currentState == State.DRAW) {
+			currentState = State.NOTPLAYING;
+		}
 		
 	}
 	
@@ -62,6 +67,14 @@ public class VoteGameRules implements IGameRules {
 		setGameState(forVotes, againstVotes);
 		
 		updateRemainingVotes(forVotes, againstVotes);
+		
+		isFinished(forVotes, againstVotes);
+	}
+	
+	private void isFinished(int forVotes, int againstVotes) {
+		if(forVotes + againstVotes == totalVotes) {
+			currentState = State.FINISHED;
+		}
 	}
 	
 	private void setGameState(int forVotes, int againstVotes) {
