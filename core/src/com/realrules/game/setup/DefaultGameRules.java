@@ -78,4 +78,10 @@ public class DefaultGameRules implements IGameRules {
 		return 0;
 	}
 
+	@Override
+	public int getEndScore() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

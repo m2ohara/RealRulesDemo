@@ -14,6 +14,8 @@ public interface IGameRules {
 	
 	int getRemainingPoints();
 	
+	int getEndScore();
+	
 	void reset();
 
 }

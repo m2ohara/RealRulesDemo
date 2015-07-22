@@ -14,6 +14,8 @@ public class VoteGameRules implements IGameRules {
 	private State winState;
 	private int totalVotes = 0;
 	private int remainingVotes = 0;
+	private int scoreWinMultiplier = 100;
+	private int scoreLoseMultiplier = 50;
 	
 	public VoteGameRules(State winState, int winVotes, int totalVotes) {
 		this.winVotes = winVotes;
@@ -68,35 +70,43 @@ public class VoteGameRules implements IGameRules {
 		
 		updateRemainingVotes(forVotes, againstVotes);
 		
-		isFinished(forVotes, againstVotes);
+		checkIsFinished(forVotes, againstVotes);
 	}
 	
-	private void isFinished(int forVotes, int againstVotes) {
+	private void checkIsFinished(int forVotes, int againstVotes) {
 		if(forVotes + againstVotes == totalVotes) {
+			setEndScore(forVotes, againstVotes);
 			currentState = State.FINISHED;
+			
 		}
+		
 	}
 	
 	private void setGameState(int forVotes, int againstVotes) {
 		
-		if(winState == State.WIN) {
-			if(forVotes >= winVotes) {
-				currentState =  State.WIN;
+		if(currentState == State.PLAYING) {
+			if(winState == State.WIN) {
+	
+				if(forVotes >= winVotes) {
+					currentState =  State.WIN;
+				}
+				else if((totalVotes - (forVotes + againstVotes)) < (winVotes - forVotes)) {
+					currentState =  State.LOSE;
+				}
+				endState = currentState;
 			}
-			else if((totalVotes - (forVotes + againstVotes)) < (winVotes - forVotes)) {
-				currentState =  State.LOSE;
-			}
-		}
-		else if(winState == State.LOSE) {
-			if(againstVotes >= winVotes) {
-				currentState =  State.WIN;
-			}
-			else if((totalVotes - (forVotes + againstVotes)) < (winVotes - againstVotes)) {
-				currentState =  State.LOSE;
+			else if(winState == State.LOSE) {
+				if(againstVotes >= winVotes) {
+					currentState =  State.WIN;
+				}
+				else if((totalVotes - (forVotes + againstVotes)) < (winVotes - againstVotes)) {
+					currentState =  State.LOSE;
+				}
+				endState = currentState;
 			}
 		}
 		else {
-			currentState =  State.PLAYING;
+			currentState = State.NOTPLAYING;
 		}
 		
 	}
@@ -124,6 +134,32 @@ public class VoteGameRules implements IGameRules {
 	public void reset() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private State endState = null;
+	private int endScore = 0;
+	private void setEndScore(int forVotes, int againstVotes) {
+		if(winState == State.WIN) {
+			if(endState == State.WIN) {
+				endScore = scoreWinMultiplier * forVotes;
+			}
+			else {
+				endScore = scoreLoseMultiplier * forVotes;
+			}
+		}
+		else if(winState == State.LOSE) {
+			if(endState == State.WIN) {
+				endScore = scoreWinMultiplier * againstVotes;
+			}
+			else {
+				endScore = scoreLoseMultiplier * againstVotes;
+			}
+		}
+	}
+
+	@Override
+	public int getEndScore() {
+		return endScore;
 	}
 	
 

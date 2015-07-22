@@ -16,10 +16,11 @@ public class GameProperties {
 	private static GameProperties instance;
 	private List<Head> followerType = null;
 	private List<Integer> followerTypeAmount = null;
+	private int rewardScore = 3500;
 	
 	private GameProperties() {
 		followerType = Arrays.asList(Head.GOSSIPER, Head.DECEIVER, Head.INFLUENCER);
-		followerTypeAmount = Arrays.asList(2, 1, 0);
+		followerTypeAmount = Arrays.asList(1, 1, 0);
 	}
 	
 	private GameProperties(PlayerState plState) {
@@ -115,9 +116,15 @@ public class GameProperties {
 		this.stage.addActor(actor);
 	}
 	
+	public int getRewardScore() {
+		return rewardScore;
+	}
+	
 	public void dispose() {
-		stage.dispose();
-		instance = null;
+		stage.clear();
+		actorGroup = new Group();
+		actorsToReplace = Arrays.asList();
+		soundWaveGroup = new Group();
 	}
 
 	

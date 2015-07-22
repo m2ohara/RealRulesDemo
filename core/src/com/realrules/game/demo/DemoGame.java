@@ -1,6 +1,7 @@
 package com.realrules.game.demo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -14,6 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -52,7 +54,8 @@ public class DemoGame extends ApplicationAdapter {
 	int winAmount = 0;
 	State winState = null;
 	IManualInteraction manualInteraction = null;
-	Label scoreCounter = null;
+	Label remainingVotesCounter = null;
+	Label endScoreCounter = null;
 	
 	public static float universalTimeRatio = 0.7f;
 
@@ -70,18 +73,18 @@ public class DemoGame extends ApplicationAdapter {
 		plState = PlayerState.get();
 		plState.load();
 		
-		createNewGame();
-		
-		setTitleScreen();
-	}
-	
-	private void createNewGame() {
 		batch = new SpriteBatch();
 		
 		stage = setView();
 		
 		GameProperties.get().setStage(stage);
 		
+		createNewGame();
+		
+		setTitleScreen();
+	}
+	
+	private void createNewGame() {		
 		setGestureDetector(new GestureDetector(new GameGestures(stage)));
 	}
 	
@@ -114,14 +117,15 @@ public class DemoGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		GameProperties.get().getStage().draw();
-		GameProperties.get().getStage().act(Gdx.graphics.getDeltaTime());
+		Stage stage = GameProperties.get().getStage();
+		stage.draw();
+		stage.act(Gdx.graphics.getDeltaTime());
 		batch.end();
 		
-		if(scoreState != null) {
+		if(scoreState != null && scoreState.getCurrentState() != State.FINISHED) {
 			updateScoreState();
 		}
 	}
@@ -379,35 +383,8 @@ public class DemoGame extends ApplicationAdapter {
 		font.scale(3.5f);
 		skin.add("default", new LabelStyle(font, Color.YELLOW));
 		String value = scoreState.getRemaingVotes() < 10 ? "0"+Integer.toString(scoreState.getRemaingVotes()) : Integer.toString(scoreState.getRemaingVotes());
-		scoreCounter = new Label(value, skin);
-		setToStage(scoreCounter, 160, 180);
-	}
-	
-	private void disposeGame() {
-		scoreState = null;
-		GameProperties.get().dispose();
-		createNewGame();
-	}
-	
-	private void setEndGameScreen() {
-		setToStage(getImage("EndScreen", "screens//screensPack"), 0, 0);
-		
-		
-		Actor btn = getButton("PlayGameBtn");
-		setToStage(btn, 0, -260);	
-		btn.addListener(new ClickListener() {
-			 public void clicked(InputEvent event, float x, float y) {
-				 setSpeechScreen();
-			 }
-		});
-	}
-	
-	private void setReputationPoints() {
-		
-	}
-	
-	private void setNewFollowers() {
-		
+		remainingVotesCounter = new Label(value, skin);
+		setToStage(remainingVotesCounter, 160, 180);
 	}
 	
 	private void updateScoreState() {
@@ -416,7 +393,7 @@ public class DemoGame extends ApplicationAdapter {
 		//Update remaining votes icon
 		if(scoreState.getRemaingVotes() >= 0) {
 			String value = scoreState.getRemaingVotes() < 10 ? "0"+Integer.toString(scoreState.getRemaingVotes()) : Integer.toString(scoreState.getRemaingVotes());
-			scoreCounter.setText(value);
+			remainingVotesCounter.setText(value);
 		}
 		
 		if(scoreState.getCurrentState() == ScoreState.State.WIN) {
@@ -429,10 +406,85 @@ public class DemoGame extends ApplicationAdapter {
 			setToStage(getImage("DrawSprite", "sprites//textPack"), 0, 0);
 		}
 		else if(scoreState.getCurrentState() == ScoreState.State.FINISHED) {	
-			disposeGame();
 			setEndGameScreen();
 		}
 	}
+	
+	private void setEndGameScreen() {
+		setToStage(getImage("EndScreen", "screens//screensPack"), 0, 0);
+		
+		setEndScoreValue();
+		
+		setFollowerRewards();
+		
+		Actor btn = getButton("PlayGameBtn");
+		setToStage(btn, 0, -260);	
+		btn.addListener(new ClickListener() {
+			 public void clicked(InputEvent event, float x, float y) {
+				disposeGame();
+				setSpeechScreen();
+			 }
+		});
+	}
+	
+	private void setEndScoreValue() {
+		final Skin skin = new Skin();
+		BitmapFont font = new BitmapFont();
+		font.scale(3.5f);
+		skin.add("default", new LabelStyle(font, Color.YELLOW));
+		int score = plState.getReputationPoints() + scoreState.getEndScore();
+		plState.setReputationPoints(score);
+		String value = Integer.toString(score);
+		remainingVotesCounter = new Label(value, skin);
+		setToStage(remainingVotesCounter, 0, -70);
+	}
+	
+	private void setFollowerRewards() {
+		int rewardPoints = GameProperties.get().getRewardScore();
+		int points = plState.getReputationPoints();
+		if(points >= rewardPoints) {
+			generateRewardFollowers(points / rewardPoints);
+			plState.setReputationPoints(points % rewardPoints);
+		}
+	}
+	
+	private void generateRewardFollowers(int amount) {	
+		
+		List<Follower> rewardedFollowers = new ArrayList<Follower>();
+		List<FollowerType> types = plState.getFollowerTypes();
+		
+		int count = amount > 3 ? 3 : amount;
+		
+		Random rand = new Random();
+		for(int i =0; i < count; i++) {
+			FollowerType type = types.get(rand.nextInt(types.size()));
+			rewardedFollowers.add(new Follower(type.head, 0, type.spritePath));
+		}
+		
+		plState.addFollowers(rewardedFollowers);
+		
+		setRewardFollowers(rewardedFollowers);
+	}
+	
+	private void setRewardFollowers(List<Follower> rewardedFollowers) {
+		for(int count = 0; count <= 2; count++) {
+			setRewardImage(rewardedFollowers.get(count).type.spritePath, CoordinateSystem.get().getHudXCoords().get(count), CoordinateSystem.get().getHudYCoords().get(count));
+		}
+	}
+	
+	private void setRewardImage(String framesPath, float origX, float origY) {
+		Image targetImage = new Image(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
+		targetImage.setPosition(origX, origY);
+		GameProperties.get().getStage().addActor(targetImage);
+		targetImage.setTouchable(Touchable.disabled);
+	}
+	
+	private void disposeGame() {
+		scoreState = null;
+		GameProperties.get().dispose();
+		createNewGame();
+	}
+
 
 	public enum Head { GOSSIPER, DECEIVER, INFLUENCER}
 

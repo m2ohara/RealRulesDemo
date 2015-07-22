@@ -101,5 +101,9 @@ public class ScoreState {
 	public int getRemaingVotes() {
 		return scoreSystem.getRemainingPoints();
 	}
+	
+	public int getEndScore() {
+		return scoreSystem.getEndScore();
+	}
 
 }

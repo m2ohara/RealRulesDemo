@@ -10,6 +10,7 @@ public class PlayerState {
 	private ArrayList<FollowerType> followerTypes = null;
 	private ArrayList<Follower> followers = null;
 	private int level = 0;
+	private int reputation = 0;
 	private static PlayerState instance;
 	
 	public static PlayerState get() {
@@ -35,6 +36,7 @@ public class PlayerState {
 		followers.add(new Follower(Head.GOSSIPER, 2, "sprites//gossiperFollowerPack.pack"));
 		followers.add(new Follower(Head.DECEIVER, 3, "sprites//deceiverFollowerPack.pack"));
 		level = 1;
+		reputation = 1000;
 	}
 	
 	//TODO: Implement Load player data
@@ -55,8 +57,20 @@ public class PlayerState {
 		return followers;
 	}
 	
+	public void addFollowers(List<Follower> followersToAdd) {
+		followers.addAll(followersToAdd);
+	}
+	
 	public List<FollowerType> getFollowerTypes() {
 		return followerTypes;
+	}
+	
+	public void setReputationPoints(int points) {
+		reputation = points;
+	}
+	
+	public int getReputationPoints() {
+		return reputation;
 	}
 	
 
