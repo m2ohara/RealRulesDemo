@@ -17,7 +17,7 @@ import com.realrules.game.demo.HeadSprite;
 public class OnAct implements IOnAct {
 	
 	private Random rand = new Random();
-	private float stateLength = 4.0f * GameProperties.get().getUniversalTimeRatio();
+	private float stateLength = 2.0f * GameProperties.get().getUniversalTimeRatio();
 	private float stateTime = stateLength;
 	private float interactStateLength = 0.7f * GameProperties.get().getUniversalTimeRatio();
 	private float interactStateTime = interactStateLength;

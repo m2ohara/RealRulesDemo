@@ -467,7 +467,8 @@ public class DemoGame extends ApplicationAdapter {
 	}
 	
 	private void setRewardFollowers(List<Follower> rewardedFollowers) {
-		for(int count = 0; count <= 2; count++) {
+		
+		for(int count = 0; count < rewardedFollowers.size(); count++) {
 			setRewardImage(rewardedFollowers.get(count).type.spritePath, CoordinateSystem.get().getHudXCoords().get(count), CoordinateSystem.get().getHudYCoords().get(count));
 		}
 	}
