@@ -1,19 +1,19 @@
 
-deceiverFollowerPack.png
+connectorPack.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-deceiver1
+ConnectorBorder
   rotate: false
   xy: 1, 1
-  size: 72, 65
-  orig: 72, 65
+  size: 120, 112
+  orig: 120, 112
   offset: 0, 0
   index: -1
-deceiver2
+Connector
   rotate: false
-  xy: 75, 1
-  size: 72, 65
-  orig: 72, 65
+  xy: 123, 1
+  size: 120, 112
+  orig: 120, 112
   offset: 0, 0
   index: -1
