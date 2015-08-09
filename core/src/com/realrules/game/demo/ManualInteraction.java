@@ -1,6 +1,11 @@
 package com.realrules.game.demo;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.realrules.game.demo.CoordinateSystem.Coordinates;
 import com.realrules.game.interact.IManualInteraction;
 
 //TODO: Test ManualInteraction
@@ -11,9 +16,12 @@ public class ManualInteraction {
 	HeadSprite lastHitActor = null;
 	boolean invalidInteraction = false;
 	private IManualInteraction manualInteraction = null;
+	private int connectorSprite;
+	private Coordinates coordinate;
 	
-	public ManualInteraction(IManualInteraction manualInteraction) {
+	public ManualInteraction(IManualInteraction manualInteraction, int connectorSprite) {
 		this.manualInteraction = manualInteraction;
+		this.connectorSprite = connectorSprite == 0 ? 1  : 0;
 	}
 	
 	public void interactHit(HeadSprite hitActor, boolean isFirst) {
@@ -39,6 +47,7 @@ public class ManualInteraction {
 				else if(interactor != null && !isFirst && !invalidInteraction && interactor.behaviour.getInfluenceAmount() > hitCount && hitActor.status == 0) {
 					if(validInteraction(hitActor)) {
 						//Set previous hit actor to passive follower
+						setConnectorSprite(lastHitActor);
 						manualInteraction.setToMiddleFollower(lastHitActor);
 						hitCount += 1;
 						setToLastFollower(hitActor);
@@ -81,6 +90,7 @@ public class ManualInteraction {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX)-1) 
 							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)) {
 						isValid = true;
+						coordinate = Coordinates.E;
 						System.out.println("Follower hit to the right");
 					}
 				}
@@ -88,6 +98,7 @@ public class ManualInteraction {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
 							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)+1)) {
 						isValid = true;
+						coordinate = Coordinates.N;
 						System.out.println("Follower hit above");
 					}
 				}
@@ -95,6 +106,7 @@ public class ManualInteraction {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
 							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)-1)) {
 						isValid = true;
+						coordinate = Coordinates.S;
 						System.out.println("Follower hit below");
 					}
 				}
@@ -106,6 +118,7 @@ public class ManualInteraction {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX)+1) 
 							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)) {
 						isValid = true;
+						coordinate = Coordinates.W;
 						System.out.println("Follower hit to the left");
 					}
 				}
@@ -113,6 +126,7 @@ public class ManualInteraction {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
 							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)-1)) {
 						isValid = true;
+						coordinate = Coordinates.S;
 						System.out.println("Follower hit below");
 					}
 				}
@@ -120,6 +134,7 @@ public class ManualInteraction {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
 							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)+1)) {
 						isValid = true;
+						coordinate = Coordinates.N;
 						System.out.println("Follower hit above");
 					}
 				}
@@ -138,5 +153,26 @@ public class ManualInteraction {
 			hitActor.setColor(Color.GREEN);
 		}
 		hitActor.status = 1;
+	}
+	
+	private void setConnectorSprite(HeadSprite lastHitActor) {
+		
+		Actor connector = new Image(new TextureAtlas(Gdx.files.internal("sprites//connectorPack.pack")).getRegions().get(connectorSprite));
+
+		connector.setOrigin(connector.getWidth()/2, connector.getHeight()/2);
+		connector.setPosition(lastHitActor.getStartingX() - 20, lastHitActor.getStartingY() -22);
+		
+		if(coordinate == Coordinates.E) {
+			connector.rotateBy(270);
+		}
+		else if(coordinate == Coordinates.S) {
+			connector.rotateBy(180);
+		}
+		else if(coordinate == Coordinates.W) {
+			connector.rotateBy(90);
+		}
+		
+		
+		GameProperties.get().addActorToStage(connector);
 	}
 }

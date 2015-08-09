@@ -2,7 +2,11 @@ package com.realrules.game.demo;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
 import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.interact.ManualOpposerInteraction;
@@ -88,7 +92,8 @@ public class DeceiverTouchAction extends TouchAction {
 		generateValidInteractees();
 		
 		if(validXCoords.size() > 0) {
-			setToMiddleFollower(interacter);
+			manInteraction.setToMiddleFollower(interacter);
+			setConnectorSprite(interacter);
 			for(int i = 0; i < validXCoords.size(); i++) {
 				HeadSprite actor = CoordinateSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i));
 				if(i == validXCoords.size()-1) {
@@ -96,21 +101,38 @@ public class DeceiverTouchAction extends TouchAction {
 				}
 				else {
 					manInteraction.setToMiddleFollower(actor);
+					setConnectorSprite(actor);
 				}
 				
 			}
 		}
 		
 	}
-	
-	private void setToMiddleFollower(HeadSprite actor) {
-		actor.setColor(Color.BLACK);
-		actor.status = 3;
-	}
-	
+		
 	private void setToLastFollower(HeadSprite actor) {
 		actor.setColor(Color.GREEN);
 		actor.status = 1;
+	}
+	
+	private void setConnectorSprite(HeadSprite lastHitActor) {
+		
+		Actor connector = new Image(new TextureAtlas(Gdx.files.internal("sprites//connectorPack.pack")).getRegions().get(0));
+
+		connector.setOrigin(connector.getWidth()/2, connector.getHeight()/2);
+		connector.setPosition(lastHitActor.getStartingX() - 20, lastHitActor.getStartingY() -22);
+		
+		if(this.getInteractorDir() == Coordinates.E) {
+			connector.rotateBy(270);
+		}
+		else if(this.getInteractorDir() == Coordinates.S) {
+			connector.rotateBy(180);
+		}
+		else if(this.getInteractorDir() == Coordinates.W) {
+			connector.rotateBy(90);
+		}
+		
+		
+		GameProperties.get().addActorToStage(connector);
 	}
 
 }

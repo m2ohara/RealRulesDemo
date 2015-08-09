@@ -25,7 +25,7 @@ public class InfluencerInteractBehaviour implements IInteraction {
 				interactee.status = 2;
 				setConnectorSprite(interactor);
 				setInfluenceSprite(interactee);
-				System.out.println("Follower influenced");
+//				System.out.println("Follower influenced");
 			}
 		}
 		
@@ -54,12 +54,12 @@ public class InfluencerInteractBehaviour implements IInteraction {
 	}
 	
 	private void setInfluenceSprite(HeadSprite interactee) {
-		Actor connector = new Image(new TextureAtlas(Gdx.files.internal("sprites//influenceDisk.pack")).getRegions().get(1));
+		Actor disk = new Image(new TextureAtlas(Gdx.files.internal("sprites//influenceDisk.pack")).getRegions().get(1));
 
-		connector.setOrigin(connector.getWidth()/2, connector.getHeight()/2);
-		connector.setPosition(interactee.getStartingX(), interactee.getStartingY());
+		disk.setOrigin(disk.getWidth()/2, disk.getHeight()/2);
+		disk.setPosition(interactee.getStartingX(), interactee.getStartingY());
 		
-		GameProperties.get().addActorToStage(connector);
+		GameProperties.get().addActorToStage(disk);
 	}
 
 }

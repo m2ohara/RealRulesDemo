@@ -269,7 +269,7 @@ public class DemoGame extends ApplicationAdapter {
 		Label label2 = new Label("BY "+winAmount+" VOTES TO WIN", skin);
 		setToStage(label2, 0, -90);
 		
-		setGestureDetector(new GestureDetector(new GameGestures(stage, manualInteraction)));
+		setGestureDetector(new GestureDetector(new GameGestures(stage, manualInteraction, vType)));
 	}
 	
 	private void setCrowdScreen() {

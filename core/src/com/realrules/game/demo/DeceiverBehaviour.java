@@ -61,7 +61,7 @@ public class DeceiverBehaviour  implements IHeadBehaviour {
 		//Set interact sprite
 		this.soundWave = new InteractSprite(x, y, "sprites//soundWaveFollower.pack"); 
 		this.soundWave.setTouchable(Touchable.disabled);
-		GameProperties.get().addToSoundWaveGroup(this.soundWave);
+//		GameProperties.get().addToSoundWaveGroup(this.soundWave);
 	}
 
 	@Override
@@ -146,12 +146,12 @@ public class DeceiverBehaviour  implements IHeadBehaviour {
 	private void performAutonomousInteraction(HeadSprite actor) {
 		Random rand = new Random();
 		if(rand.nextFloat() < this.interactSuccessP) {
-			this.soundWave.setVisible(true);
+//			this.soundWave.setVisible(true);
 			actor.interaction.interactAutonomous(actor, GameProperties.get().getActorGroup());
 			
 		}
 		else {
-			this.soundWave.setVisible(false);
+//			this.soundWave.setVisible(false);
 		}
 	}
 

@@ -18,9 +18,9 @@ public class GameGestures  implements GestureListener {
 			this.stage = stage;
 		}
 		
-		public GameGestures(Stage stage, IManualInteraction followerInteractAction) {
+		public GameGestures(Stage stage, IManualInteraction followerInteractAction, int influenceType) {
 			this.stage = stage;
-			this.interaction = new ManualInteraction(followerInteractAction);
+			this.interaction = new ManualInteraction(followerInteractAction, influenceType);
 		}
 
 		@Override
