@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
 
@@ -20,15 +21,15 @@ public class GossiperInteractBehaviour implements IInteraction {
 		if(interactee.status == 0 && interactee.isActive == true) {
 			if(rand.nextFloat() > interactor.argueSuccessP) {
 				interactee.status = 3;
-				setConnectorSprite(interactor, 0);
+//				setConnectorSprite(interactor, 0);
 				setInfluenceSprite(interactee, 0);
-//				System.out.println("Gossiper opposed");
+				System.out.println("Interactee opposed");
 			}
 			else {
 				interactee.status = 1;
-				setConnectorSprite(interactor, 1);
+//				setConnectorSprite(interactor, 1);
 				setInfluenceSprite(interactee, 1);
-//				System.out.println("Gossiper influenced");
+				System.out.println("Interactee influenced");
 			}
 		}
 		
@@ -43,6 +44,7 @@ public class GossiperInteractBehaviour implements IInteraction {
 
 		connector.setOrigin(connector.getWidth()/2, connector.getHeight()/2);
 		connector.setPosition(interactor.getStartingX() - 20, interactor.getStartingY() -22);
+		connector.setTouchable(Touchable.disabled);
 		
 		if(direction == Coordinates.E) {
 			connector.rotateBy(270);
@@ -66,6 +68,7 @@ public class GossiperInteractBehaviour implements IInteraction {
 
 		disk.setOrigin(disk.getWidth()/2, disk.getHeight()/2);
 		disk.setPosition(interactee.getStartingX(), interactee.getStartingY());
+		disk.setTouchable(Touchable.disabled);
 		
 		GameProperties.get().addActorToStage(disk);
 	}

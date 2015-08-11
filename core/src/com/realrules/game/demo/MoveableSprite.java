@@ -51,7 +51,7 @@ public class MoveableSprite
 	private void setSourceSprite(float x, float y) {
 		sourceSprite = new Image(currentFrame);
 		sourceSprite.setPosition(x, y);
-		sourceSprite.setColor(Color.CYAN);
+//		sourceSprite.setColor(Color.CYAN);
 		
 		GameProperties.get().getStage().addActor(sourceSprite);
 	}

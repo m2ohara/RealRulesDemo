@@ -97,7 +97,7 @@ public class AutonomousInteraction {
 						interactor.getXGameCoord() + 1,
 						(interactor.getYGameCoord()));
 				System.out.println("Member type " + interactor.status
-						+ "  influencing to the rigth at "
+						+ "  influencing to the right at "
 						+ (interactor.getXGameCoord() + 1) + ", "
 						+ interactor.getYGameCoord());
 
