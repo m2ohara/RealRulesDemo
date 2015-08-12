@@ -32,10 +32,6 @@ public class OnAct implements IOnAct {
 	private int angle;
 	
 	private int frameCount = 0;
-//	private TextureAtlas Up = new TextureAtlas(Gdx.files.internal("sprites//Donal//Up.pack"));
-//	private TextureAtlas Left = new TextureAtlas(Gdx.files.internal("sprites//Donal//Left.pack"));
-//	private TextureAtlas Right = new TextureAtlas(Gdx.files.internal("sprites//Donal//Right.pack"));
-//	private TextureAtlas Down = new TextureAtlas(Gdx.files.internal("sprites//Donal//Down.pack"));
 	
 	public OnAct(float rotateProbability, float interactProbability, String framesPath) 
 	{
@@ -43,21 +39,14 @@ public class OnAct implements IOnAct {
 		interactP = interactProbability;
 		frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
 		
-//		Up = new TextureAtlas(Gdx.files.internal(framesPath+"//Up.pack"));
-//		Left = new TextureAtlas(Gdx.files.internal(framesPath+"//Left.pack"));
-//		Right = new TextureAtlas(Gdx.files.internal(framesPath+"//Right.pack"));
-//		Down = new TextureAtlas(Gdx.files.internal(framesPath+"//Down.pack"));
-		
-//		changeSpriteOrientation();
-		
 	}
 
 	@Override
-	public void performActing(float delta, HeadSprite actor, ArrayList<Coordinates> invalidDirections) {
+	public void performActing(float delta, HeadSprite actor, ArrayList<Coordinates> validDirections) {
 		
 		if(stateTime >= stateLength) {
 			stateTime = 0.0f;		
-			setFrame(actor, invalidDirections);
+			setFrame(actor, validDirections);
 		}
 		
 		else if( interactStateTime >= interactStateLength) {
@@ -104,10 +93,10 @@ public class OnAct implements IOnAct {
 		frameTime += delta;
 	}
 	
-	private void setFrame(HeadSprite actor, ArrayList<Coordinates> invalidDirections) {
+	private void setFrame(HeadSprite actor, ArrayList<Coordinates> validDirections) {
 		//Based on rotation probability
 		if(rand.nextFloat() < this.rotateP) {
-			updateCurrentAngle(invalidDirections);
+			updateCurrentDirection(validDirections);
 //			changeSpriteOrientation();
 			changeRotation(actor); //Temp
 		}
@@ -126,6 +115,30 @@ public class OnAct implements IOnAct {
 			angle = startingAngle + angleMultiple;
 	}
 	
+	private void updateCurrentDirection( ArrayList<Coordinates> validDirections) {
+
+
+		int choice = rand.nextInt(validDirections.size());
+		if (validDirections.get(choice) == Coordinates.N) {
+			angle = 90;
+			direction = 1;
+		} else {
+			choice = rand.nextInt(2) + 1;
+		}
+		if (validDirections.get(choice) == Coordinates.E) {
+			angle = 0;
+			direction = 1;
+		}
+		if (validDirections.get(choice) == Coordinates.S) {
+			angle = 90;
+			direction = 0;
+		}
+		if (validDirections.get(choice) == Coordinates.W) {
+			angle = 0;
+			direction = 0;
+		}
+}
+	
 	private void changeRotation(HeadSprite actor) {
 		//Rotate this
 		actor.setRotation((float) (angle));	
@@ -135,12 +148,8 @@ public class OnAct implements IOnAct {
 	private void performAutonomousInteraction(HeadSprite actor) {
 		Random rand = new Random();
 		if(rand.nextFloat() < this.interactP) {
-//			this.soundWave.setVisible(true);
 			actor.interaction.interact(actor, GameProperties.get().getActorGroup(), CoordinateSystem.getCoordDirection(direction, angle));
 			
-		}
-		else {
-//			this.soundWave.setVisible(false);
 		}
 	}
 

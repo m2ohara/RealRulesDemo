@@ -1,6 +1,7 @@
 package com.realrules.game.demo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -36,7 +37,7 @@ public class HeadSprite  extends Image  {
 	InteractSprite soundWave;
 	public boolean isActive = true;
 	public int status = 0; //0 : neutral, 1 : for 2 : against
-	private ArrayList<Coordinates> invalidDirections;
+	private ArrayList<Coordinates> validDirections;
 	
 	
 	private boolean isActing = false;
@@ -82,6 +83,7 @@ public class HeadSprite  extends Image  {
 		this.framesPath = framesPath;
 		this.type = type;
 		
+		setValidDirections();
 	}
 	
 	public void setBehaviour(IManualInteraction manInteraction) {
@@ -149,25 +151,25 @@ public class HeadSprite  extends Image  {
 	public void act(float delta) {
 		super.act(delta);
 		if(isActive && isActing){
-			behaviour.onAct(delta, this, invalidDirections);
+			behaviour.onAct(delta, this, validDirections);
 		}
 	}
 	
-	private void setInvalidDirections() {
+	private void setValidDirections() {
 		
-		invalidDirections = new ArrayList<Coordinates>();
+		validDirections = new ArrayList<Coordinates> (Arrays.asList(Coordinates.N, Coordinates.E, Coordinates.S, Coordinates.W));
 		
 		if(getXGameCoord() == CoordinateSystem.getSystemWidth()) {
-			invalidDirections.add(Coordinates.E);
+			validDirections.remove(Coordinates.W);
 		}
 		if(getXGameCoord() == 0) {
-			invalidDirections.add(Coordinates.W);
+			validDirections.remove(Coordinates.E);
 		}
 		if(getYGameCoord() == CoordinateSystem.getSystemHeight()) {
-			invalidDirections.add(Coordinates.N);
+			validDirections.remove(Coordinates.S);
 		}
 		if(getYGameCoord() == 0) {
-			invalidDirections.add(Coordinates.S);
+			validDirections.remove(Coordinates.N);
 		}
 	}
 	
