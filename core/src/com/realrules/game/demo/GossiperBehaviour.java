@@ -6,6 +6,8 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.realrules.game.act.IOnAct;
+import com.realrules.game.act.OnAct;
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
 import com.realrules.game.interact.IManualInteraction;
 
@@ -22,6 +24,8 @@ public class GossiperBehaviour implements IHeadBehaviour, ITouchActionBehaviour 
 	private int direction = 0;
 	private float rotateP = 0.8f;
 	private TouchAction onTouch;
+	private IOnAct onAct;
+	private float interactSuccess = 0.2f;
 	
 	//Skills
 	private int influenceAmount = 2;
@@ -32,32 +36,44 @@ public class GossiperBehaviour implements IHeadBehaviour, ITouchActionBehaviour 
 		return influenceAmount;
 	}
 
-	public GossiperBehaviour(HeadSprite gossiper, boolean isActive, IManualInteraction manInteraction) {
+//	public GossiperBehaviour(HeadSprite gossiper, boolean isActive, IManualInteraction manInteraction) {
+//		this.gossiper = gossiper;		
+//		this.isActive = isActive;
+//		onTouch = new GossiperTouchAction(manInteraction);
+//		this.onTouch.setInteractorX(gossiper.getXGameCoord());
+//		this.onTouch.setInteractorY(gossiper.getYGameCoord());
+//		this.onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(direction, 0));
+//		
+//	}
+	
+	public GossiperBehaviour(HeadSprite gossiper, String framesPath, boolean isActive, IManualInteraction manInteraction) {
 		this.gossiper = gossiper;		
 		this.isActive = isActive;
 		onTouch = new GossiperTouchAction(manInteraction);
 		this.onTouch.setInteractorX(gossiper.getXGameCoord());
 		this.onTouch.setInteractorY(gossiper.getYGameCoord());
 		this.onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(direction, 0));
+		
+		onAct = new OnAct(rotateP, interactSuccess, framesPath);
 	}
 
 	@Override
 	public void onAct(float delta) {
 		
-		if(isActive) {
-			if(stateTime >= stateLength) {
-				stateTime = 0.0f;
-				setFrame();
-			}
-			stateTime += delta;
-			
-
-			if( InStateTime >= InStateLength) {
-				InStateTime = 0.0f;
-				performAutonomousInteraction();
-			}
-			InStateTime += delta;
-		}
+//		if(isActive) {
+//			if(stateTime >= stateLength) {
+//				stateTime = 0.0f;
+//				setFrame();
+//			}
+//			stateTime += delta;
+//			
+//
+//			if( InStateTime >= InStateLength) {
+//				InStateTime = 0.0f;
+//				performAutonomousInteraction();
+//			}
+//			InStateTime += delta;
+//		}
 	}
 
 	@Override
@@ -69,8 +85,7 @@ public class GossiperBehaviour implements IHeadBehaviour, ITouchActionBehaviour 
 		
 		if(isActive) {
 			onTouch.interact();
-		}
-		
+		}		
 		
 	}
 	
@@ -119,7 +134,15 @@ public class GossiperBehaviour implements IHeadBehaviour, ITouchActionBehaviour 
 	@Override
 	public void onAct(float delta, HeadSprite actor, ArrayList<Coordinates> invalidDirections) {
 		// TODO Refactor acting into this method
-		this.onAct(delta);
+//		this.onAct(delta);
+		
+		
+		if(isActive) {
+			onAct.performActing(delta, actor, invalidDirections);
+			
+			//Update direction  for touch action
+			onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(onAct.getCurrentDirection(), onAct.getCurrentAngle()));
+		}
 		
 	}
 
@@ -131,7 +154,7 @@ public class GossiperBehaviour implements IHeadBehaviour, ITouchActionBehaviour 
 
 	
 	public int getDirection() {
-		return this.direction;
+		return onAct.getCurrentDirection();
 	}
 
 	@Override

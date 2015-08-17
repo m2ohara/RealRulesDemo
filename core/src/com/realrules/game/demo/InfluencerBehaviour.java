@@ -63,7 +63,7 @@ public class InfluencerBehaviour implements IHeadBehaviour {
 			onAct.performActing(delta, actor, invalidDirections);
 		
 			//Rotate interact sprite
-			interactSpriteAngle = onAct.getCurrentDirection() == 1 ? onAct.getCurrentAngle() : (onAct.getCurrentAngle() + 180) % 360;
+//			interactSpriteAngle = onAct.getCurrentDirection() == 1 ? onAct.getCurrentAngle() : (onAct.getCurrentAngle() + 180) % 360;
 			
 			//Update direction  for touch action
 			onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(onAct.getCurrentDirection(), onAct.getCurrentAngle()));

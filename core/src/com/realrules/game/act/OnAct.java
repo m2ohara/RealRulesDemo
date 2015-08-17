@@ -122,9 +122,7 @@ public class OnAct implements IOnAct {
 		if (validDirections.get(choice) == Coordinates.N) {
 			angle = 90;
 			direction = 1;
-		} else {
-			choice = rand.nextInt(2) + 1;
-		}
+		} 
 		if (validDirections.get(choice) == Coordinates.E) {
 			angle = 0;
 			direction = 1;
@@ -137,7 +135,7 @@ public class OnAct implements IOnAct {
 			angle = 0;
 			direction = 0;
 		}
-}
+	}
 	
 	private void changeRotation(HeadSprite actor) {
 		//Rotate this

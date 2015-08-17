@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.realrules.game.act.IOnAct;
+import com.realrules.game.act.OnAct;
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
 import com.realrules.game.interact.IManualInteraction;
 
@@ -24,6 +26,7 @@ public class DeceiverBehaviour  implements IHeadBehaviour {
 	float TouchStateLength = 3.0f;
 	float TouchStateTime = 0;
 	private TouchAction onTouch;
+	private IOnAct onAct;
 
 	private Array<AtlasRegion> frames;
 	private TextureRegion currentFrame;
@@ -54,13 +57,16 @@ public class DeceiverBehaviour  implements IHeadBehaviour {
 		this.onTouch.setInteractorY(y);
 		this.onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(direction, 0));
 		
+		onAct = new OnAct(rotateP, argueSuccessP, framesPath);
+		
+		
 
 	}
 	
 	public void setInteractSprite(float x, float y) {
 		//Set interact sprite
-		this.soundWave = new InteractSprite(x, y, "sprites//soundWaveFollower.pack"); 
-		this.soundWave.setTouchable(Touchable.disabled);
+//		this.soundWave = new InteractSprite(x, y, "sprites//soundWaveFollower.pack"); 
+//		this.soundWave.setTouchable(Touchable.disabled);
 //		GameProperties.get().addToSoundWaveGroup(this.soundWave);
 	}
 
@@ -93,71 +99,81 @@ public class DeceiverBehaviour  implements IHeadBehaviour {
 	@Override
 	public void onAct(float delta, HeadSprite actor, ArrayList<Coordinates> invalidDirections) {
 		
+//		if(isActive) {
+//			if(stateTime >= stateLength) {
+//				stateTime = 0.0f;
+//				updateCurrentAngle();
+//			}
+//
+//			else if( InStateTime >= InStateLength) {
+//				InStateTime = 0.0f;
+//				performAutonomousInteraction(actor);
+//			}
+//			
+//			stateTime += delta;
+//			InStateTime += delta;
+//		}
+//		
+//
+//		
+//		//Rotate this
+//		actor.setRotation((float) (deceiverAngle));	
+//		actor.setDrawable(new TextureRegionDrawable(new TextureRegion(this.currentFrame)));
+//		
+//
+//		this.soundWave.setRotation(soundWaveAngle);
+//		this.soundWave.currentAngle = (int)this.soundWave.getRotation();
+		
 		if(isActive) {
-			if(stateTime >= stateLength) {
-				stateTime = 0.0f;
-				updateCurrentAngle();
-			}
-
-			else if( InStateTime >= InStateLength) {
-				InStateTime = 0.0f;
-				performAutonomousInteraction(actor);
-			}
+			onAct.performActing(delta, actor, invalidDirections);
+		
+			//Rotate interact sprite
+//			interactSpriteAngle = onAct.getCurrentDirection() == 1 ? onAct.getCurrentAngle() : (onAct.getCurrentAngle() + 180) % 360;
 			
-			stateTime += delta;
-			InStateTime += delta;
+			//Update direction  for touch action
+			onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(onAct.getCurrentDirection(), onAct.getCurrentAngle()));
 		}
-		
-
-		
-		//Rotate this
-		actor.setRotation((float) (deceiverAngle));	
-		actor.setDrawable(new TextureRegionDrawable(new TextureRegion(this.currentFrame)));
-		
-
-		this.soundWave.setRotation(soundWaveAngle);
-		this.soundWave.currentAngle = (int)this.soundWave.getRotation();
 		
 	}
 	
 	//Deceiver behaviours
-	private void updateCurrentAngle() {
-		//Based on rotation probability
-		if(rand.nextFloat() < this.rotateP) {
-			
-			//Set direction
-			direction = rand.nextInt(2);
-			this.currentFrame = this.frames.get(direction);
-			//Set angle
-			int angleSpread = 90;
-			int angleSector = rand.nextInt(2);
-			int angleMultiple = angleSpread * rand.nextInt((180/angleSpread)-1);
-			int startingAngle = angleSector == 0 ? 0 : 270;
-			deceiverAngle = startingAngle + angleMultiple;
-			
-			//Rotate soundwave
-			soundWaveAngle = direction == 1 ? deceiverAngle : (deceiverAngle + 180) % 360;
-			
-			onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(direction, deceiverAngle));
-			
-		}
-	}
-	
-	private void performAutonomousInteraction(HeadSprite actor) {
-		Random rand = new Random();
-		if(rand.nextFloat() < this.interactSuccessP) {
-//			this.soundWave.setVisible(true);
-			actor.interaction.interactAutonomous(actor, GameProperties.get().getActorGroup());
-			
-		}
-		else {
-//			this.soundWave.setVisible(false);
-		}
-	}
+//	private void updateCurrentAngle() {
+//		//Based on rotation probability
+//		if(rand.nextFloat() < this.rotateP) {
+//			
+//			//Set direction
+//			direction = rand.nextInt(2);
+//			this.currentFrame = this.frames.get(direction);
+//			//Set angle
+//			int angleSpread = 90;
+//			int angleSector = rand.nextInt(2);
+//			int angleMultiple = angleSpread * rand.nextInt((180/angleSpread)-1);
+//			int startingAngle = angleSector == 0 ? 0 : 270;
+//			deceiverAngle = startingAngle + angleMultiple;
+//			
+//			//Rotate soundwave
+//			soundWaveAngle = direction == 1 ? deceiverAngle : (deceiverAngle + 180) % 360;
+//			
+//			onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(direction, deceiverAngle));
+//			
+//		}
+//	}
+//	
+//	private void performAutonomousInteraction(HeadSprite actor) {
+//		Random rand = new Random();
+//		if(rand.nextFloat() < this.interactSuccessP) {
+////			this.soundWave.setVisible(true);
+//			actor.interaction.interactAutonomous(actor, GameProperties.get().getActorGroup());
+//			
+//		}
+//		else {
+////			this.soundWave.setVisible(false);
+//		}
+//	}
 
 	
 	public int getDirection() {
-		return this.direction;
+		return onAct.getCurrentDirection();
 	}
 
 	@Override

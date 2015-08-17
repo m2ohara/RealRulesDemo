@@ -89,7 +89,8 @@ public class HeadSprite  extends Image  {
 	public void setBehaviour(IManualInteraction manInteraction) {
 		
 		if(type == type.GOSSIPER) {
-			behaviour = new GossiperBehaviour(this,isActive, manInteraction);
+//			behaviour = new GossiperBehaviour(this,isActive, manInteraction);
+			behaviour = new GossiperBehaviour(this, framesPath, isActive, manInteraction);
 			interaction = new GossiperInteraction();
 
 		}
@@ -159,13 +160,13 @@ public class HeadSprite  extends Image  {
 		
 		validDirections = new ArrayList<Coordinates> (Arrays.asList(Coordinates.N, Coordinates.E, Coordinates.S, Coordinates.W));
 		
-		if(getXGameCoord() == CoordinateSystem.getSystemWidth()) {
-			validDirections.remove(Coordinates.W);
-		}
-		if(getXGameCoord() == 0) {
+		if(getXGameCoord() == CoordinateSystem.getSystemWidth()-1) {
 			validDirections.remove(Coordinates.E);
 		}
-		if(getYGameCoord() == CoordinateSystem.getSystemHeight()) {
+		if(getXGameCoord() == 0) {
+			validDirections.remove(Coordinates.W);
+		}
+		if(getYGameCoord() == CoordinateSystem.getSystemHeight()-1) {
 			validDirections.remove(Coordinates.S);
 		}
 		if(getYGameCoord() == 0) {
