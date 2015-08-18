@@ -1,4 +1,5 @@
-package com.realrules.game.demo;
+package com.realrules.game.interact;
+
 
 public class DeceiverInteraction extends AutonomousInteraction {
 	

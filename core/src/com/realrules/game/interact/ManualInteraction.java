@@ -1,12 +1,15 @@
-package com.realrules.game.demo;
+package com.realrules.game.interact;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.realrules.game.demo.CoordinateSystem;
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
-import com.realrules.game.interact.IManualInteraction;
+import com.realrules.game.demo.GameProperties;
+import com.realrules.game.demo.HeadSprite;
+import com.realrules.game.demo.ScoreState;
 
 //TODO: Test ManualInteraction
 public class ManualInteraction {

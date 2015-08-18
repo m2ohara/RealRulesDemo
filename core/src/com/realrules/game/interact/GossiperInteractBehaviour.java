@@ -1,4 +1,4 @@
-package com.realrules.game.demo;
+package com.realrules.game.interact;
 
 import java.util.Random;
 
@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.realrules.game.demo.GameProperties;
+import com.realrules.game.demo.HeadSprite;
 
 public class GossiperInteractBehaviour implements IInteraction {
 	

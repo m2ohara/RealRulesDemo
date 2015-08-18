@@ -1,5 +1,6 @@
-package com.realrules.game.demo;
+package com.realrules.touch;
 
+import com.realrules.game.demo.CoordinateSystem;
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
 
 public abstract class TouchAction implements ITouchAction {

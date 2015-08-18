@@ -1,11 +1,15 @@
-package com.realrules.game.demo;
+package com.realrules.game.behaviour;
 
 import java.util.ArrayList;
 
 import com.realrules.game.act.IOnAct;
 import com.realrules.game.act.OnAct;
+import com.realrules.game.demo.CoordinateSystem;
+import com.realrules.game.demo.HeadSprite;
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
 import com.realrules.game.interact.IManualInteraction;
+import com.realrules.touch.GossiperTouchAction;
+import com.realrules.touch.TouchAction;
 
 public class GossiperBehaviour implements IHeadBehaviour {
 	

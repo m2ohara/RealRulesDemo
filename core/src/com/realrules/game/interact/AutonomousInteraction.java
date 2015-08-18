@@ -1,6 +1,8 @@
-package com.realrules.game.demo;
+package com.realrules.game.interact;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.realrules.game.demo.CoordinateSystem;
+import com.realrules.game.demo.HeadSprite;
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
 
 //import com.realrules.game.demo.DemoGame.Interaction;

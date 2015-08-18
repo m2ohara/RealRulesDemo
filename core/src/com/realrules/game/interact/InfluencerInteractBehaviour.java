@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.demo.GameProperties;
 import com.realrules.game.demo.HeadSprite;
-import com.realrules.game.demo.IInteraction;
 
 public class InfluencerInteractBehaviour implements IInteraction {
 	

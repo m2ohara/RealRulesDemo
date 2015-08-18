@@ -1,7 +1,9 @@
-package com.realrules.game.demo;
+package com.realrules.game.behaviour;
 
 import java.util.ArrayList;
 
+import com.realrules.game.demo.CoordinateSystem;
+import com.realrules.game.demo.HeadSprite;
 import com.realrules.game.demo.CoordinateSystem.Coordinates;
 
 public interface IHeadBehaviour {
