@@ -1,4 +1,4 @@
-package com.realrules.game.demo;
+package com.realrules.game.main;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,24 +6,21 @@ import java.util.Arrays;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.realrules.game.behaviour.DeceiverBehaviour;
 import com.realrules.game.behaviour.GossiperBehaviour;
 import com.realrules.game.behaviour.IHeadBehaviour;
 import com.realrules.game.behaviour.InfluencerBehaviour;
-import com.realrules.game.demo.CoordinateSystem.Coordinates;
-import com.realrules.game.demo.DemoGame.Head;
 import com.realrules.game.interact.AutonomousInteraction;
 import com.realrules.game.interact.DeceiverInteraction;
 import com.realrules.game.interact.GossiperInteraction;
 import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.interact.InfluencerInteraction;
+import com.realrules.game.main.CoordinateSystem.Coordinates;
+import com.realrules.game.main.DemoGame.Head;
 
 public class HeadSprite  extends Image  {
 	public IHeadBehaviour behaviour;

@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.realrules.game.demo.DemoGame;
+import com.realrules.game.main.DemoGame;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override

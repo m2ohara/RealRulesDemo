@@ -1,4 +1,4 @@
-package com.realrules.game.demo;
+package com.realrules.game.main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +27,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.realrules.game.demo.ScoreState.State;
+import com.realrules.game.gestures.GameGestures;
 import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.interact.ManualOpposerInteraction;
 import com.realrules.game.interact.ManualSupporterInteraction;
+import com.realrules.game.main.ScoreState.State;
 import com.realrules.game.state.Follower;
 import com.realrules.game.state.FollowerType;
 import com.realrules.game.state.PlayerState;
-import com.realrules.gestures.GameGestures;
 
 public class DemoGame extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -292,7 +292,7 @@ public class DemoGame extends ApplicationAdapter {
 					current = new HeadSprite(Head.INFLUENCER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//promoterFollowerPack.pack", true);
 				}
 				if(y == CoordinateSystem.getSystemHeight()-1 && x == starterX) {
-					current.status = 1; current.setColor(Color.YELLOW); 
+					current.status = 1; current.setColor(Color.ORANGE); 
 				}
 				GameProperties.get().addToActorGroup(current);
 			}

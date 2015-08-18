@@ -1,4 +1,4 @@
-package com.realrules.game.demo;
+package com.realrules.game.main;
 
 public class InfluenceState {
 	

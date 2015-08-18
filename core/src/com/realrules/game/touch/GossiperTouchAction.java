@@ -1,4 +1,4 @@
-package com.realrules.touch;
+package com.realrules.game.touch;
 
 import java.util.ArrayList;
 
@@ -7,22 +7,25 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.realrules.game.demo.CoordinateSystem;
-import com.realrules.game.demo.GameProperties;
-import com.realrules.game.demo.HeadSprite;
-import com.realrules.game.demo.CoordinateSystem.Coordinates;
 import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.interact.ManualOpposerInteraction;
+import com.realrules.game.main.CoordinateSystem;
+import com.realrules.game.main.GameProperties;
+import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.CoordinateSystem.Coordinates;
 
-public class DeceiverTouchAction extends TouchAction {
-
+public class GossiperTouchAction extends TouchAction{
+	
 	private ArrayList<Integer> validXCoords = new ArrayList<Integer>();
 	private ArrayList<Integer> validYCoords = new ArrayList<Integer>();
 	private HeadSprite interacter;
 	private IManualInteraction manInteraction = null;
+	private int spriteType;
 	
-	public DeceiverTouchAction(IManualInteraction manInteraction) {
-		this.manInteraction = new ManualOpposerInteraction();
+	public GossiperTouchAction(IManualInteraction manInteraction) {
+		this.manInteraction = manInteraction;
+		
+		spriteType = manInteraction instanceof ManualOpposerInteraction ? 0 : 1; 
 	}
 
 	//Two members ahead of interactor are valid
@@ -111,15 +114,16 @@ public class DeceiverTouchAction extends TouchAction {
 		}
 		
 	}
-		
+	
 	private void setToLastFollower(HeadSprite actor) {
-		actor.setColor(Color.GREEN);
+
+		actor.setColor(Color.YELLOW);
 		actor.status = 1;
 	}
 	
 	private void setConnectorSprite(HeadSprite lastHitActor) {
 		
-		Actor connector = new Image(new TextureAtlas(Gdx.files.internal("sprites//connectorPack.pack")).getRegions().get(0));
+		Actor connector = new Image(new TextureAtlas(Gdx.files.internal("sprites//connectorPack.pack")).getRegions().get(spriteType));
 
 		connector.setOrigin(connector.getWidth()/2, connector.getHeight()/2);
 		connector.setPosition(lastHitActor.getStartingX() - 20, lastHitActor.getStartingY() -22);

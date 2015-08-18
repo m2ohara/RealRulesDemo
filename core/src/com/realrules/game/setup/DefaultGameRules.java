@@ -2,9 +2,9 @@ package com.realrules.game.setup;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.realrules.game.demo.GameProperties;
-import com.realrules.game.demo.HeadSprite;
-import com.realrules.game.demo.ScoreState.State;
+import com.realrules.game.main.GameProperties;
+import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.ScoreState.State;
 
 public class DefaultGameRules implements IGameRules {
 	

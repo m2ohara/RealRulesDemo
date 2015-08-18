@@ -9,10 +9,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.realrules.game.demo.CoordinateSystem;
-import com.realrules.game.demo.CoordinateSystem.Coordinates;
-import com.realrules.game.demo.GameProperties;
-import com.realrules.game.demo.HeadSprite;
+import com.realrules.game.main.CoordinateSystem;
+import com.realrules.game.main.GameProperties;
+import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.CoordinateSystem.Coordinates;
 
 public class OnAct implements IOnAct {
 	

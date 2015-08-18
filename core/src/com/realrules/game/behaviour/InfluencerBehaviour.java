@@ -4,22 +4,20 @@ import java.util.ArrayList;
 
 import com.realrules.game.act.IOnAct;
 import com.realrules.game.act.OnAct;
-import com.realrules.game.demo.CoordinateSystem;
-import com.realrules.game.demo.HeadSprite;
-import com.realrules.game.demo.CoordinateSystem.Coordinates;
 import com.realrules.game.interact.IManualInteraction;
-import com.realrules.touch.InfluencerTouchAction;
-import com.realrules.touch.TouchAction;
+import com.realrules.game.main.CoordinateSystem;
+import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.CoordinateSystem.Coordinates;
+import com.realrules.game.touch.InfluencerTouchAction;
+import com.realrules.game.touch.TouchAction;
 
 public class InfluencerBehaviour implements IHeadBehaviour {
 
 	//Members
-	public int status = 0; //0 : neutral, 1 : for 2 : against
-//	public float argueSuccessP = 0.2f;
-	private float rotateP = 0.8f;
-	private int influenceAmount = 3;
-	private float interactP = 0.4f;
 	private boolean isActive = true;
+	private float rotateP = 0.8f;
+	private float interactP = 0.4f;
+	private int influenceAmount = 3;
 	private TouchAction onTouch;
 	private IOnAct onAct;
 	

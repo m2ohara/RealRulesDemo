@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.realrules.game.demo.CoordinateSystem;
-import com.realrules.game.demo.CoordinateSystem.Coordinates;
-import com.realrules.game.demo.GameProperties;
-import com.realrules.game.demo.HeadSprite;
-import com.realrules.game.demo.ScoreState;
+import com.realrules.game.main.CoordinateSystem;
+import com.realrules.game.main.GameProperties;
+import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.ScoreState;
+import com.realrules.game.main.CoordinateSystem.Coordinates;
 
 //TODO: Test ManualInteraction
 public class ManualInteraction {
@@ -150,10 +150,10 @@ public class ManualInteraction {
 	
 	private void setToLastFollower(HeadSprite hitActor) {
 		if(ScoreState.validTouchAction()) {
-			hitActor.setColor(Color.YELLOW);
+			hitActor.setColor(Color.ORANGE);
 		}
 		else {
-			hitActor.setColor(Color.GREEN);
+			hitActor.setColor(Color.YELLOW);
 		}
 		hitActor.status = 1;
 	}

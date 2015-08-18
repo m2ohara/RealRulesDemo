@@ -1,6 +1,6 @@
 package com.realrules.game.interact;
 
-import com.realrules.game.demo.HeadSprite;
+import com.realrules.game.main.HeadSprite;
 
 
 public interface IInteraction {

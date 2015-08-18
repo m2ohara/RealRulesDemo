@@ -3,7 +3,7 @@ package com.realrules.game.state;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.realrules.game.demo.DemoGame.Head;
+import com.realrules.game.main.DemoGame.Head;
 
 public class PlayerState {
 	
@@ -33,7 +33,7 @@ public class PlayerState {
 		
 		followers = new ArrayList<Follower>();
 		followers.add(new Follower(Head.GOSSIPER, 1, "sprites//gossiperFollowerPack.pack"));
-		followers.add(new Follower(Head.GOSSIPER, 2, "sprites//gossiperFollowerPack.pack"));
+		followers.add(new Follower(Head.INFLUENCER, 2, "sprites//promoterFollowerPack.pack"));
 		followers.add(new Follower(Head.DECEIVER, 3, "sprites//deceiverFollowerPack.pack"));
 		level = 1;
 		reputation = 1000;

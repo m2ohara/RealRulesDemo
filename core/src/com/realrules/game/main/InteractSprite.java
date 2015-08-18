@@ -1,4 +1,4 @@
-package com.realrules.game.demo;
+package com.realrules.game.main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;

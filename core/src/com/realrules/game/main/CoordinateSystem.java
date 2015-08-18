@@ -1,4 +1,4 @@
-package com.realrules.game.demo;
+package com.realrules.game.main;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.realrules.game.demo;
+package com.realrules.game.main;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.realrules.game.demo.DemoGame.Head;
+import com.realrules.game.main.DemoGame.Head;
 import com.realrules.game.state.PlayerState;
 
 public class GameProperties {
@@ -20,7 +20,7 @@ public class GameProperties {
 	
 	private GameProperties() {
 		followerType = Arrays.asList(Head.GOSSIPER, Head.DECEIVER, Head.INFLUENCER);
-		followerTypeAmount = Arrays.asList(1, 1, 0);
+		followerTypeAmount = Arrays.asList(1, 1, 1);
 	}
 	
 	private GameProperties(PlayerState plState) {

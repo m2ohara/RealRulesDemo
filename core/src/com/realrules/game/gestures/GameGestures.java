@@ -1,12 +1,12 @@
-package com.realrules.gestures;
+package com.realrules.game.gestures;
 
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.realrules.game.demo.HeadSprite;
 import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.interact.ManualInteraction;
+import com.realrules.game.main.HeadSprite;
 
 public class GameGestures  implements GestureListener {
 		

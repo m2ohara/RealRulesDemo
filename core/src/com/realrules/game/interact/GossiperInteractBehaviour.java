@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.realrules.game.demo.GameProperties;
-import com.realrules.game.demo.HeadSprite;
+import com.realrules.game.main.GameProperties;
+import com.realrules.game.main.HeadSprite;
 
 public class GossiperInteractBehaviour implements IInteraction {
 	

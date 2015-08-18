@@ -1,6 +1,6 @@
 package com.realrules.game.setup;
 
-import com.realrules.game.demo.ScoreState.State;
+import com.realrules.game.main.ScoreState.State;
 
 public interface IGameRules {
 	

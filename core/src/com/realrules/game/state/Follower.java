@@ -1,6 +1,6 @@
 package com.realrules.game.state;
 
-import com.realrules.game.demo.DemoGame.Head;
+import com.realrules.game.main.DemoGame.Head;
 
 public class Follower {
 	

@@ -2,8 +2,8 @@ package com.realrules.game.act;
 
 import java.util.ArrayList;
 
-import com.realrules.game.demo.HeadSprite;
-import com.realrules.game.demo.CoordinateSystem.Coordinates;
+import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.CoordinateSystem.Coordinates;
 
 public interface IOnAct {
 	
