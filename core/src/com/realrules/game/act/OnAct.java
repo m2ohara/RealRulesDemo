@@ -21,8 +21,6 @@ public class OnAct implements IOnAct {
 	private float stateTime = stateLength;
 	private float interactStateLength = 0.7f * GameProperties.get().getUniversalTimeRatio();
 	private float interactStateTime = interactStateLength;
-	private float frameLength = 0.2f * GameProperties.get().getUniversalTimeRatio();
-	private float frameTime = frameLength;
 	
 	private Array<AtlasRegion> frames;
 	
@@ -30,8 +28,6 @@ public class OnAct implements IOnAct {
 	private float rotateP;
 	private int direction;
 	private int angle;
-	
-	private int frameCount = 0;
 	
 	public OnAct(float rotateProbability, float interactProbability, String framesPath) 
 	{
@@ -57,62 +53,15 @@ public class OnAct implements IOnAct {
 		stateTime += delta;
 		interactStateTime += delta;
 
-//		updateSprite(delta, actor);
-	}
-	
-	private void changeSpriteOrientation() {
-		
-//		if(CoordinateSystem.getCoordDirection(direction, angle) == Coordinates.N) {
-//			frames = Up.getRegions();
-//		}
-//		else if(CoordinateSystem.getCoordDirection(direction, angle) == Coordinates.E) {
-//			frames = Right.getRegions();
-//		}
-//		else if(CoordinateSystem.getCoordDirection(direction, angle) == Coordinates.S) {
-//			frames = Down.getRegions();
-//		}
-//		else if(CoordinateSystem.getCoordDirection(direction, angle) == Coordinates.W) {
-//			frames = Left.getRegions();
-//		}
-		
-	}
-	
-	private void updateSprite(float delta, HeadSprite actor) {
-		
-		if(frameTime >= frameLength) {
-			frameTime = 0.0f;
-			
-			if(frameCount > frames.size -1) {
-				frameCount = 0;
-			}
-			
-			actor.setDrawable(new TextureRegionDrawable(new TextureRegion(frames.get(frameCount++))));
-			
-		}
-		
-		frameTime += delta;
 	}
 	
 	private void setFrame(HeadSprite actor, ArrayList<Coordinates> validDirections) {
 		//Based on rotation probability
 		if(rand.nextFloat() < this.rotateP) {
 			updateCurrentDirection(validDirections);
-//			changeSpriteOrientation();
 			changeRotation(actor); //Temp
 		}
 		
-	}
-	
-	private void updateCurrentAngle( ArrayList<Coordinates> invalidDirections) {
-
-			//Set direction
-			direction = rand.nextInt(2);
-			//Set angle
-			int angleSpread = 90;
-			int angleSector = rand.nextInt(2);
-			int angleMultiple = angleSpread * rand.nextInt((180/angleSpread)-1);
-			int startingAngle = angleSector == 0 ? 0 : 270;
-			angle = startingAngle + angleMultiple;
 	}
 	
 	private void updateCurrentDirection( ArrayList<Coordinates> validDirections) {
@@ -160,5 +109,55 @@ public class OnAct implements IOnAct {
 	public int getCurrentAngle() {
 		return angle;
 	}
+	
+	//**************************** Talking heads logic
+//	private float frameLength = 0.2f * GameProperties.get().getUniversalTimeRatio();
+//	private float frameTime = frameLength;
+//	private int frameCount = 0;
+	
+//	private void updateCurrentAngle( ArrayList<Coordinates> invalidDirections) {
+//
+//			//Set direction
+//			direction = rand.nextInt(2);
+//			//Set angle
+//			int angleSpread = 90;
+//			int angleSector = rand.nextInt(2);
+//			int angleMultiple = angleSpread * rand.nextInt((180/angleSpread)-1);
+//			int startingAngle = angleSector == 0 ? 0 : 270;
+//			angle = startingAngle + angleMultiple;
+//	}
+	
+//	private void changeSpriteOrientation() {
+//		
+////		if(CoordinateSystem.getCoordDirection(direction, angle) == Coordinates.N) {
+////			frames = Up.getRegions();
+////		}
+////		else if(CoordinateSystem.getCoordDirection(direction, angle) == Coordinates.E) {
+////			frames = Right.getRegions();
+////		}
+////		else if(CoordinateSystem.getCoordDirection(direction, angle) == Coordinates.S) {
+////			frames = Down.getRegions();
+////		}
+////		else if(CoordinateSystem.getCoordDirection(direction, angle) == Coordinates.W) {
+////			frames = Left.getRegions();
+////		}
+//		
+//	}
+//	
+//	private void updateSprite(float delta, HeadSprite actor) {
+//		
+//		if(frameTime >= frameLength) {
+//			frameTime = 0.0f;
+//			
+//			if(frameCount > frames.size -1) {
+//				frameCount = 0;
+//			}
+//			
+//			actor.setDrawable(new TextureRegionDrawable(new TextureRegion(frames.get(frameCount++))));
+//			
+//		}
+//		
+//		frameTime += delta;
+//	}
 
 }

@@ -11,7 +11,7 @@ public class AutonomousInteraction {
 	public void interactAutonomous(HeadSprite interactor, Group actorGroup) {
 
 		// As long as interactor isn't neutral
-		if (interactor.status != 0 && 1 != 1) {
+		if (interactor.status != 0) {
 			// Determine interactor's direction
 			float facingAngle = interactor.getRotation();
 			int direction = interactor.getDirection();
@@ -84,7 +84,7 @@ public class AutonomousInteraction {
 	public void interact(HeadSprite interactor, Group actorGroup,Coordinates orientation) {
 
 		// As long as interactor isn't neutral
-		if (interactor.status != 0 && 1 != 1) {
+		if (interactor.status != 0) {
 			HeadSprite interactee = null;
 
 			// If facing towards the right
