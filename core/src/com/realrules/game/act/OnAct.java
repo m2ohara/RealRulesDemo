@@ -109,6 +109,12 @@ public class OnAct implements IOnAct {
 	public int getCurrentAngle() {
 		return angle;
 	}
+
+	@Override
+	public Coordinates getCurrentCoordinate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 

@@ -12,5 +12,7 @@ public interface IOnAct {
 	public int getCurrentDirection();
 	
 	public int getCurrentAngle();
+	
+	public Coordinates getCurrentCoordinate(); 
 
 }

@@ -17,4 +17,6 @@ public interface IHeadBehaviour {
 	
 	int getDirection(); //Refactor out
 	
+	public Coordinates getCoordDirection();
+	
 }

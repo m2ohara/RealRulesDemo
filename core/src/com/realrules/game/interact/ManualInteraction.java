@@ -83,41 +83,33 @@ public class ManualInteraction {
 		boolean isValid = false;
 		
 		if(hitActor.status == 0) {
-			//Get lastHitActor's facing angle
-			float facingAngle = lastHitActor.getRotation();
-			int direction = lastHitActor.getDirection();
 			
-			//If facing towards the right
-			if(direction == 1) {
-				if(facingAngle == 0) {
+			//TODO Refactor condition out
+			if(hitActor.getCoordDirection() != null) {
+				coordinate = hitActor.getCoordDirection();
+				if(hitActor.getCoordDirection() == Coordinates.E) {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX)-1) 
 							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)) {
 						isValid = true;
-						coordinate = Coordinates.E;
 						System.out.println("Follower hit to the right");
 					}
 				}
-				if(facingAngle == 90) {
+				else if(hitActor.getCoordDirection() == Coordinates.N) {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
 							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)+1)) {
 						isValid = true;
-						coordinate = Coordinates.N;
 						System.out.println("Follower hit above");
 					}
+					
 				}
-				if(facingAngle == 270) {
+				else if(hitActor.getCoordDirection() == Coordinates.S) {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
 							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)-1)) {
 						isValid = true;
-						coordinate = Coordinates.S;
 						System.out.println("Follower hit below");
 					}
 				}
-			}
-			
-			//If facing towards the left
-			if(direction == 0) {
-				if(facingAngle == 0) {
+				else if(hitActor.getCoordDirection() == Coordinates.W) {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX)+1) 
 							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)) {
 						isValid = true;
@@ -125,27 +117,78 @@ public class ManualInteraction {
 						System.out.println("Follower hit to the left");
 					}
 				}
-				if(facingAngle == 90) {
-					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
-							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)-1)) {
-						isValid = true;
-						coordinate = Coordinates.S;
-						System.out.println("Follower hit below");
-					}
+			}
+			else {
+				
+				isValid =  getRedundantDirection(hitActor, lastHitActor.getRotation(), lastHitActor.getDirection());
+			}
+		}
+			
+		return isValid;
+
+	}
+	
+	private boolean getRedundantDirection(HeadSprite hitActor, float facingAngle, int direction) {
+		
+		boolean isValid = false;
+		
+		//If facing towards the right
+		if(direction == 1) {
+			if(facingAngle == 0) {
+				if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX)-1) 
+						&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)) {
+					isValid = true;
+					coordinate = Coordinates.E;
+					System.out.println("Follower hit to the right");
 				}
-				if(facingAngle == 270) {
-					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
-							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)+1)) {
-						isValid = true;
-						coordinate = Coordinates.N;
-						System.out.println("Follower hit above");
-					}
+			}
+			if(facingAngle == 90) {
+				if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
+						&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)+1)) {
+					isValid = true;
+					coordinate = Coordinates.N;
+					System.out.println("Follower hit above");
+				}
+			}
+			if(facingAngle == 270) {
+				if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
+						&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)-1)) {
+					isValid = true;
+					coordinate = Coordinates.S;
+					System.out.println("Follower hit below");
 				}
 			}
 		}
 		
-		return isValid;
-
+		//If facing towards the left
+		if(direction == 0) {
+			if(facingAngle == 0) {
+				if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX)+1) 
+						&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)) {
+					isValid = true;
+					coordinate = Coordinates.W;
+					System.out.println("Follower hit to the left");
+				}
+			}
+			if(facingAngle == 90) {
+				if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
+						&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)-1)) {
+					isValid = true;
+					coordinate = Coordinates.S;
+					System.out.println("Follower hit below");
+				}
+			}
+			if(facingAngle == 270) {
+				if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
+						&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)+1)) {
+					isValid = true;
+					coordinate = Coordinates.N;
+					System.out.println("Follower hit above");
+				}
+			}
+		}
+	
+	return isValid;
 	}
 	
 	private void setToLastFollower(HeadSprite hitActor) {

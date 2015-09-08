@@ -76,6 +76,11 @@ public class OnAnimateTalkingAct implements IOnAct{
 		return 0;
 	}
 	
+	@Override
+	public Coordinates getCurrentCoordinate() {
+		return this.direction;
+	}
+	
 	private void setFrame(HeadSprite actor, ArrayList<Coordinates> validDirections) {
 		//Based on rotation probability
 		if(rand.nextFloat() < this.rotateP) {
@@ -109,16 +114,16 @@ public class OnAnimateTalkingAct implements IOnAct{
 	private void changeSpriteOrientation(HeadSprite actor) {
 	
 		if(direction == Coordinates.N) {
-			frames = animationFrames.get("TalkRight");
+			frames = animationFrames.get("TalkAbove");
 		}
 		else if(direction == Coordinates.E) {
 			frames = animationFrames.get("TalkRight");
 		}
-		else if(direction == Coordinates.S) {
-			frames = animationFrames.get("TalkRight");
-		}
 		else if(direction == Coordinates.W) {
-			frames = animationFrames.get("TalkRight");
+			frames = animationFrames.get("TalkLeft");
+		}
+		else if(direction == Coordinates.S) {
+			frames = animationFrames.get("TalkBelow");
 		}
 	}
 	
@@ -140,6 +145,18 @@ public class OnAnimateTalkingAct implements IOnAct{
 		Array<AtlasRegion> talkRight = new TextureAtlas(Gdx.files.internal(framesPath + "Right.pack")).getRegions();
 		
 		animationFrames.put("TalkRight", talkRight);
+		
+		Array<AtlasRegion> talkLeft = new TextureAtlas(Gdx.files.internal(framesPath + "Left.pack")).getRegions();
+		
+		animationFrames.put("TalkLeft", talkLeft);
+		
+		Array<AtlasRegion> talkAbove = new TextureAtlas(Gdx.files.internal(framesPath + "Above.pack")).getRegions();
+		
+		animationFrames.put("TalkAbove", talkAbove);
+		
+		Array<AtlasRegion> talkBelow = new TextureAtlas(Gdx.files.internal(framesPath + "Below.pack")).getRegions();
+		
+		animationFrames.put("TalkBelow", talkBelow);
 	}
 	
 	//**************************** Talking heads logic

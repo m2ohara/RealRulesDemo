@@ -10,7 +10,7 @@ import com.realrules.game.state.PlayerState;
 public class CoordinateSystem {
 	
 	private static int systemWidth = 3;
-	private static int systemHeight = 5;
+	private static int systemHeight = 4;
 	public static enum Coordinates {N, NE, E, SE, S, SW, W, NW}
 	private static CoordinateSystem instance;
 	//Properties related to setting sprites on game screen
@@ -48,7 +48,7 @@ public class CoordinateSystem {
 			getGameXCoords().add(x);
 		}
 		
-		float centreY = (Gdx.graphics.getHeight()) / 2; 
+		float centreY = (Gdx.graphics.getHeight()-100) / 2; 
 		float ySpan = headSpriteH*yGrid;
 		float startY = centreY + (ySpan/2);
 		float spanLengthY = startY - ySpan;

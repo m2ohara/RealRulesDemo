@@ -62,6 +62,11 @@ public class GossiperBehaviour implements IHeadBehaviour {
 	public int getInfluenceAmount() {
 		return influenceAmount;
 	}
+
+	@Override
+	public Coordinates getCoordDirection() {
+		return onAct.getCurrentCoordinate();
+	}
 	
 }
 

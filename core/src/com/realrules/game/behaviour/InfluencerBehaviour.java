@@ -62,5 +62,10 @@ public class InfluencerBehaviour implements IHeadBehaviour {
 	public int getDirection() {
 		return onAct.getCurrentDirection();
 	}
+	
+	@Override
+	public Coordinates getCoordDirection() {
+		return onAct.getCurrentCoordinate();
+	}
 
 }

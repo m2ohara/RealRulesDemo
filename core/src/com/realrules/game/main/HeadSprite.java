@@ -66,6 +66,10 @@ public class HeadSprite  extends Image  {
 		return isActing;
 	}
 	
+	public Coordinates getCoordDirection() {
+		return behaviour.getCoordDirection();
+	}
+	
 	public HeadSprite(Head type, float x, float y, String framesPath, boolean isActive) {
 		super(new TextureAtlas(Gdx.files.internal(framesPath+defaultPack)).getRegions().get(0));
 

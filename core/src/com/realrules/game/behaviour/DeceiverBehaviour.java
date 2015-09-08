@@ -65,4 +65,9 @@ public class DeceiverBehaviour implements IHeadBehaviour {
 		return onAct.getCurrentDirection();
 	}
 
+	@Override
+	public Coordinates getCoordDirection() {
+		return onAct.getCurrentCoordinate();
+	}
+
 }
