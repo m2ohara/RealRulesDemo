@@ -27,12 +27,12 @@ public class PlayerState {
 	public void generateDummyProperties() {
 		
 		followerTypes = new ArrayList<FollowerType>();
-		followerTypes.add(new FollowerType("sprites//gossiperFollowerPack.pack", Head.GOSSIPER));
-		followerTypes.add(new FollowerType("sprites//promoterFollowerPack.pack", Head.INFLUENCER));
-		followerTypes.add(new FollowerType("sprites//deceiverFollowerPack.pack", Head.DECEIVER));
+		followerTypes.add(new FollowerType("sprites////Meep//Gossiper//", Head.GOSSIPER));
+		followerTypes.add(new FollowerType("sprites//Disk//Promoter//", Head.INFLUENCER));
+		followerTypes.add(new FollowerType("sprites//Disk//Deceiver//", Head.DECEIVER));
 		
 		followers = new ArrayList<Follower>();
-		followers.add(new Follower(Head.GOSSIPER, 1, "sprites//gossiperFollowerPack.pack"));
+		followers.add(new Follower(Head.GOSSIPER, 1, "sprites//Meep//Gossiper//Default.pack"));
 		followers.add(new Follower(Head.INFLUENCER, 2, "sprites//promoterFollowerPack.pack"));
 		followers.add(new Follower(Head.DECEIVER, 3, "sprites//deceiverFollowerPack.pack"));
 		level = 1;

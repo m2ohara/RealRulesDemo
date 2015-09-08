@@ -39,6 +39,7 @@ public class HeadSprite  extends Image  {
 	
 	private boolean isActing = false;
 	private String framesPath = null;
+	private static String defaultPack = "Default.pack";
 	private Head type = null;
 	
 	public int getXGameCoord() {
@@ -66,10 +67,10 @@ public class HeadSprite  extends Image  {
 	}
 	
 	public HeadSprite(Head type, float x, float y, String framesPath, boolean isActive) {
-		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
+		super(new TextureAtlas(Gdx.files.internal(framesPath+defaultPack)).getRegions().get(0));
 
 		//Centre origin in frame for rotation;
-		TextureRegion currentFrame  = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0);
+		TextureRegion currentFrame  = new TextureAtlas(Gdx.files.internal(framesPath+defaultPack)).getRegions().get(0);
 		this.setOrigin(currentFrame.getRegionWidth()/2, currentFrame.getRegionHeight()/2);
 		this.setPosition(x, y);
 		

@@ -3,11 +3,11 @@ package com.realrules.game.behaviour;
 import java.util.ArrayList;
 
 import com.realrules.game.act.IOnAct;
-import com.realrules.game.act.OnAct;
+import com.realrules.game.act.OnAnimateTalkingAct;
 import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.main.CoordinateSystem;
-import com.realrules.game.main.HeadSprite;
 import com.realrules.game.main.CoordinateSystem.Coordinates;
+import com.realrules.game.main.HeadSprite;
 import com.realrules.game.touch.GossiperTouchAction;
 import com.realrules.game.touch.TouchAction;
 
@@ -24,7 +24,7 @@ public class GossiperBehaviour implements IHeadBehaviour {
 	public GossiperBehaviour(boolean isActive, String framesPath, int x, int y, IManualInteraction manInteraction) {
 		this.isActive = isActive;
 		
-		onAct = new OnAct(rotateP, interactP, framesPath);
+		onAct = new OnAnimateTalkingAct(rotateP, interactP, framesPath);
 		
 		onTouch = new GossiperTouchAction(manInteraction);
 		this.onTouch.setInteractorX(x);

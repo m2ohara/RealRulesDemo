@@ -272,24 +272,25 @@ public class DemoGame extends ApplicationAdapter {
 	
 	private void setCrowdScreen() {
 		
-		Actor screen = getImage("CrowdScreen", "screens//screensPack");
+		Actor screen = getImage("GameScreen", "screens//screensPack");
 		screen.setTouchable(Touchable.disabled);
 		setToStage(screen, 0, 0);
 		
+		List<FollowerType> types = plState.getFollowerTypes();
 		Random crowdSetter = new Random();
 		int starterX = crowdSetter.nextInt(CoordinateSystem.getSystemWidth()-1);
 		for(int x = 0; x < CoordinateSystem.getSystemWidth(); x++) {
 			for(int y = 0; y < CoordinateSystem.getSystemHeight(); y++) {
 				HeadSprite current = null;
 				float rand = crowdSetter.nextFloat();
-				if(rand < 0.33) {
-					current = new HeadSprite(Head.GOSSIPER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//gossiperFollowerPack.pack", true);
+				if(rand < 1) {
+					current = new HeadSprite(Head.GOSSIPER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), types.get(0).spritePath, true);
 				}
 				else if(rand >= 0.33 && rand < 0.66) {
-					current = new HeadSprite(Head.DECEIVER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//deceiverFollowerPack.pack", true);
+					current = new HeadSprite(Head.DECEIVER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), types.get(2).spritePath, true);
 				}
 				else {
-					current = new HeadSprite(Head.INFLUENCER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), "sprites//promoterFollowerPack.pack", true);
+					current = new HeadSprite(Head.INFLUENCER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), types.get(1).spritePath, true);
 				}
 				if(y == CoordinateSystem.getSystemHeight()-1 && x == starterX) {
 					current.status = 1; current.setColor(Color.ORANGE); 
@@ -314,7 +315,7 @@ public class DemoGame extends ApplicationAdapter {
 		List<FollowerType> types = plState.getFollowerTypes();
 		
 		for(int i = 0; i < types.size(); i++) {
-			Image placeHolder = createTargetImage(types.get(i).spritePath,CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i));
+			Image placeHolder = createTargetImage(types.get(i).spritePath+"Default.pack",CoordinateSystem.get().getHudXCoords().get(i), CoordinateSystem.get().getHudYCoords().get(i));
 			placeHolders.add(placeHolder);
 			for(Follower follower : plFollowers) {
 				if(follower.type.head == types.get(i).head) {

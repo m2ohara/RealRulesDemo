@@ -20,12 +20,13 @@ public class DeceiverBehaviour implements IHeadBehaviour {
 	private int influenceAmount = 3;
 	private TouchAction onTouch;
 	private IOnAct onAct;
+	private String actingPack = "deceiverFollowerPack.pack";
 
 	
 	public DeceiverBehaviour(boolean isActive, String framesPath, int x, int y, IManualInteraction manInteraction) {
 		this.isActive = isActive;
 		
-		onAct = new OnAct(rotateP, interactP, framesPath);
+		onAct = new OnAct(rotateP, interactP, framesPath+actingPack);
 		
 		this.onTouch = new DeceiverTouchAction(manInteraction);
 		this.onTouch.setInteractorX(x);
