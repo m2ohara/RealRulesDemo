@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.realrules.game.act.IOnAct;
 import com.realrules.game.act.OnAct;
+import com.realrules.game.act.OnAnimateTalkingAct;
 import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.main.CoordinateSystem;
 import com.realrules.game.main.HeadSprite;
@@ -20,13 +21,14 @@ public class DeceiverBehaviour implements IHeadBehaviour {
 	private int influenceAmount = 3;
 	private TouchAction onTouch;
 	private IOnAct onAct;
-	private String actingPack = "deceiverFollowerPack.pack";
+//	private String actingPack = "deceiverFollowerPack.pack";
 
 	
 	public DeceiverBehaviour(boolean isActive, String framesPath, int x, int y, IManualInteraction manInteraction) {
 		this.isActive = isActive;
 		
-		onAct = new OnAct(rotateP, interactP, framesPath+actingPack);
+//		onAct = new OnAct(rotateP, interactP, framesPath+actingPack);
+		onAct = new OnAnimateTalkingAct(rotateP, interactP, framesPath);
 		
 		this.onTouch = new DeceiverTouchAction(manInteraction);
 		this.onTouch.setInteractorX(x);

@@ -29,12 +29,12 @@ public class PlayerState {
 		followerTypes = new ArrayList<FollowerType>();
 		followerTypes.add(new FollowerType("sprites////Meep//Gossiper//", Head.GOSSIPER));
 		followerTypes.add(new FollowerType("sprites//Disk//Promoter//", Head.INFLUENCER));
-		followerTypes.add(new FollowerType("sprites//Disk//Deceiver//", Head.DECEIVER));
+		followerTypes.add(new FollowerType("sprites////Meep//Gossiper//", Head.DECEIVER));
 		
 		followers = new ArrayList<Follower>();
 		followers.add(new Follower(Head.GOSSIPER, 1, "sprites//Meep//Gossiper//Default.pack"));
 		followers.add(new Follower(Head.INFLUENCER, 2, "sprites//promoterFollowerPack.pack"));
-		followers.add(new Follower(Head.DECEIVER, 3, "sprites//deceiverFollowerPack.pack"));
+		followers.add(new Follower(Head.DECEIVER, 3, "sprites//Meep//Gossiper//Default.pack"));
 		level = 1;
 		reputation = 1000;
 	}
