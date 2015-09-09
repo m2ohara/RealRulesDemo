@@ -18,12 +18,12 @@ public class ManualSupporterInteraction implements IManualInteraction {
 	
 	private void setInfluenceSprite(HeadSprite interactee) {
 		
-		Actor disk = new Image(new TextureAtlas(Gdx.files.internal("sprites//influenceDisk.pack")).getRegions().get(1));
+		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(0));
 
-		disk.setOrigin(disk.getWidth()/2, disk.getHeight()/2);
-		disk.setPosition(interactee.getStartingX(), interactee.getStartingY());
+		handSign.setOrigin(handSign.getWidth()/2, handSign.getHeight()/2);
+		handSign.setPosition(interactee.getStartingX(), interactee.getStartingY());
 		
-		GameProperties.get().addActorToStage(disk);
+		GameProperties.get().addActorToStage(handSign);
 	}
 
 }

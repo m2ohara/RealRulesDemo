@@ -83,7 +83,7 @@ public class AutonomousInteraction {
 
 	}
 
-	public void interact(HeadSprite interactor, Group actorGroup,Coordinates orientation) {
+	public void interact(HeadSprite interactor, Group actorGroup, Coordinates orientation) {
 
 		// As long as interactor isn't neutral
 		if (interactor.status != 0) {

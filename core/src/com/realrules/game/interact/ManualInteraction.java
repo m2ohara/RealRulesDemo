@@ -48,7 +48,7 @@ public class ManualInteraction {
 				}
 				//Neutral interactee
 				else if(interactor != null && !isFirst && !invalidInteraction && interactor.behaviour.getInfluenceAmount() > hitCount && hitActor.status == 0) {
-					if(validInteraction(hitActor)) {
+					if(validInteraction(hitActor, lastHitActor.getCoordDirection())) {
 						//Set previous hit actor to passive follower
 						setConnectorSprite(lastHitActor);
 						manualInteraction.setToMiddleFollower(lastHitActor);
@@ -78,23 +78,23 @@ public class ManualInteraction {
 		lastHitActor = null;
 	}
 	
-	private boolean validInteraction(HeadSprite hitActor) {
+	private boolean validInteraction(HeadSprite hitActor, Coordinates swipeDirection) {
 		
 		boolean isValid = false;
 		
 		if(hitActor.status == 0) {
 			
 			//TODO Refactor condition out
-			if(hitActor.getCoordDirection() != null) {
-				coordinate = hitActor.getCoordDirection();
-				if(hitActor.getCoordDirection() == Coordinates.E) {
+			if(swipeDirection != null) {
+				coordinate = swipeDirection;
+				if(swipeDirection == Coordinates.E) {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX)-1) 
 							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)) {
 						isValid = true;
 						System.out.println("Follower hit to the right");
 					}
 				}
-				else if(hitActor.getCoordDirection() == Coordinates.N) {
+				else if(swipeDirection == Coordinates.N) {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
 							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)+1)) {
 						isValid = true;
@@ -102,14 +102,14 @@ public class ManualInteraction {
 					}
 					
 				}
-				else if(hitActor.getCoordDirection() == Coordinates.S) {
+				else if(swipeDirection == Coordinates.S) {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
 							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)-1)) {
 						isValid = true;
 						System.out.println("Follower hit below");
 					}
 				}
-				else if(hitActor.getCoordDirection() == Coordinates.W) {
+				else if(swipeDirection == Coordinates.W) {
 					if(CoordinateSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (CoordinateSystem.get().getGameXCoords().indexOf(hitActor.startingX)+1) 
 							&& CoordinateSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  CoordinateSystem.get().getGameYCoords().indexOf(hitActor.startingY)) {
 						isValid = true;

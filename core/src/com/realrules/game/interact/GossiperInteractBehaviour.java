@@ -37,13 +37,13 @@ public class GossiperInteractBehaviour implements IInteraction {
 		
 		int influenceSprite = influenceType == 0 ? 0 : 1;
 		
-		Actor disk = new Image(new TextureAtlas(Gdx.files.internal("sprites//influenceDisk.pack")).getRegions().get(influenceSprite));
+		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(0));
 
-		disk.setOrigin(disk.getWidth()/2, disk.getHeight()/2);
-		disk.setPosition(interactee.getStartingX(), interactee.getStartingY());
-		disk.setTouchable(Touchable.disabled);
+		handSign.setOrigin(handSign.getWidth()/2, handSign.getHeight()/2);
+		handSign.setPosition(interactee.getStartingX(), interactee.getStartingY());
+		handSign.setTouchable(Touchable.disabled);
 		
-		GameProperties.get().addActorToStage(disk);
+		GameProperties.get().addActorToStage(handSign);
 	}
 	
 //	private void setConnectorSprite(HeadSprite interactor, int influenceType) {

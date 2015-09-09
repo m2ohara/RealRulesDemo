@@ -127,12 +127,6 @@ public class OnAnimateTalkingAct implements IOnAct{
 		}
 	}
 	
-//	private void changeRotation(HeadSprite actor) {
-//		//Rotate this
-//		actor.setRotation((float) (angle));	
-//		actor.setDrawable(new TextureRegionDrawable(new TextureRegion(frames.get(direction))));
-//	}
-	
 	private void performAutonomousInteraction(HeadSprite actor) {
 		Random rand = new Random();
 		if(rand.nextFloat() < this.interactP) {
@@ -158,20 +152,5 @@ public class OnAnimateTalkingAct implements IOnAct{
 		
 		animationFrames.put("TalkBelow", talkBelow);
 	}
-	
-	//**************************** Talking heads logic
-	
-//	private void updateCurrentAngle( ArrayList<Coordinates> invalidDirections) {
-//
-//			//Set direction
-//			direction = rand.nextInt(2);
-//			//Set angle
-//			int angleSpread = 90;
-//			int angleSector = rand.nextInt(2);
-//			int angleMultiple = angleSpread * rand.nextInt((180/angleSpread)-1);
-//			int startingAngle = angleSector == 0 ? 0 : 270;
-//			angle = startingAngle + angleMultiple;
-//	}
-//
 
 }
