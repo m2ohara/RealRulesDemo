@@ -283,10 +283,10 @@ public class DemoGame extends ApplicationAdapter {
 			for(int y = 0; y < CoordinateSystem.getSystemHeight(); y++) {
 				HeadSprite current = null;
 				float rand = crowdSetter.nextFloat();
-				if(rand < -0.33) {
+				if(rand < 0.33) {
 					current = new HeadSprite(Head.GOSSIPER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), types.get(0).spritePath, true);
 				}
-				else if(rand >= 0 && rand < 1) {
+				else if(rand >= 0.33 && rand < 1) {
 					current = new HeadSprite(Head.DECEIVER, CoordinateSystem.get().getGameXCoords().get(x), CoordinateSystem.get().getGameYCoords().get(y), types.get(2).spritePath, true);
 				}
 				else {
