@@ -1,6 +1,6 @@
 package com.realrules.game.touch;
 
-import com.realrules.game.main.CoordinateSystem.Coordinates;
+import com.realrules.game.main.WorldSystem.Orientation;
 
 public interface ITouchAction {
 	
@@ -9,7 +9,7 @@ public interface ITouchAction {
 	
 	void setInteractorY(int interactorY);
 	
-	void setInteractorDir(Coordinates interactorDir);
+	void setInteractorDir(Orientation interactorDir);
 	
 	void interact();
 

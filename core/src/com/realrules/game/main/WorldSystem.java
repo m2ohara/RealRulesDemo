@@ -7,12 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.realrules.game.state.PlayerState;
 
-public class CoordinateSystem {
+public class WorldSystem {
 	
 	private static int systemWidth = 3;
 	private static int systemHeight = 4;
-	public static enum Coordinates {N, NE, E, SE, S, SW, W, NW}
-	private static CoordinateSystem instance;
+	public static enum Orientation {N, NE, E, SE, S, SW, W, NW}
+	private static WorldSystem instance;
 	//Properties related to setting sprites on game screen
 	public final int xGrid = systemWidth;
 	public final int yGrid = systemHeight;
@@ -26,14 +26,14 @@ public class CoordinateSystem {
 	private ArrayList<Float> hudXCoords = new ArrayList<Float>();
 	private ArrayList<Float> hudYCoords = new ArrayList<Float>();
 	
-	public static CoordinateSystem get() {
+	public static WorldSystem get() {
 		if(instance == null) {
-			instance = new CoordinateSystem();
+			instance = new WorldSystem();
 		}
 		return instance;
 	}
 	
-	private CoordinateSystem() {
+	private WorldSystem() {
 		setGameCoords();
 		
 		setHudCoords();
@@ -105,29 +105,29 @@ public class CoordinateSystem {
 		//TODO: Implement
 	}
 	
-	public static Coordinates getCoordDirection(int direction, int angle ) {
+	public static Orientation getCoordDirection(int direction, int angle ) {
 		
 		if(direction == 1) { //Right
 			if(angle == 0) {
-				return Coordinates.E;
+				return Orientation.E;
 			}
 			else if(angle == 90) {
-				return Coordinates.N;
+				return Orientation.N;
 			}
 			else if(angle == 270) {
-				return Coordinates.S;
+				return Orientation.S;
 			}
 			
 		}
 		else if(direction == 0) { //Left
 			if(angle == 0) {
-				return Coordinates.W;
+				return Orientation.W;
 			}
 			else if(angle == 90) {
-				return Coordinates.S;
+				return Orientation.S;
 			}
 			else if(angle == 270) {
-				return Coordinates.N;
+				return Orientation.N;
 			}
 		}
 		return null;
@@ -156,17 +156,17 @@ public class CoordinateSystem {
 		return systemHeight;
 	}
 	
-	//Determine direction object is facing
-	public static Coordinates getCoordinates(int dir, int rotation) {
-		
-		//TODO: dev logic for getting coordinates
-		if(dir == 0){
-
-		}
-		return null;
-			
-		
-	}
+//	//Determine direction object is facing
+//	public static Orientation getCoordinates(int dir, int rotation) {
+//		
+//		//TODO: dev logic for getting coordinates
+//		if(dir == 0){
+//
+//		}
+//		return null;
+//			
+//		
+//	}
 	
 	public static boolean isValidYCoordinate(int coordinate) {
 		if(coordinate >= 0 &&  coordinate < systemHeight)

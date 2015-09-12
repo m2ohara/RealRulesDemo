@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.realrules.game.main.CoordinateSystem.Coordinates;
+import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.HeadSprite;
 
@@ -31,7 +31,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 	
 	private float interactP;
 	private float rotateP;
-	private Coordinates direction;
+	private Orientation direction;
 	
 	public OnAnimateTalkingAct(float rotateProbability, float interactProbability, String framesPath) 
 	{
@@ -45,7 +45,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 	}
 
 	@Override
-	public void performActing(float delta, HeadSprite actor, ArrayList<Coordinates> validDirections) {
+	public void performActing(float delta, HeadSprite actor, ArrayList<Orientation> validDirections) {
 		
 		if(stateTime >= stateLength) {
 			stateTime = 0.0f;		
@@ -65,23 +65,13 @@ public class OnAnimateTalkingAct implements IOnAct{
 		interactStateTime += delta;
 		
 	}
-
-	@Override
-	public int getCurrentDirection() {
-		return 0;
-	}
-
-	@Override
-	public int getCurrentAngle() {
-		return 0;
-	}
 	
 	@Override
-	public Coordinates getCurrentCoordinate() {
+	public Orientation getCurrentCoordinate() {
 		return this.direction;
 	}
 	
-	private void setFrame(HeadSprite actor, ArrayList<Coordinates> validDirections) {
+	private void setFrame(HeadSprite actor, ArrayList<Orientation> validDirections) {
 		//Based on rotation probability
 		if(rand.nextFloat() < this.rotateP) {
 			updateCurrentDirection(validDirections);
@@ -106,23 +96,23 @@ public class OnAnimateTalkingAct implements IOnAct{
 		frameTime += delta;
 	}
 	
-	private void updateCurrentDirection( ArrayList<Coordinates> validDirections) {
+	private void updateCurrentDirection( ArrayList<Orientation> validDirections) {
 		int choice = rand.nextInt(validDirections.size());
 		direction = validDirections.get(choice);
 	}
 	
 	private void changeSpriteOrientation(HeadSprite actor) {
 	
-		if(direction == Coordinates.N) {
+		if(direction == Orientation.N) {
 			frames = animationFrames.get("TalkAbove");
 		}
-		else if(direction == Coordinates.E) {
+		else if(direction == Orientation.E) {
 			frames = animationFrames.get("TalkRight");
 		}
-		else if(direction == Coordinates.W) {
+		else if(direction == Orientation.W) {
 			frames = animationFrames.get("TalkLeft");
 		}
-		else if(direction == Coordinates.S) {
+		else if(direction == Orientation.S) {
 			frames = animationFrames.get("TalkBelow");
 		}
 	}

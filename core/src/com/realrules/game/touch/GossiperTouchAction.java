@@ -9,10 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.interact.ManualOpposerInteraction;
-import com.realrules.game.main.CoordinateSystem;
+import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.HeadSprite;
-import com.realrules.game.main.CoordinateSystem.Coordinates;
+import com.realrules.game.main.WorldSystem.Orientation;
 
 public class GossiperTouchAction extends TouchAction{
 	
@@ -36,52 +36,52 @@ public class GossiperTouchAction extends TouchAction{
 			int origX = this.getInteractorX();
 			int origY = this.getInteractorY();
 			
-			interacter = CoordinateSystem.get().getMemberFromCoords(origX, origY);
+			interacter = WorldSystem.get().getMemberFromCoords(origX, origY);
 			
 			//Determine direction
-			if(this.getInteractorDir() == Coordinates.N) {
+			if(this.getInteractorDir() == Orientation.N) {
 				//Set related coordinates for valid interactees
-				if(CoordinateSystem.isValidYCoordinate(origY-1)) {
+				if(WorldSystem.isValidYCoordinate(origY-1)) {
 					validYCoords.add(origY-1);
 					validXCoords.add(origX);
 				}
-				if(CoordinateSystem.isValidYCoordinate(origY-2)) {
+				if(WorldSystem.isValidYCoordinate(origY-2)) {
 					validYCoords.add(origY-2);
 					validXCoords.add(origX);
 				}
 			}
 			
-			if(this.getInteractorDir() == Coordinates.E) {
+			if(this.getInteractorDir() == Orientation.E) {
 				//Set related coordinates for valid interactees
-				if(CoordinateSystem.isValidXCoordinate(origX+1)) {
+				if(WorldSystem.isValidXCoordinate(origX+1)) {
 					validXCoords.add(origX+1);
 					validYCoords.add(origY);
 				}
-				if(CoordinateSystem.isValidXCoordinate(origX+2)) {
+				if(WorldSystem.isValidXCoordinate(origX+2)) {
 					validXCoords.add(origX+2);
 					validYCoords.add(origY);
 				}
 			}
 			
-			if(this.getInteractorDir() == Coordinates.S) {
+			if(this.getInteractorDir() == Orientation.S) {
 				//Set related coordinates for valid interactees
-				if(CoordinateSystem.isValidYCoordinate(origY+1)) {
+				if(WorldSystem.isValidYCoordinate(origY+1)) {
 					validYCoords.add(origY+1);
 					validXCoords.add(origX);
 				}
-				if(CoordinateSystem.isValidYCoordinate(origY+2)) {
+				if(WorldSystem.isValidYCoordinate(origY+2)) {
 					validYCoords.add(origY+2);
 					validXCoords.add(origX);
 				}
 			}
 			
-			if(this.getInteractorDir() == Coordinates.W) {
+			if(this.getInteractorDir() == Orientation.W) {
 				//Set related coordinates for valid interactees
-				if(CoordinateSystem.isValidXCoordinate(origX-1)) {
+				if(WorldSystem.isValidXCoordinate(origX-1)) {
 					validXCoords.add(origX-1);
 					validYCoords.add(origY);
 				}
-				if(CoordinateSystem.isValidXCoordinate(origX-2)) {
+				if(WorldSystem.isValidXCoordinate(origX-2)) {
 					validXCoords.add(origX-2);
 					validYCoords.add(origY);
 				} 
@@ -101,7 +101,7 @@ public class GossiperTouchAction extends TouchAction{
 			manInteraction.setToMiddleFollower(interacter);
 			setConnectorSprite(interacter);
 			for(int i = 0; i < validXCoords.size(); i++) {
-				HeadSprite actor = CoordinateSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i));
+				HeadSprite actor = WorldSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i));
 				if(i == validXCoords.size()-1) {
 					setToLastFollower(actor);
 				}
@@ -128,13 +128,13 @@ public class GossiperTouchAction extends TouchAction{
 		connector.setOrigin(connector.getWidth()/2, connector.getHeight()/2);
 		connector.setPosition(lastHitActor.getStartingX() - 20, lastHitActor.getStartingY() -22);
 		
-		if(this.getInteractorDir() == Coordinates.E) {
+		if(this.getInteractorDir() == Orientation.E) {
 			connector.rotateBy(270);
 		}
-		else if(this.getInteractorDir() == Coordinates.S) {
+		else if(this.getInteractorDir() == Orientation.S) {
 			connector.rotateBy(180);
 		}
-		else if(this.getInteractorDir() == Coordinates.W) {
+		else if(this.getInteractorDir() == Orientation.W) {
 			connector.rotateBy(90);
 		}
 		

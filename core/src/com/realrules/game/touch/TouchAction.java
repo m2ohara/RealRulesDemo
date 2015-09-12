@@ -1,12 +1,12 @@
 package com.realrules.game.touch;
 
-import com.realrules.game.main.CoordinateSystem.Coordinates;
+import com.realrules.game.main.WorldSystem.Orientation;
 
 public abstract class TouchAction implements ITouchAction {
 	
 	private int interactorX;
 	private int interactorY;
-	private Coordinates interactorDir;
+	private Orientation interactorDir;
 
 	protected abstract void generateValidInteractees();
 
@@ -26,11 +26,11 @@ public abstract class TouchAction implements ITouchAction {
 		this.interactorY = interactorY;
 	}
 
-	public Coordinates getInteractorDir() {
+	public Orientation getInteractorDir() {
 		return interactorDir;
 	}
 
-	public void setInteractorDir(Coordinates interactorDir) {
+	public void setInteractorDir(Orientation interactorDir) {
 		this.interactorDir = interactorDir;
 	}
 

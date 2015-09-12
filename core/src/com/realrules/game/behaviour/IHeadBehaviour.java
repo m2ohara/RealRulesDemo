@@ -3,7 +3,7 @@ package com.realrules.game.behaviour;
 import java.util.ArrayList;
 
 import com.realrules.game.main.HeadSprite;
-import com.realrules.game.main.CoordinateSystem.Coordinates;
+import com.realrules.game.main.WorldSystem.Orientation;
 
 public interface IHeadBehaviour {
 	
@@ -11,12 +11,10 @@ public interface IHeadBehaviour {
 	void onTouch();
 	
 	//New act behaviour
-	void onAct(float delta, HeadSprite actor, ArrayList<Coordinates> invalidDirections);
+	void onAct(float delta, HeadSprite actor, ArrayList<Orientation> invalidDirections);
 	
 	int getInfluenceAmount();
 	
-	int getDirection(); //Refactor out
-	
-	public Coordinates getCoordDirection();
+	public Orientation getOrientation();
 	
 }

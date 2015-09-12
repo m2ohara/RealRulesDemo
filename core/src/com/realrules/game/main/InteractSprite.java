@@ -23,8 +23,8 @@ public class InteractSprite extends Image {
 		currentFrame = frames.get(0);
 		
 		//Centre sprite to follower's centre
-		this.xCoord = followerX + (CoordinateSystem.headSpriteW/2) - (this.getWidth()/2);
-		this.yCoord = followerY + (CoordinateSystem.headSpriteH/2) - (this.getHeight()/2);
+		this.xCoord = followerX + (WorldSystem.headSpriteW/2) - (this.getWidth()/2);
+		this.yCoord = followerY + (WorldSystem.headSpriteH/2) - (this.getHeight()/2);
 		
 		//Centre origin in frame for rotation;
 		this.setOrigin(this.currentFrame.getRegionWidth()/2, this.currentFrame.getRegionHeight()/2);			

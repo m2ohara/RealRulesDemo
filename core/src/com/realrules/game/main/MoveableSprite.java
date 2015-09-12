@@ -17,9 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Array;
 import com.realrules.game.main.DemoGame.Head;
 import com.realrules.game.state.Follower;
+import com.realrules.game.state.PlayerState;
 
 public class MoveableSprite 
-//extends Image 
 {
 	
 	private Head type = null;
@@ -192,7 +192,7 @@ public class MoveableSprite
 	}
 	
 	public String getFramesPath() {
-		return this.framesPath;
+		return (String)PlayerState.get().getFollowerTypes().get(GameProperties.get().getFollowerType().indexOf(this.type)).spritePath;
 	}
 	
 	public Actor getTargetImage() {

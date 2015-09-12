@@ -9,10 +9,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.realrules.game.main.CoordinateSystem;
+import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.HeadSprite;
-import com.realrules.game.main.CoordinateSystem.Coordinates;
+import com.realrules.game.main.WorldSystem.Orientation;
 
 public class OnAct implements IOnAct {
 	
@@ -38,7 +38,7 @@ public class OnAct implements IOnAct {
 	}
 
 	@Override
-	public void performActing(float delta, HeadSprite actor, ArrayList<Coordinates> validDirections) {
+	public void performActing(float delta, HeadSprite actor, ArrayList<Orientation> validDirections) {
 		
 		if(stateTime >= stateLength) {
 			stateTime = 0.0f;		
@@ -55,7 +55,7 @@ public class OnAct implements IOnAct {
 
 	}
 	
-	private void setFrame(HeadSprite actor, ArrayList<Coordinates> validDirections) {
+	private void setFrame(HeadSprite actor, ArrayList<Orientation> validDirections) {
 		//Based on rotation probability
 		if(rand.nextFloat() < this.rotateP) {
 			updateCurrentDirection(validDirections);
@@ -64,23 +64,23 @@ public class OnAct implements IOnAct {
 		
 	}
 	
-	private void updateCurrentDirection( ArrayList<Coordinates> validDirections) {
+	private void updateCurrentDirection( ArrayList<Orientation> validDirections) {
 
 
 		int choice = rand.nextInt(validDirections.size());
-		if (validDirections.get(choice) == Coordinates.N) {
+		if (validDirections.get(choice) == Orientation.N) {
 			angle = 90;
 			direction = 1;
 		} 
-		if (validDirections.get(choice) == Coordinates.E) {
+		if (validDirections.get(choice) == Orientation.E) {
 			angle = 0;
 			direction = 1;
 		}
-		if (validDirections.get(choice) == Coordinates.S) {
+		if (validDirections.get(choice) == Orientation.S) {
 			angle = 90;
 			direction = 0;
 		}
-		if (validDirections.get(choice) == Coordinates.W) {
+		if (validDirections.get(choice) == Orientation.W) {
 			angle = 0;
 			direction = 0;
 		}
@@ -95,23 +95,13 @@ public class OnAct implements IOnAct {
 	private void performAutonomousInteraction(HeadSprite actor) {
 		Random rand = new Random();
 		if(rand.nextFloat() < this.interactP) {
-			actor.interaction.interact(actor, GameProperties.get().getActorGroup(), CoordinateSystem.getCoordDirection(direction, angle));
+			actor.interaction.interact(actor, GameProperties.get().getActorGroup(), WorldSystem.getCoordDirection(direction, angle));
 			
 		}
 	}
 
 	@Override
-	public int getCurrentDirection() {
-		return direction;
-	}
-
-	@Override
-	public int getCurrentAngle() {
-		return angle;
-	}
-
-	@Override
-	public Coordinates getCurrentCoordinate() {
+	public Orientation getCurrentCoordinate() {
 		// TODO Auto-generated method stub
 		return null;
 	}

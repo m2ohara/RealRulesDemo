@@ -13,13 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.realrules.game.behaviour.DeceiverBehaviour;
 import com.realrules.game.behaviour.GossiperBehaviour;
 import com.realrules.game.behaviour.IHeadBehaviour;
-import com.realrules.game.behaviour.InfluencerBehaviour;
+import com.realrules.game.behaviour.PromoterBehaviour;
 import com.realrules.game.interact.AutonomousInteraction;
 import com.realrules.game.interact.DeceiverInteraction;
 import com.realrules.game.interact.GossiperInteraction;
 import com.realrules.game.interact.IManualInteraction;
-import com.realrules.game.interact.InfluencerInteraction;
-import com.realrules.game.main.CoordinateSystem.Coordinates;
+import com.realrules.game.interact.PromoterInteraction;
+import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.main.DemoGame.Head;
 
 public class HeadSprite  extends Image  {
@@ -34,7 +34,7 @@ public class HeadSprite  extends Image  {
 	public float startingY;
 	public boolean isActive = true;
 	public int status = 0; //0 : neutral, 1 : for 2 : against
-	private ArrayList<Coordinates> validDirections;
+	private ArrayList<Orientation> validDirections;
 	
 	
 	private boolean isActing = false;
@@ -43,15 +43,11 @@ public class HeadSprite  extends Image  {
 	private Head type = null;
 	
 	public int getXGameCoord() {
-		return CoordinateSystem.get().getGameXCoords().indexOf(this.startingX);
+		return WorldSystem.get().getGameXCoords().indexOf(this.startingX);
 	}
 	
 	public int getYGameCoord() {
-		return CoordinateSystem.get().getGameYCoords().indexOf(this.startingY);
-	}
-
-	public int getDirection() {
-		return behaviour.getDirection();
+		return WorldSystem.get().getGameYCoords().indexOf(this.startingY);
 	}
 
 	public float getStartingX() {
@@ -66,8 +62,8 @@ public class HeadSprite  extends Image  {
 		return isActing;
 	}
 	
-	public Coordinates getCoordDirection() {
-		return behaviour.getCoordDirection();
+	public Orientation getOrientation() {
+		return behaviour.getOrientation();
 	}
 	
 	public HeadSprite(Head type, float x, float y, String framesPath, boolean isActive) {
@@ -98,8 +94,8 @@ public class HeadSprite  extends Image  {
 			interaction = new DeceiverInteraction();
 		}
 		if(type == type.INFLUENCER) {
-			behaviour = new InfluencerBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord(), manInteraction);
-			interaction = new InfluencerInteraction();
+			behaviour = new PromoterBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord(), manInteraction);
+			interaction = new PromoterInteraction();
 		}
 		
 		//Refactor into Behaviour
@@ -140,19 +136,19 @@ public class HeadSprite  extends Image  {
 	
 	private void setValidDirections() {
 		
-		validDirections = new ArrayList<Coordinates> (Arrays.asList(Coordinates.N, Coordinates.E, Coordinates.S, Coordinates.W));
+		validDirections = new ArrayList<Orientation> (Arrays.asList(Orientation.N, Orientation.E, Orientation.S, Orientation.W));
 		
-		if(getXGameCoord() == CoordinateSystem.getSystemWidth()-1) {
-			validDirections.remove(Coordinates.E);
+		if(getXGameCoord() == WorldSystem.getSystemWidth()-1) {
+			validDirections.remove(Orientation.E);
 		}
 		if(getXGameCoord() == 0) {
-			validDirections.remove(Coordinates.W);
+			validDirections.remove(Orientation.W);
 		}
-		if(getYGameCoord() == CoordinateSystem.getSystemHeight()-1) {
-			validDirections.remove(Coordinates.S);
+		if(getYGameCoord() == WorldSystem.getSystemHeight()-1) {
+			validDirections.remove(Orientation.S);
 		}
 		if(getYGameCoord() == 0) {
-			validDirections.remove(Coordinates.N);
+			validDirections.remove(Orientation.N);
 		}
 	}
 	

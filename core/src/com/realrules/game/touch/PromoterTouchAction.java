@@ -10,23 +10,23 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.interact.ManualSupporterInteraction;
-import com.realrules.game.main.CoordinateSystem;
+import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.HeadSprite;
-import com.realrules.game.main.CoordinateSystem.Coordinates;
+import com.realrules.game.main.WorldSystem.Orientation;
 
-public class InfluencerTouchAction extends TouchAction {
+public class PromoterTouchAction extends TouchAction {
 
 	private ArrayList<Integer> validXCoords = new ArrayList<Integer>();
 	private ArrayList<Integer> validYCoords = new ArrayList<Integer>();
 	private HeadSprite interacter;
 	private IManualInteraction manInteraction = null;
 	
-	public InfluencerTouchAction(int x, int y, IManualInteraction manInteraction) {
+	public PromoterTouchAction(int x, int y, IManualInteraction manInteraction) {
 		this.manInteraction = new ManualSupporterInteraction();
 		this.setInteractorX(x);
 		this.setInteractorY(y);
-		this.setInteractorDir(CoordinateSystem.getCoordDirection(0, 0));
+		this.setInteractorDir(WorldSystem.getCoordDirection(0, 0));
 	}
 	
 	@Override
@@ -36,14 +36,14 @@ public class InfluencerTouchAction extends TouchAction {
 			int origX = this.getInteractorX();
 			int origY = this.getInteractorY();
 			
-			interacter = CoordinateSystem.get().getMemberFromCoords(origX, origY);
+			interacter = WorldSystem.get().getMemberFromCoords(origX, origY);
 			
 			Random rand = new Random();
 			
 			//Determine direction
-			if(this.getInteractorDir() == Coordinates.N) {
+			if(this.getInteractorDir() == Orientation.N) {
 				//Set related coordinates for valid interactees
-				if(CoordinateSystem.isValidYCoordinate(origY-1)) {
+				if(WorldSystem.isValidYCoordinate(origY-1)) {
 					validYCoords.add(origY-1);
 					validYCoords.add(origY-1);
 					
@@ -53,9 +53,9 @@ public class InfluencerTouchAction extends TouchAction {
 				}
 			}
 			
-			if(this.getInteractorDir() == Coordinates.E) {
+			if(this.getInteractorDir() == Orientation.E) {
 				//Set related coordinates for valid interactees
-				if(CoordinateSystem.isValidXCoordinate(origX+1)) {
+				if(WorldSystem.isValidXCoordinate(origX+1)) {
 					validXCoords.add(origX+1);
 					validXCoords.add(origX+1);
 					
@@ -64,9 +64,9 @@ public class InfluencerTouchAction extends TouchAction {
 				}
 			}
 			
-			if(this.getInteractorDir() == Coordinates.S) {
+			if(this.getInteractorDir() == Orientation.S) {
 				//Set related coordinates for valid interactees
-				if(CoordinateSystem.isValidYCoordinate(origY+1)) {
+				if(WorldSystem.isValidYCoordinate(origY+1)) {
 					validYCoords.add(origY+1);
 					validYCoords.add(origY+1);
 					
@@ -75,9 +75,9 @@ public class InfluencerTouchAction extends TouchAction {
 				}
 			}
 			
-			if(this.getInteractorDir() == Coordinates.W) {
+			if(this.getInteractorDir() == Orientation.W) {
 				//Set related coordinates for valid interactees
-				if(CoordinateSystem.isValidXCoordinate(origX-1)) {
+				if(WorldSystem.isValidXCoordinate(origX-1)) {
 					validXCoords.add(origX-1);
 					validXCoords.add(origX-1);
 					
@@ -91,7 +91,7 @@ public class InfluencerTouchAction extends TouchAction {
 	
 	private void setValidXCoords(float randVal, int origX) {
 		if(randVal < 0.33) {
-			if(CoordinateSystem.isValidXCoordinate(origX-1)) {
+			if(WorldSystem.isValidXCoordinate(origX-1)) {
 				validXCoords.add(origX-1);
 				validXCoords.add(origX);
 			}
@@ -102,7 +102,7 @@ public class InfluencerTouchAction extends TouchAction {
 		}
 		else if(randVal >= 0.33 && randVal <= 0.66) {
 			validXCoords.add(origX);
-			if(CoordinateSystem.isValidXCoordinate(origX-1)) {
+			if(WorldSystem.isValidXCoordinate(origX-1)) {
 				validXCoords.add(origX-1);
 			}
 			else {
@@ -110,7 +110,7 @@ public class InfluencerTouchAction extends TouchAction {
 			}
 		}
 		else {
-			if(CoordinateSystem.isValidXCoordinate(origX+1)) {
+			if(WorldSystem.isValidXCoordinate(origX+1)) {
 				validXCoords.add(origX+1);
 				validXCoords.add(origX);
 			}
@@ -123,7 +123,7 @@ public class InfluencerTouchAction extends TouchAction {
 	
 	private void setValidYCoords(float randVal, int origY) {
 		if(randVal < 0.33) {
-			if(CoordinateSystem.isValidYCoordinate(origY-1)) {
+			if(WorldSystem.isValidYCoordinate(origY-1)) {
 				validYCoords.add(origY-1);
 				validYCoords.add(origY);
 			}
@@ -134,7 +134,7 @@ public class InfluencerTouchAction extends TouchAction {
 		}
 		else if(randVal >= 0.33 && randVal <= 0.66) {
 			validYCoords.add(origY);
-			if(CoordinateSystem.isValidYCoordinate(origY-1)) {
+			if(WorldSystem.isValidYCoordinate(origY-1)) {
 				validYCoords.add(origY-1);
 			}
 			else {
@@ -142,7 +142,7 @@ public class InfluencerTouchAction extends TouchAction {
 			}
 		}
 		else {
-			if(CoordinateSystem.isValidXCoordinate(origY+1)) {
+			if(WorldSystem.isValidXCoordinate(origY+1)) {
 				validYCoords.add(origY+1);
 				validYCoords.add(origY);
 			}
@@ -162,7 +162,7 @@ public class InfluencerTouchAction extends TouchAction {
 			manInteraction.setToMiddleFollower(interacter);
 			setConnectorSprite(interacter);
 			for(int i = 0; i < validXCoords.size(); i++) {
-				HeadSprite actor = CoordinateSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i));
+				HeadSprite actor = WorldSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i));
 				if(i == validXCoords.size()-1) {
 					setToLastFollower(actor);
 				}
@@ -187,13 +187,13 @@ public class InfluencerTouchAction extends TouchAction {
 		connector.setOrigin(connector.getWidth()/2, connector.getHeight()/2);
 		connector.setPosition(lastHitActor.getStartingX() - 20, lastHitActor.getStartingY() -22);
 		
-		if(this.getInteractorDir() == Coordinates.E) {
+		if(this.getInteractorDir() == Orientation.E) {
 			connector.rotateBy(270);
 		}
-		else if(this.getInteractorDir() == Coordinates.S) {
+		else if(this.getInteractorDir() == Orientation.S) {
 			connector.rotateBy(180);
 		}
-		else if(this.getInteractorDir() == Coordinates.W) {
+		else if(this.getInteractorDir() == Orientation.W) {
 			connector.rotateBy(90);
 		}
 		

@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import com.realrules.game.act.IOnAct;
 import com.realrules.game.act.OnAnimateTalkingAct;
 import com.realrules.game.interact.IManualInteraction;
-import com.realrules.game.main.CoordinateSystem;
-import com.realrules.game.main.CoordinateSystem.Coordinates;
+import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.main.HeadSprite;
 import com.realrules.game.touch.GossiperTouchAction;
 import com.realrules.game.touch.TouchAction;
@@ -29,7 +28,7 @@ public class GossiperBehaviour implements IHeadBehaviour {
 		onTouch = new GossiperTouchAction(manInteraction);
 		this.onTouch.setInteractorX(x);
 		this.onTouch.setInteractorY(y);
-		this.onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(onAct.getCurrentDirection(), onAct.getCurrentAngle()));
+		this.onTouch.setInteractorDir(onAct.getCurrentCoordinate());
 		
 	}
 
@@ -43,28 +42,24 @@ public class GossiperBehaviour implements IHeadBehaviour {
 	}
 
 	@Override
-	public void onAct(float delta, HeadSprite actor, ArrayList<Coordinates> invalidDirections) {
+	public void onAct(float delta, HeadSprite actor, ArrayList<Orientation> invalidDirections) {
 
 		if(isActive) {
 			onAct.performActing(delta, actor, invalidDirections);
 			
 			//Update direction  for touch action
-			onTouch.setInteractorDir(CoordinateSystem.getCoordDirection(onAct.getCurrentDirection(), onAct.getCurrentAngle()));
+			onTouch.setInteractorDir(onAct.getCurrentCoordinate());
 		}
 		
 	}
-
 	
-	public int getDirection() {
-		return onAct.getCurrentDirection();
-	}
-	
+	@Override
 	public int getInfluenceAmount() {
 		return influenceAmount;
 	}
 
 	@Override
-	public Coordinates getCoordDirection() {
+	public Orientation getOrientation() {
 		return onAct.getCurrentCoordinate();
 	}
 	
