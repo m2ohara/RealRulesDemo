@@ -20,7 +20,7 @@ public class GameProperties {
 	private int rewardScore = 3500;
 	
 	private GameProperties() {
-		followerType = Arrays.asList(Head.GOSSIPER, Head.DECEIVER, Head.INFLUENCER);
+		followerType = Arrays.asList(Head.GOSSIPER, Head.INFLUENCER, Head.DECEIVER);
 		followerTypeAmount = Arrays.asList(1, 1, 1);
 	}
 	
@@ -48,13 +48,7 @@ public class GameProperties {
 	
 	public List<Integer> getfollowerTypeAmount() {
 		return followerTypeAmount;
-	}
-	
-	private List<String> spritePaths = Arrays.asList( "sprites//gossiperFollowerPack.pack", "sprites//deceiverFollowerPack.pack", "sprites//promoterFollowerPack.pack" );
-	public List<String> getSpritePaths() {
-		return spritePaths;
-	}
-	
+	}	
 	
 	private float universalTimeRatio = 0.7f;
 	

@@ -286,7 +286,7 @@ public class DemoGame extends ApplicationAdapter {
 				if(rand < 0.33) {
 					current = new HeadSprite(Head.GOSSIPER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(0).spritePath, true);
 				}
-				else if(rand >= 0.33 && rand < 1) {
+				else if(rand >= 0.33 && rand < 0.66) {
 					current = new HeadSprite(Head.INFLUENCER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(1).spritePath, true);
 				}
 				else {
