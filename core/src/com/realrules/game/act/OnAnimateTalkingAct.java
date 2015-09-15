@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.realrules.game.main.WorldSystem.Orientation;
+import com.realrules.game.main.Assets;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.HeadSprite;
 
@@ -126,19 +127,19 @@ public class OnAnimateTalkingAct implements IOnAct{
 	}
 	
 	private void setFramePacks(String framesPath) {
-		Array<AtlasRegion> talkRight = new TextureAtlas(Gdx.files.internal(framesPath + "Right.pack")).getRegions();
+		Array<AtlasRegion> talkRight = Assets.get().getAssetManager().get(framesPath + "Right.pack", TextureAtlas.class).getRegions();
 		
 		animationFrames.put("TalkRight", talkRight);
 		
-		Array<AtlasRegion> talkLeft = new TextureAtlas(Gdx.files.internal(framesPath + "Left.pack")).getRegions();
+		Array<AtlasRegion> talkLeft = Assets.get().getAssetManager().get(framesPath + "Left.pack", TextureAtlas.class).getRegions();
 		
 		animationFrames.put("TalkLeft", talkLeft);
 		
-		Array<AtlasRegion> talkAbove = new TextureAtlas(Gdx.files.internal(framesPath + "Above.pack")).getRegions();
+		Array<AtlasRegion> talkAbove = Assets.get().getAssetManager().get(framesPath + "Above.pack", TextureAtlas.class).getRegions();
 		
 		animationFrames.put("TalkAbove", talkAbove);
 		
-		Array<AtlasRegion> talkBelow = new TextureAtlas(Gdx.files.internal(framesPath + "Below.pack")).getRegions();
+		Array<AtlasRegion> talkBelow = Assets.get().getAssetManager().get(framesPath + "Below.pack", TextureAtlas.class).getRegions();
 		
 		animationFrames.put("TalkBelow", talkBelow);
 	}

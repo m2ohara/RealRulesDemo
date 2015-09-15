@@ -16,6 +16,7 @@ public class VoteGameRules implements IGameRules {
 	private int remainingVotes = 0;
 	private int scoreWinMultiplier = 100;
 	private int scoreLoseMultiplier = 50;
+	private int waitTime = 300;
 	
 	public VoteGameRules(State winState, int winVotes, int totalVotes) {
 		this.winVotes = winVotes;
@@ -76,7 +77,13 @@ public class VoteGameRules implements IGameRules {
 	private void checkIsFinished(int forVotes, int againstVotes) {
 		if(forVotes + againstVotes == totalVotes) {
 			setEndScore(forVotes, againstVotes);
-			currentState = State.FINISHED;
+			
+			if(waitTime == 0) {
+				currentState = State.FINISHED;
+			}
+			else {
+				waitTime--;
+			}
 			
 		}
 		

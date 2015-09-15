@@ -115,6 +115,11 @@ public class DemoGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+		
+		if(!Assets.get().isLoaded()) {
+			Assets.get().load();
+		}
+		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
@@ -209,15 +214,17 @@ public class DemoGame extends ApplicationAdapter {
 	
 	private void setSpeechScreen() {
 		
-		setToStage(getImage("SpeechScreen", "screens//screensPack"), 0, 0);
-		Actor btn = getButton("CreateSpeechBtn");
-		setToStage(btn, 0, -260);
-		
-		btn.addListener(new ClickListener() {
-			 public void clicked(InputEvent event, float x, float y) {
-				 displaySpeechScroll();
-			 }
-		});
+		if(Assets.get().isLoaded()) {
+			setToStage(getImage("SpeechScreen", "screens//screensPack"), 0, 0);
+			Actor btn = getButton("CreateSpeechBtn");
+			setToStage(btn, 0, -260);
+			
+			btn.addListener(new ClickListener() {
+				 public void clicked(InputEvent event, float x, float y) {
+					 displaySpeechScroll();
+				 }
+			});
+		}
 	}
 	
 	private void displaySpeechScroll() {
