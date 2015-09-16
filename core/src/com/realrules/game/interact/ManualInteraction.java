@@ -36,13 +36,10 @@ public class ManualInteraction {
 				//Flag actor as inactive for other interactions
 				hitActor.isActive = false;
 
-				//If first hit and is influenced actor
+				//If first hit and is the current influenced actor
 				if(isFirst && hitActor.status == 1) {	
 					invalidInteraction = false;
 					interactor = hitActor;
-
-					//					float angle = hitActor.getRotation();
-					//					angle = hitActor.getDirection() == 0 ? angle + 180f : angle;
 
 					System.out.println("First follower hit facing "+hitActor.getOrientation());
 				}

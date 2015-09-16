@@ -86,9 +86,9 @@ public class WorldSystem {
 	private void setYHudCoord() {
 		//Start from centre
 		float centreY = (Gdx.graphics.getHeight()) / 2; 
-		float ySpan = headSpriteH*yGrid;
+		float ySpan = headSpriteH*5;
 		float startY = centreY + (ySpan/2);
-		float spanLengthY = startY - ySpan;
+		float spanLengthY = startY - 370;
 		hudYCoord = (float) (spanLengthY - (headSpriteH*0.5));
 	}
 	

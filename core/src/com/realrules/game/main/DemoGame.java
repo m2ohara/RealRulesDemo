@@ -54,6 +54,7 @@ public class DemoGame extends ApplicationAdapter {
 	IManualInteraction manualInteraction = null;
 	Label remainingVotesCounter = null;
 	Label endScoreCounter = null;
+	boolean isAssetsLoaded = false;
 	
 	public static float universalTimeRatio = 0.7f;
 
@@ -116,9 +117,7 @@ public class DemoGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 		
-		if(!Assets.get().isLoaded()) {
-			Assets.get().load();
-		}
+		if(!isAssetsLoaded) { loadAssets();}
 		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -194,7 +193,26 @@ public class DemoGame extends ApplicationAdapter {
 		_yCentreOffset = actorToSet.getY();
 	}
 	
+	private void loadAssets() {
+		
+		if(!Assets.get().isLoaded()) {
+			Assets.get().load();
+		}
+		else {
+			setPlayButton();
+			isAssetsLoaded = true;
+		}
+	}
+	
 	private void setTitleScreen() {
+		
+		setToStage(getImage("TitleScreen", "screens//screensPack"), 0, 0);
+		Actor btn = getButton("LoadingBtn");
+		setToStage(btn, 0, -260);
+		
+	}
+	
+	private void setPlayButton() {
 		
 		setToStage(getImage("TitleScreen", "screens//screensPack"), 0, 0);
 		Actor btn = getButton("PlayGameBtn");
@@ -205,7 +223,6 @@ public class DemoGame extends ApplicationAdapter {
 				 setSpeechScreen();
 			 }
 		});
-		
 	}
 	
 	private void setTutorialScreen() {
@@ -291,13 +308,13 @@ public class DemoGame extends ApplicationAdapter {
 				HeadSprite current = null;
 				float rand = crowdSetter.nextFloat();
 				if(rand < 0.33) {
-					current = new HeadSprite(Head.GOSSIPER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(0).spritePath, true);
+					current = new HeadSprite(Head.GOSSIPER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(0).directoryPath, true);
 				}
 				else if(rand >= 0.33 && rand < 0.66) {
-					current = new HeadSprite(Head.INFLUENCER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(1).spritePath, true);
+					current = new HeadSprite(Head.INFLUENCER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(1).directoryPath, true);
 				}
 				else {
-					current = new HeadSprite(Head.DECEIVER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(2).spritePath, true);
+					current = new HeadSprite(Head.DECEIVER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(2).directoryPath, true);
 				}
 				if(y == WorldSystem.getSystemHeight()-1 && x == starterX) {
 					current.status = 1; current.setColor(Color.ORANGE); 
@@ -322,7 +339,7 @@ public class DemoGame extends ApplicationAdapter {
 		List<FollowerType> types = plState.getFollowerTypes();
 		
 		for(int i = 0; i < types.size(); i++) {
-			Image placeHolder = createTargetImage(types.get(i).spritePath+"Default.pack",WorldSystem.get().getHudXCoords().get(i), WorldSystem.get().getHudYCoords().get(i));
+			Image placeHolder = createTargetImage(types.get(i).directoryPath+"Default.pack",WorldSystem.get().getHudXCoords().get(i), WorldSystem.get().getHudYCoords().get(i));
 			placeHolders.add(placeHolder);
 			for(Follower follower : plFollowers) {
 				if(follower.type.head == types.get(i).head) {
@@ -464,7 +481,7 @@ public class DemoGame extends ApplicationAdapter {
 		Random rand = new Random();
 		for(int i =0; i < count; i++) {
 			FollowerType type = types.get(rand.nextInt(types.size()));
-			rewardedFollowers.add(new Follower(type.head, 0, type.spritePath));
+			rewardedFollowers.add(new Follower(type.head, 0, type.directoryPath+"Default.pack"));
 		}
 		
 		plState.addFollowers(rewardedFollowers);
@@ -475,12 +492,12 @@ public class DemoGame extends ApplicationAdapter {
 	private void setRewardFollowers(List<Follower> rewardedFollowers) {
 		
 		for(int count = 0; count < rewardedFollowers.size(); count++) {
-			setRewardImage(rewardedFollowers.get(count).type.spritePath, WorldSystem.get().getHudXCoords().get(count), WorldSystem.get().getHudYCoords().get(count));
+			setRewardImage(rewardedFollowers.get(count).type.directoryPath, WorldSystem.get().getHudXCoords().get(count), WorldSystem.get().getHudYCoords().get(count));
 		}
 	}
 	
 	private void setRewardImage(String framesPath, float origX, float origY) {
-		Image targetImage = new Image(new TextureAtlas(Gdx.files.internal(framesPath+"Default.pack")).getRegions().get(0));
+		Image targetImage = new Image(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 		targetImage.setPosition(origX, origY);
 		GameProperties.get().getStage().addActor(targetImage);
 		targetImage.setTouchable(Touchable.disabled);

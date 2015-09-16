@@ -16,6 +16,7 @@ public class ScoreState {
 
 	public ScoreState(int winVotes, State winState, int totalVotes) {
 		scoreSystem = new VoteGameRules(winState, winVotes, totalVotes);
+		userPoints = touchActionPoints;
 	}
 	
 	public static int getTouchActionPoints() {

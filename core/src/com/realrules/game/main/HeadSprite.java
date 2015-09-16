@@ -19,8 +19,8 @@ import com.realrules.game.interact.DeceiverInteraction;
 import com.realrules.game.interact.GossiperInteraction;
 import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.interact.PromoterInteraction;
-import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.main.DemoGame.Head;
+import com.realrules.game.main.WorldSystem.Orientation;
 
 public class HeadSprite  extends Image  {
 	public IHeadBehaviour behaviour;
@@ -112,7 +112,7 @@ public class HeadSprite  extends Image  {
 			public void clicked(InputEvent event, float x, float y) 
 		    {
 				if(ScoreState.validTouchAction()) {
-					System.out.println("Touched at: x: "+x+", y: "+y+"");
+					System.out.println("Pressed at: x: "+x+", y: "+y+"");
 					behaviour.onTouch();
 					ScoreState.resetUserPoints();
 				}
