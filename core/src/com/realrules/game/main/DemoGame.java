@@ -32,6 +32,7 @@ import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.interact.ManualOpposerInteraction;
 import com.realrules.game.interact.ManualSupporterInteraction;
 import com.realrules.game.main.ScoreState.State;
+import com.realrules.game.setup.GameGenerator;
 import com.realrules.game.state.Follower;
 import com.realrules.game.state.FollowerType;
 import com.realrules.game.state.PlayerState;
@@ -300,28 +301,30 @@ public class DemoGame extends ApplicationAdapter {
 		screen.setTouchable(Touchable.disabled);
 		setToStage(screen, 0, 0);
 		
-		List<FollowerType> types = plState.getFollowerTypes();
-		Random crowdSetter = new Random();
-		int starterX = crowdSetter.nextInt(WorldSystem.getSystemWidth()-1);
-		for(int x = 0; x < WorldSystem.getSystemWidth(); x++) {
-			for(int y = 0; y < WorldSystem.getSystemHeight(); y++) {
-				HeadSprite current = null;
-				float rand = crowdSetter.nextFloat();
-				if(rand < 0.33) {
-					current = new HeadSprite(Head.GOSSIPER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(0).directoryPath, true);
-				}
-				else if(rand >= 0.33 && rand < 0.66) {
-					current = new HeadSprite(Head.INFLUENCER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(1).directoryPath, true);
-				}
-				else {
-					current = new HeadSprite(Head.DECEIVER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(2).directoryPath, true);
-				}
-				if(y == WorldSystem.getSystemHeight()-1 && x == starterX) {
-					current.status = 1; current.setColor(Color.ORANGE); 
-				}
-				GameProperties.get().addToActorGroup(current);
-			}
-		}
+//		List<FollowerType> types = plState.getFollowerTypes();
+//		Random crowdSetter = new Random();
+//		int starterX = crowdSetter.nextInt(WorldSystem.getSystemWidth()-1);
+//		for(int x = 0; x < WorldSystem.getSystemWidth(); x++) {
+//			for(int y = 0; y < WorldSystem.getSystemHeight(); y++) {
+//				HeadSprite current = null;
+//				float rand = crowdSetter.nextFloat();
+//				if(rand < 0.33) {
+//					current = new HeadSprite(Head.GOSSIPER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(0).directoryPath, true);
+//				}
+//				else if(rand >= 0.33 && rand < 0.66) {
+//					current = new HeadSprite(Head.INFLUENCER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(1).directoryPath, true);
+//				}
+//				else {
+//					current = new HeadSprite(Head.DECEIVER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(2).directoryPath, true);
+//				}
+//				if(y == WorldSystem.getSystemHeight()-1 && x == starterX) {
+//					current.status = 1; current.setColor(Color.ORANGE); 
+//				}
+//				GameProperties.get().addToActorGroup(current);
+//			}
+//		}
+		
+		new GameGenerator().populateCrowdScreen();
 		
 		GameProperties.get().getStage().addActor(GameProperties.get().getActorGroup());
 		GameProperties.get().getStage().addActor(GameProperties.get().getSoundWaveGroup());

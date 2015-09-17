@@ -9,7 +9,7 @@ public class PlayerState {
 	
 	private ArrayList<FollowerType> followerTypes = null;
 	private ArrayList<Follower> followers = null;
-	private int level = 0;
+	private int level;
 	private int reputation = 0;
 	private static PlayerState instance;
 	
