@@ -301,30 +301,7 @@ public class DemoGame extends ApplicationAdapter {
 		screen.setTouchable(Touchable.disabled);
 		setToStage(screen, 0, 0);
 		
-//		List<FollowerType> types = plState.getFollowerTypes();
-//		Random crowdSetter = new Random();
-//		int starterX = crowdSetter.nextInt(WorldSystem.getSystemWidth()-1);
-//		for(int x = 0; x < WorldSystem.getSystemWidth(); x++) {
-//			for(int y = 0; y < WorldSystem.getSystemHeight(); y++) {
-//				HeadSprite current = null;
-//				float rand = crowdSetter.nextFloat();
-//				if(rand < 0.33) {
-//					current = new HeadSprite(Head.GOSSIPER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(0).directoryPath, true);
-//				}
-//				else if(rand >= 0.33 && rand < 0.66) {
-//					current = new HeadSprite(Head.INFLUENCER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(1).directoryPath, true);
-//				}
-//				else {
-//					current = new HeadSprite(Head.DECEIVER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(2).directoryPath, true);
-//				}
-//				if(y == WorldSystem.getSystemHeight()-1 && x == starterX) {
-//					current.status = 1; current.setColor(Color.ORANGE); 
-//				}
-//				GameProperties.get().addToActorGroup(current);
-//			}
-//		}
-		
-		new GameGenerator().populateCrowdScreen();
+		new GameGenerator().populateFullCrowdScreen();
 		
 		GameProperties.get().getStage().addActor(GameProperties.get().getActorGroup());
 		GameProperties.get().getStage().addActor(GameProperties.get().getSoundWaveGroup());
@@ -423,17 +400,28 @@ public class DemoGame extends ApplicationAdapter {
 		}
 		
 		if(scoreState.getCurrentState() == ScoreState.State.WIN) {
-			setToStage(getImage("WinSprite", "sprites//textPack"), 0, 0);
+			Actor image = getImage("WinSprite", "sprites//textPack");
+			setScoreStateSprite(image);
 		}
 		else if(scoreState.getCurrentState() == ScoreState.State.LOSE) {
-			setToStage(getImage("LoseSprite", "sprites//textPack"), 0, 0);
+			Actor image = getImage("LoseSprite", "sprites//textPack");
+			setScoreStateSprite(image);
 		}
 		else if(scoreState.getCurrentState() == ScoreState.State.DRAW) {
-			setToStage(getImage("DrawSprite", "sprites//textPack"), 0, 0);
+			Actor image = getImage("DrawSprite", "sprites//textPack");
+			setScoreStateSprite(image);
+
 		}
 		else if(scoreState.getCurrentState() == ScoreState.State.FINISHED) {	
 			setEndGameScreen();
 		}
+	}
+	
+	private void setScoreStateSprite(Actor image) {
+		image.setOriginX(image.getHeight()/2);
+		image.setOriginY(image.getWidth()/2);
+		image.scaleBy(-0.5f);
+		setToStage(image, -50, -130);
 	}
 	
 	private void setEndGameScreen() {

@@ -3,18 +3,18 @@ textPack.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-LoseSprite
-  rotate: false
-  xy: 1, 1
-  size: 422, 600
-  orig: 422, 600
-  offset: 0, 0
-  index: -1
 DrawSprite
   rotate: false
-  xy: 425, 1
-  size: 420, 600
-  orig: 420, 600
+  xy: 1, 1
+  size: 415, 585
+  orig: 415, 585
+  offset: 0, 0
+  index: -1
+LoseSprite
+  rotate: false
+  xy: 418, 1
+  size: 405, 585
+  orig: 405, 585
   offset: 0, 0
   index: -1
 
@@ -25,7 +25,7 @@ repeat: none
 WinSprite
   rotate: false
   xy: 1, 1
-  size: 420, 600
-  orig: 420, 600
+  size: 405, 585
+  orig: 405, 585
   offset: 0, 0
   index: -1

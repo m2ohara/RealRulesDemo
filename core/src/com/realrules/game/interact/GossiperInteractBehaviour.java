@@ -13,6 +13,7 @@ import com.realrules.game.main.HeadSprite;
 public class GossiperInteractBehaviour implements IInteraction {
 	
 	private float interactSuccess = 0.2f;
+	private float promoteOpposeProb = 0.5f;
 
 	@Override
 	public void interact(HeadSprite interactor, HeadSprite interactee) {
@@ -20,24 +21,27 @@ public class GossiperInteractBehaviour implements IInteraction {
 		
 		//TODO: Check interactee isn't hit
 		//Influence if interactee is neutral
+		if(rand.nextFloat() > interactSuccess) {
 		if(interactee.status == 0 && interactee.isActive == true) {
-			if(rand.nextFloat() > interactSuccess) {
+			//Oppose
+			if(rand.nextFloat() > promoteOpposeProb) {
 				interactee.status = 3;
-				setInfluenceSprite(interactee, 0);
-			}
-			else {
-				interactee.status = 1;
 				setInfluenceSprite(interactee, 1);
 			}
+			//Promote
+			else {
+				interactee.status = 2;
+				setInfluenceSprite(interactee, 0);
+			}
+		}
 		}
 		
 	}
 	
 	private void setInfluenceSprite(HeadSprite interactee, int influenceType) {
 		
-		int influenceSprite = influenceType == 0 ? 0 : 1;
 		
-		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(influenceSprite));
+		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(influenceType));
 
 		handSign.setOrigin(handSign.getWidth()/2, handSign.getHeight()/2);
 		handSign.setPosition(interactee.getStartingX(), interactee.getStartingY());
