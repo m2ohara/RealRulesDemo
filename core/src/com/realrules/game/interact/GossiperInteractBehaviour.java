@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.realrules.game.act.IOnActing;
+import com.realrules.game.act.OnAnimateInteractionAct;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.HeadSprite;
 
@@ -14,31 +16,42 @@ public class GossiperInteractBehaviour implements IInteraction {
 	
 	private float interactSuccess = 0.2f;
 	private float promoteOpposeProb = 0.5f;
-
+	private Random rand = new Random();
+	private float interactionStateLength = 0.7f;
+	private int interactionStages = 3;
+	private IOnActing animateInteraction;
 	@Override
 	public void interact(HeadSprite interactor, HeadSprite interactee) {
-		Random rand = new Random();
 		
-		//TODO: Check interactee isn't hit
-		//Influence if interactee is neutral
-		if(rand.nextFloat() > interactSuccess) {
-		if(interactee.status == 0 && interactee.isActive == true) {
-			//Oppose
-			if(rand.nextFloat() > promoteOpposeProb) {
-				interactee.status = 3;
-				setInfluenceSprite(interactee, 1);
-			}
-			//Promote
-			else {
-				interactee.status = 2;
-				setInfluenceSprite(interactee, 0);
-			}
+		//Influence if interactee is neutral and interactor isn't already interacting
+		if(interactor.status != 4 && interactee.status == 0 && rand.nextFloat() > interactSuccess) {
+			animateInteraction = new OnAnimateInteractionAct(interactionStateLength, interactionStages, interactor);
+			setInteractionResult(interactee);
 		}
+		//Perform interaction
+		if(interactor.status == 4) {
+			animateInteraction.performActing(0f);
 		}
 		
 	}
 	
-	private void setInfluenceSprite(HeadSprite interactee, int influenceType) {
+	private void setInteractionResult(HeadSprite interactee) {
+		
+		if(interactee.status == 0 && interactee.isActive == true) {
+			//Oppose
+			if(rand.nextFloat() > promoteOpposeProb) {
+				interactee.status = 3;
+				setInfluencedSprite(interactee, 1);
+			}
+			//Promote
+			else {
+				interactee.status = 2;
+				setInfluencedSprite(interactee, 0);
+			}
+		}
+	}
+	
+	private void setInfluencedSprite(HeadSprite interactee, int influenceType) {
 		
 		
 		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(influenceType));

@@ -18,10 +18,10 @@ import com.realrules.game.main.HeadSprite;
 public class OnAnimateTalkingAct implements IOnAct{
 	
 	private Random rand = new Random();
-	private float stateLength = 2.0f * GameProperties.get().getUniversalTimeRatio();
-	private float stateTime = stateLength;
-	private float interactStateLength = 0.7f * GameProperties.get().getUniversalTimeRatio();
-	private float interactStateTime = interactStateLength;
+	private float animateStateLength = 2.0f * GameProperties.get().getUniversalTimeRatio();
+	private float animateStateTime = animateStateLength;
+	private float attemptInteractStateLength = 0.7f * GameProperties.get().getUniversalTimeRatio();
+	private float attemptInteractStateTime = attemptInteractStateLength;
 	
 	private float frameLength = 0.2f * GameProperties.get().getUniversalTimeRatio();
 	private float frameTime = frameLength;
@@ -48,22 +48,32 @@ public class OnAnimateTalkingAct implements IOnAct{
 	@Override
 	public void performActing(float delta, HeadSprite actor, ArrayList<Orientation> validDirections) {
 		
-		if(stateTime >= stateLength) {
-			stateTime = 0.0f;		
+		//Change actor's direction
+		if(animateStateTime >= animateStateLength) {
+			animateStateTime = 0.0f;		
 			setFrame(actor, validDirections);
 		}
 		
-		else if( interactStateTime >= interactStateLength) {
-			interactStateTime = 0.0f;
-			performAutonomousInteraction(actor);
+		//Attempt interaction
+		else if( attemptInteractStateTime >= attemptInteractStateLength) {
+			attemptInteractStateTime = 0.0f;
+			attemptAutonomousInteraction(actor);
 		}
 		
-		if(stateTime < stateLength) {
+		//Animate frames for current direction
+		if(animateStateTime < animateStateLength) {
 			updateSprite(delta, actor);
 		}
 		
-		stateTime += delta;
-		interactStateTime += delta;
+		//If not interacting increment states
+		if(actor.status != 4) {
+			animateStateTime += delta;
+			attemptInteractStateTime += delta;
+		}
+		//Otherwise continue interaction
+		else {
+			continueAutonomousInteraction(actor);
+		}
 		
 	}
 	
@@ -118,12 +128,16 @@ public class OnAnimateTalkingAct implements IOnAct{
 		}
 	}
 	
-	private void performAutonomousInteraction(HeadSprite actor) {
+	private void attemptAutonomousInteraction(HeadSprite actor) {
 		Random rand = new Random();
 		if(rand.nextFloat() < this.interactP) {
 			actor.interaction.interact(actor, GameProperties.get().getActorGroup(), direction);
 			
 		}
+	}
+	
+	private void continueAutonomousInteraction(HeadSprite actor) {
+		actor.interaction.interact(actor, GameProperties.get().getActorGroup(), direction);
 	}
 	
 	private void setFramePacks(String framesPath) {
