@@ -8,30 +8,30 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.act.IOnActing;
-import com.realrules.game.act.OnAnimateInteractionAct;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.InteractSprite;
 
 public class GossiperInteractBehaviour implements IInteraction {
 	
 	private float interactSuccess = 0.2f;
 	private float promoteOpposeProb = 0.5f;
 	private Random rand = new Random();
-	private float interactionStateLength = 0.7f;
+	private float interactionStateLength = 10f;
 	private int interactionStages = 3;
-	private IOnActing animateInteraction;
+	
 	@Override
 	public void interact(HeadSprite interactor, HeadSprite interactee) {
 		
 		//Influence if interactee is neutral and interactor isn't already interacting
 		if(interactor.status != 4 && interactee.status == 0 && rand.nextFloat() > interactSuccess) {
-			animateInteraction = new OnAnimateInteractionAct(interactionStateLength, interactionStages, interactor);
-			setInteractionResult(interactee);
+			new InteractSprite(interactionStateLength, interactionStages, interactor);
+//			setInteractionResult(interactee);
 		}
-		//Perform interaction
-		if(interactor.status == 4) {
-			animateInteraction.performActing(0f);
-		}
+//		//Perform interaction
+//		if(interactor.status == 4) {
+//			animateInteraction.performActing(0f);
+//		}
 		
 	}
 	

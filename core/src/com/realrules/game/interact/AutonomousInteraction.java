@@ -6,6 +6,7 @@ import com.realrules.game.main.HeadSprite;
 import com.realrules.game.main.WorldSystem.Orientation;
 
 public class AutonomousInteraction {
+	
 	public IInteraction interactionBehaviour = null;
 
 	public void interact(HeadSprite interactor, Group actorGroup, Orientation orientation) {
