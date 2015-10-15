@@ -72,7 +72,7 @@ public class GameGenerator {
 			for(int y = 0; y < WorldSystem.getSystemHeight(); y++) {
 				HeadSprite current = null;
 				float rand = crowdSetter.nextFloat();
-				if(rand < 0.33) {
+				if(rand < 1) {
 					current = new HeadSprite(Head.GOSSIPER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(0).directoryPath, true);
 				}
 				else if(rand >= 0.33 && rand < 0.66) {

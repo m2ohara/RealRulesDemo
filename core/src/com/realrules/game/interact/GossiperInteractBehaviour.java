@@ -17,21 +17,28 @@ public class GossiperInteractBehaviour implements IInteraction {
 	private float interactSuccess = 0.2f;
 	private float promoteOpposeProb = 0.5f;
 	private Random rand = new Random();
-	private float interactionStateLength = 10f;
+	private float interactionStateLength = 3f;
 	private int interactionStages = 3;
+	private int origStatus;
+	private InteractSprite interactSprite;
 	
 	@Override
 	public void interact(HeadSprite interactor, HeadSprite interactee) {
 		
 		//Influence if interactee is neutral and interactor isn't already interacting
 		if(interactor.status != 4 && interactee.status == 0 && rand.nextFloat() > interactSuccess) {
-			new InteractSprite(interactionStateLength, interactionStages, interactor);
-//			setInteractionResult(interactee);
+			origStatus = interactor.status;
+			interactor.status = 4;
+			interactee.isActive = false;
+			interactSprite = new InteractSprite(interactionStateLength, interactionStages, interactor);
+
 		}
-//		//Perform interaction
-//		if(interactor.status == 4) {
-//			animateInteraction.performActing(0f);
-//		}
+		//Perform interaction
+		if(interactSprite != null && interactSprite.isComplete() == true) {
+			interactor.status = origStatus;
+			interactee.isActive = true;
+			setInteractionResult(interactee);
+		}
 		
 	}
 	

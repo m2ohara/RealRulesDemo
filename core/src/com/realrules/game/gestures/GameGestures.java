@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.realrules.game.interact.IManualInteraction;
+import com.realrules.game.interact.ManualConverseInteraction;
 import com.realrules.game.interact.ManualInteraction;
 import com.realrules.game.main.HeadSprite;
 
@@ -12,7 +13,7 @@ public class GameGestures  implements GestureListener {
 		
 		boolean isFirstHit = true;
 		private Stage stage = null;
-		ManualInteraction interaction = null;
+		ManualConverseInteraction interaction = null;
 		
 		public GameGestures(Stage stage) {
 			this.stage = stage;
@@ -20,7 +21,7 @@ public class GameGestures  implements GestureListener {
 		
 		public GameGestures(Stage stage, IManualInteraction followerInteractAction, int influenceType) {
 			this.stage = stage;
-			this.interaction = new ManualInteraction(followerInteractAction, influenceType);
+			this.interaction = new ManualConverseInteraction(followerInteractAction, influenceType);
 		}
 
 		@Override

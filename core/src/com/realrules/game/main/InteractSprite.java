@@ -45,7 +45,6 @@ public class InteractSprite extends Image {
 		
 //	}
 	
-	private IOnActing animateInteraction;
 	private static String framesPath = "sprites//Meep//Effects//Effects.pack";
 	public boolean isInteracting = false;
 	private float interactionScaleFactor;
@@ -53,20 +52,16 @@ public class InteractSprite extends Image {
 	private float interactionStateLength;
 	private ScaleToAction scaleAction;
 	private HeadSprite interactor;
-	private int origStatus;
 	
 	public InteractSprite(float interactionStateLength, int interactionStages, HeadSprite interactor) {
 		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 		
-//		animateInteraction = new OnAnimateInteractionAct(interactionStateLength, interactionStages, this);
 		this.interactionStateLength = interactionStateLength;
 		this.interactionScaleFactor = 1f/(float)(interactionStages);
 		this.currentScaleFactor = interactionScaleFactor;
-		setSprite(interactor.getStartingX()+90, interactor.getStartingY()+90);
+		setSprite(interactor.getStartingX()+35, interactor.getStartingY()+35);
 		
 		//Set interactor to interacting
-		origStatus = interactor.status;
-		interactor.status = 4;
 		this.interactor = interactor;
 		
 		this.setDrawable(new TextureRegionDrawable(new TextureRegion(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0))));
@@ -75,23 +70,16 @@ public class InteractSprite extends Image {
 	
 	private void setSprite(float xCoord, float yCoord) {
 
-		this.setOrigin(this.getWidth()/2, this.getHeight()/2);
+//		this.setOrigin(this.getWidth()/2, this.getHeight()/2);
 		this.setPosition(xCoord, yCoord);
 		this.setTouchable(Touchable.disabled);
-		float scaleAmount = 1 - interactionScaleFactor;
-		this.scaleBy(-scaleAmount);
+		this.scaleBy(-1);
 
 		GameProperties.get().addActorToStage(this);
 	}
 	
 	private void setInteractionAction(float interactionStateLength) {
-		scaleAction = new ScaleToAction(1, 1, interactionStateLength){
-			
-			public boolean act( float delta ) {
-	        
-	        return true;
-	    }
-	};
+		scaleAction = Actions.scaleTo(currentScaleFactor, currentScaleFactor, interactionStateLength);
 		this.addAction(scaleAction);
 		this.isInteracting = true;
 	}
@@ -105,18 +93,21 @@ public class InteractSprite extends Image {
 	public void act(float delta) {
 		super.act(delta);
 	
-		if(scaleAction.getTime() == 10f) {
-//			scaleAction.restart();
-//			currentScaleFactor += interactionScaleFactor;
-//		}
-//		else 
-//			if(isFinished == true && currentScaleFactor == 1){
+		if(this.getActions().size == 0 && currentScaleFactor == 1) {
 			scaleAction.finish();
-			interactor.status = origStatus;
+			isComplete = true;
 			this.remove();
 		}
-		
-		//animateInteraction.performActing(delta);
+		else if(this.getActions().size == 0 && currentScaleFactor != 1) {
+			currentScaleFactor += interactionScaleFactor;
+			scaleAction = Actions.scaleTo(currentScaleFactor, currentScaleFactor, interactionStateLength);
+			this.addAction(scaleAction);
+		}
+	}
+	
+	private boolean isComplete = false;
+	public boolean isComplete() {
+		return isComplete;
 	}
 	
 

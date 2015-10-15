@@ -35,6 +35,7 @@ public class HeadSprite  extends Image  {
 	public boolean isActive = true;
 	public int status = 0; //0 : neutral, 1 : for 2 : against
 	private ArrayList<Orientation> validDirections;
+	public boolean isInteractor = false;
 	
 	
 	private boolean isActing = false;
