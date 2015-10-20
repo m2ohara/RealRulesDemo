@@ -31,6 +31,7 @@ public class GossiperInteractBehaviour implements IInteraction {
 			interactor.status = 4;
 			interactee.isActive = false;
 			interactSprite = new InteractSprite(interactionStateLength, interactionStages, interactor);
+			interactSprite.setAction();
 
 		}
 		//Perform interaction

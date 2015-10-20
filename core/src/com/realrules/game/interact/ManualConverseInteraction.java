@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.ManualInteractSprite;
 import com.realrules.game.main.ScoreState;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
@@ -47,9 +48,9 @@ public class ManualConverseInteraction {
 					if(validInteraction(hitActor, lastHitActor.getOrientation())) {
 						//Set previous hit actor to passive follower
 						setConnectorSprite(lastHitActor);
-						manualInteraction.interact(lastHitActor, hitActor );
+						interact(lastHitActor, hitActor );
+//						System.out.println("Influencing interactee at "+hitActor.getXGameCoord()+", "+hitActor.getYGameCoord());
 						hitCount += 1;
-//						setToLastFollower(hitActor);
 						//Update hit count
 						ScoreState.addUserPoints(1);
 					}
@@ -65,6 +66,7 @@ public class ManualConverseInteraction {
 					hitActor.isActive = true;
 
 				lastHitActor = hitActor;
+				
 			}
 		}
 	}
@@ -73,6 +75,7 @@ public class ManualConverseInteraction {
 		interactor = null;
 		hitCount = 0;
 		lastHitActor = null;
+
 	}
 
 	private boolean validInteraction(HeadSprite hitActor, Orientation swipeDirection) {
@@ -147,5 +150,17 @@ public class ManualConverseInteraction {
 
 
 		GameProperties.get().addActorToStage(connector);
+	}
+	
+	public void interact(HeadSprite interactor, HeadSprite interactee) {
+
+		//Influence if interactee is neutral and interactor isn't already interacting
+		if(interactee.status == 0) {
+			if(interactor.status == 1) {
+				interactor.isActive = true;
+			}
+			new ManualInteractSprite(2f, 3, interactor, interactee, 0);
+
+		}
 	}
 }
