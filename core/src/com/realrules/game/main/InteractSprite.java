@@ -9,7 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.realrules.game.act.IOnActing;
+import com.realrules.game.interact.IManualInteraction;
+import com.realrules.game.interact.ManualSupporterInteraction;
 
 public class InteractSprite extends Image {
 	
@@ -19,10 +20,12 @@ public class InteractSprite extends Image {
 	protected float currentScaleFactor;
 	protected float interactionStateLength;
 	protected ScaleToAction scaleAction;
+	private IManualInteraction interactionType;
 	
-	public InteractSprite(float interactionStateLength, int interactionStages, HeadSprite interactor) {
+	public InteractSprite(float interactionStateLength, int interactionStages, HeadSprite interactor, IManualInteraction interactionType) {
 		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 		
+		this.interactionType = interactionType;
 		this.interactionStateLength = interactionStateLength;
 		this.interactionScaleFactor = 1f/(float)(interactionStages);
 		this.currentScaleFactor = interactionScaleFactor;
@@ -59,6 +62,7 @@ public class InteractSprite extends Image {
 		if(this.scaleAction != null && this.getActions().size == 0 && currentScaleFactor == 1) {
 			scaleAction.finish();
 			isComplete = true;
+			interactionType.complete();
 			this.remove();
 		}
 		else if(this.scaleAction != null && this.getActions().size == 0 && currentScaleFactor != 1) {

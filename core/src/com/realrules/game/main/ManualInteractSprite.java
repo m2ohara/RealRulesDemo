@@ -3,31 +3,67 @@ package com.realrules.game.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.realrules.game.interact.ManualSupporterInteraction;
 
-public class ManualInteractSprite extends InteractSprite {
+public class ManualInteractSprite extends Image{
+	
+	private static String framesPath = "sprites//Meep//Effects//Effects.pack";
+	public boolean isInteracting = false;
+	protected float interactionScaleFactor;
+	protected float currentScaleFactor;
+	protected float interactionStateLength;
+	protected ScaleToAction scaleAction;
 	
 	private HeadSprite interactor;
 	private HeadSprite interactee;
 	private int interactType;
 
-	public ManualInteractSprite(float interactionStateLength,
-			int interactionStages, HeadSprite interactor, HeadSprite interactee, int interactType) {
-		super(interactionStateLength, interactionStages, interactor);
+	public ManualInteractSprite(float interactionStateLength, int interactionStages, HeadSprite interactor, HeadSprite interactee) {
+		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
+		
+		this.interactionStateLength = interactionStateLength;
+		this.interactionScaleFactor = 1f/(float)(interactionStages);
+		this.currentScaleFactor = interactionScaleFactor;
+		setSprite(interactor.getStartingX()+35, interactor.getStartingY()+35);
+		
+		this.setDrawable(new TextureRegionDrawable(new TextureRegion(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0))));
 		
 		System.out.println("Setting interact sprite for "+interactor.getXGameCoord()+", "+interactor.getYGameCoord()+ " status: "+interactor.status);
 		this.interactor = interactor;
 		this.interactee = interactee;
-		this.interactType = interactType;
+//		this.interactType = interactType;
 		
 		if(interactor.status == 1) {
 			setAction();
+			setInfluenceSprite(interactor);
+			interactor.setColor(Color.WHITE);
 		}
 		else {
 			scaleAction = null;
 		}
+	}
+	
+	private void setSprite(float xCoord, float yCoord) {
+
+//		this.setOrigin(this.getWidth()/2, this.getHeight()/2);
+		this.setPosition(xCoord, yCoord);
+		this.setTouchable(Touchable.disabled);
+		this.scaleBy(-1);
+
+		GameProperties.get().addActorToStage(this);
+	}
+	
+	public void setAction() {
+		scaleAction = Actions.scaleTo(currentScaleFactor, currentScaleFactor, interactionStateLength);
+		this.addAction(scaleAction);
+		this.isInteracting = true;
 	}
 	
 	@Override
@@ -42,7 +78,7 @@ public class ManualInteractSprite extends InteractSprite {
 			scaleAction.finish();
 			isComplete = true;
 			this.remove();
-			if(interactee.status == 0) {
+			if(interactee.isManualInteractor) {
 				setNextInteractSprite();
 			}
 			else {
@@ -76,12 +112,18 @@ public class ManualInteractSprite extends InteractSprite {
 	
 	private void setToLastFollower() {
 		if(ScoreState.validTouchAction()) {
-			interactor.setColor(Color.ORANGE);
+			interactee.setColor(Color.ORANGE);
 		}
 		else {
-			interactor.setColor(Color.YELLOW);
+			interactee.setColor(Color.YELLOW);
 		}
-		interactor.status = 1;
+		interactee.status = 1;
+		interactee.isActive = true;
+	}
+	
+	protected boolean isComplete = false;
+	public boolean isComplete() {
+		return isComplete;
 	}
 
 }

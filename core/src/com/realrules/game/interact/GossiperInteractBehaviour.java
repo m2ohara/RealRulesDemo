@@ -19,57 +19,57 @@ public class GossiperInteractBehaviour implements IInteraction {
 	private Random rand = new Random();
 	private float interactionStateLength = 3f;
 	private int interactionStages = 3;
-	private int origStatus;
 	private InteractSprite interactSprite;
+	private IManualInteraction interactionType;
 	
 	@Override
 	public void interact(HeadSprite interactor, HeadSprite interactee) {
 		
 		//Influence if interactee is neutral and interactor isn't already interacting
-		if(interactor.status != 4 && interactee.status == 0 && rand.nextFloat() > interactSuccess) {
-			origStatus = interactor.status;
-			interactor.status = 4;
+		if(!interactor.isManualInteractor && interactor.status != 4 && interactee.status == 0 && rand.nextFloat() > interactSuccess) {
+			
+			setInteractionResult(interactor, interactee);
+			
+			interactor.status = 4; //TODO: Replace with isInteracting
 			interactee.isActive = false;
-			interactSprite = new InteractSprite(interactionStateLength, interactionStages, interactor);
+			interactSprite = new InteractSprite(interactionStateLength, interactionStages, interactor, interactionType);
 			interactSprite.setAction();
 
 		}
 		//Perform interaction
-		if(interactSprite != null && interactSprite.isComplete() == true) {
-			interactor.status = origStatus;
-			interactee.isActive = true;
-			setInteractionResult(interactee);
-		}
+//		if(interactSprite != null && interactSprite.isComplete() == true) {
+//			interactor.status = origStatus;
+//			interactee.isActive = true;
+//			setInteractionResult(interactee);
+//		}
 		
 	}
 	
-	private void setInteractionResult(HeadSprite interactee) {
+	private void setInteractionResult(HeadSprite interactor, HeadSprite interactee) {
 		
 		if(interactee.status == 0 && interactee.isActive == true) {
 			//Oppose
 			if(rand.nextFloat() > promoteOpposeProb) {
-				interactee.status = 3;
-				setInfluencedSprite(interactee, 1);
+				interactionType = new ManualOpposerInteraction(interactor, interactee);
 			}
 			//Promote
 			else {
-				interactee.status = 2;
-				setInfluencedSprite(interactee, 0);
+				interactionType = new ManualSupporterInteraction(interactor, interactee);
 			}
 		}
 	}
 	
-	private void setInfluencedSprite(HeadSprite interactee, int influenceType) {
-		
-		
-		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(influenceType));
-
-		handSign.setOrigin(handSign.getWidth()/2, handSign.getHeight()/2);
-		handSign.setPosition(interactee.getStartingX(), interactee.getStartingY());
-		handSign.setTouchable(Touchable.disabled);
-		
-		GameProperties.get().addActorToStage(handSign);
-	}
+//	private void setInfluencedSprite(HeadSprite interactee, int influenceType) {
+//		
+//		
+//		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(influenceType));
+//
+//		handSign.setOrigin(handSign.getWidth()/2, handSign.getHeight()/2);
+//		handSign.setPosition(interactee.getStartingX(), interactee.getStartingY());
+//		handSign.setTouchable(Touchable.disabled);
+//		
+//		GameProperties.get().addActorToStage(handSign);
+//	}
 	
 //	private void setConnectorSprite(HeadSprite interactor, int influenceType) {
 //		Coordinates direction = CoordinateSystem.getCoordDirection(interactor.getDirection(), (int)interactor.getRotation());

@@ -34,7 +34,6 @@ public class ManualConverseInteraction {
 			if(hitActor.isActive) {
 
 				//Flag actor as inactive for other interactions
-				hitActor.isActive = false;
 
 				//If first hit and is the current influenced actor
 				if(isFirst && hitActor.status == 1) {	
@@ -46,20 +45,24 @@ public class ManualConverseInteraction {
 				//Interactee
 				else if(interactor != null && !isFirst && !invalidInteraction && interactor.behaviour.getInfluenceAmount() > hitCount && hitActor.status == 0) {
 					if(validInteraction(hitActor, lastHitActor.getOrientation())) {
+						hitActor.isActive = false;
 						//Set previous hit actor to passive follower
 						setConnectorSprite(lastHitActor);
+						lastHitActor.isManualInteractor = true;
 						interact(lastHitActor, hitActor );
-//						System.out.println("Influencing interactee at "+hitActor.getXGameCoord()+", "+hitActor.getYGameCoord());
+						System.out.println("Influencing interactee at "+hitActor.getXGameCoord()+", "+hitActor.getYGameCoord());
 						hitCount += 1;
 						//Update hit count
 						ScoreState.addUserPoints(1);
 					}
 					else {
 						invalidInteraction = true;
+						hitActor.isActive = true;
 					}
 				}	
 				else {
 					invalidInteraction = true;
+					hitActor.isActive = true;
 				}
 
 				if(invalidInteraction)
@@ -121,15 +124,15 @@ public class ManualConverseInteraction {
 
 	}
 
-	private void setToLastFollower(HeadSprite hitActor) {
-		if(ScoreState.validTouchAction()) {
-			hitActor.setColor(Color.ORANGE);
-		}
-		else {
-			hitActor.setColor(Color.YELLOW);
-		}
-//		hitActor.status = 1;
-	}
+//	private void setToLastFollower(HeadSprite hitActor) {
+//		if(ScoreState.validTouchAction()) {
+//			hitActor.setColor(Color.ORANGE);
+//		}
+//		else {
+//			hitActor.setColor(Color.YELLOW);
+//		}
+////		hitActor.status = 1;
+//	}
 
 	private void setConnectorSprite(HeadSprite lastHitActor) {
 
@@ -159,7 +162,7 @@ public class ManualConverseInteraction {
 			if(interactor.status == 1) {
 				interactor.isActive = true;
 			}
-			new ManualInteractSprite(2f, 3, interactor, interactee, 0);
+			new ManualInteractSprite(2f, 3, interactor, interactee);
 
 		}
 	}

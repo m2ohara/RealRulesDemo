@@ -48,7 +48,7 @@ public class ManualInteraction {
 					if(validInteraction(hitActor, lastHitActor.getOrientation())) {
 						//Set previous hit actor to passive follower
 						setConnectorSprite(lastHitActor);
-						manualInteraction.setToMiddleFollower(lastHitActor);
+//						manualInteraction.setToMiddleFollower(lastHitActor);
 						hitCount += 1;
 						setToLastFollower(hitActor);
 						//Update hit count
