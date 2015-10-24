@@ -21,6 +21,8 @@ public class ManualConverseInteraction {
 	private IManualInteraction manualInteraction = null;
 	private int connectorSprite;
 	private Orientation coordinate;
+	private float interactionStateLength = 3f;
+	private int interactionStages = 3;
 
 	public ManualConverseInteraction(IManualInteraction manualInteraction, int connectorSprite) {
 		this.manualInteraction = manualInteraction;
@@ -32,8 +34,6 @@ public class ManualConverseInteraction {
 		if((lastHitActor == null || !hitActor.equals(lastHitActor))) {
 
 			if(hitActor.isActive) {
-
-				//Flag actor as inactive for other interactions
 
 				//If first hit and is the current influenced actor
 				if(isFirst && hitActor.status == 1) {	
@@ -50,7 +50,6 @@ public class ManualConverseInteraction {
 						setConnectorSprite(lastHitActor);
 						lastHitActor.isManualInteractor = true;
 						interact(lastHitActor, hitActor );
-						System.out.println("Influencing interactee at "+hitActor.getXGameCoord()+", "+hitActor.getYGameCoord());
 						hitCount += 1;
 						//Update hit count
 						ScoreState.addUserPoints(1);
@@ -124,16 +123,6 @@ public class ManualConverseInteraction {
 
 	}
 
-//	private void setToLastFollower(HeadSprite hitActor) {
-//		if(ScoreState.validTouchAction()) {
-//			hitActor.setColor(Color.ORANGE);
-//		}
-//		else {
-//			hitActor.setColor(Color.YELLOW);
-//		}
-////		hitActor.status = 1;
-//	}
-
 	private void setConnectorSprite(HeadSprite lastHitActor) {
 
 		Actor connector = new Image(new TextureAtlas(Gdx.files.internal("sprites//connectorPack.pack")).getRegions().get(connectorSprite));
@@ -162,7 +151,7 @@ public class ManualConverseInteraction {
 			if(interactor.status == 1) {
 				interactor.isActive = true;
 			}
-			new ManualInteractSprite(2f, 3, interactor, interactee);
+			new ManualInteractSprite(interactionStateLength, interactionStages, interactor, interactee, manualInteraction);
 
 		}
 	}

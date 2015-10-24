@@ -36,7 +36,6 @@ public class InteractSprite extends Image {
 	
 	private void setSprite(float xCoord, float yCoord) {
 
-//		this.setOrigin(this.getWidth()/2, this.getHeight()/2);
 		this.setPosition(xCoord, yCoord);
 		this.setTouchable(Touchable.disabled);
 		this.scaleBy(-1);

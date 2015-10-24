@@ -26,22 +26,15 @@ public class GossiperInteractBehaviour implements IInteraction {
 	public void interact(HeadSprite interactor, HeadSprite interactee) {
 		
 		//Influence if interactee is neutral and interactor isn't already interacting
-		if(!interactor.isManualInteractor && interactor.status != 4 && interactee.status == 0 && rand.nextFloat() > interactSuccess) {
-			
+		if(!interactor.isManualInteractor && !interactor.isInteracting && interactee.status == 0 && interactee.isActive && rand.nextFloat() > interactSuccess) {
 			setInteractionResult(interactor, interactee);
 			
-			interactor.status = 4; //TODO: Replace with isInteracting
+			interactor.isInteracting = true; //TODO: Replace with isInteracting
 			interactee.isActive = false;
 			interactSprite = new InteractSprite(interactionStateLength, interactionStages, interactor, interactionType);
 			interactSprite.setAction();
 
 		}
-		//Perform interaction
-//		if(interactSprite != null && interactSprite.isComplete() == true) {
-//			interactor.status = origStatus;
-//			interactee.isActive = true;
-//			setInteractionResult(interactee);
-//		}
 		
 	}
 	
@@ -58,42 +51,5 @@ public class GossiperInteractBehaviour implements IInteraction {
 			}
 		}
 	}
-	
-//	private void setInfluencedSprite(HeadSprite interactee, int influenceType) {
-//		
-//		
-//		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(influenceType));
-//
-//		handSign.setOrigin(handSign.getWidth()/2, handSign.getHeight()/2);
-//		handSign.setPosition(interactee.getStartingX(), interactee.getStartingY());
-//		handSign.setTouchable(Touchable.disabled);
-//		
-//		GameProperties.get().addActorToStage(handSign);
-//	}
-	
-//	private void setConnectorSprite(HeadSprite interactor, int influenceType) {
-//		Coordinates direction = CoordinateSystem.getCoordDirection(interactor.getDirection(), (int)interactor.getRotation());
-//		
-//		int influenceSprite = influenceType == 0 ? 0 : 1;
-//		
-//		Actor connector = new Image(new TextureAtlas(Gdx.files.internal("sprites//connectorPack.pack")).getRegions().get(influenceSprite ));
-//
-//		connector.setOrigin(connector.getWidth()/2, connector.getHeight()/2);
-//		connector.setPosition(interactor.getStartingX() - 20, interactor.getStartingY() -22);
-//		connector.setTouchable(Touchable.disabled);
-//		
-//		if(direction == Coordinates.E) {
-//			connector.rotateBy(270);
-//		}
-//		else if(direction == Coordinates.S) {
-//			connector.rotateBy(180);
-//		}
-//		else if(direction == Coordinates.W) {
-//			connector.rotateBy(90);
-//		}
-//		
-//		
-//		GameProperties.get().addActorToStage(connector);
-//	}
 	
 }

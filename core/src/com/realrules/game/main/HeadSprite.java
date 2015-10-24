@@ -37,7 +37,7 @@ public class HeadSprite  extends Image  {
 	public boolean isManualInteractor = false;
 	private ArrayList<Orientation> validDirections;
 	
-	
+	public boolean isInteracting = false;
 	private boolean isActing = false;
 	private String framesPath = null;
 	private static String defaultPack = "Default.pack";

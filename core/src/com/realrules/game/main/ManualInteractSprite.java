@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.realrules.game.interact.IManualInteraction;
 import com.realrules.game.interact.ManualSupporterInteraction;
 
 public class ManualInteractSprite extends Image{
@@ -23,11 +24,12 @@ public class ManualInteractSprite extends Image{
 	
 	private HeadSprite interactor;
 	private HeadSprite interactee;
-	private int interactType;
+	private IManualInteraction interactionType;
 
-	public ManualInteractSprite(float interactionStateLength, int interactionStages, HeadSprite interactor, HeadSprite interactee) {
+	public ManualInteractSprite(float interactionStateLength, int interactionStages, HeadSprite interactor, HeadSprite interactee, IManualInteraction interactionType) {
 		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 		
+		this.interactionType = interactionType;
 		this.interactionStateLength = interactionStateLength;
 		this.interactionScaleFactor = 1f/(float)(interactionStages);
 		this.currentScaleFactor = interactionScaleFactor;
@@ -35,14 +37,12 @@ public class ManualInteractSprite extends Image{
 		
 		this.setDrawable(new TextureRegionDrawable(new TextureRegion(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0))));
 		
-		System.out.println("Setting interact sprite for "+interactor.getXGameCoord()+", "+interactor.getYGameCoord()+ " status: "+interactor.status);
 		this.interactor = interactor;
 		this.interactee = interactee;
-//		this.interactType = interactType;
 		
 		if(interactor.status == 1) {
 			setAction();
-			setInfluenceSprite(interactor);
+			interactionType.setInfluencedSprite(interactor);
 			interactor.setColor(Color.WHITE);
 		}
 		else {
@@ -52,7 +52,6 @@ public class ManualInteractSprite extends Image{
 	
 	private void setSprite(float xCoord, float yCoord) {
 
-//		this.setOrigin(this.getWidth()/2, this.getHeight()/2);
 		this.setPosition(xCoord, yCoord);
 		this.setTouchable(Touchable.disabled);
 		this.scaleBy(-1);
@@ -96,19 +95,20 @@ public class ManualInteractSprite extends Image{
 		interactor.status = 2;
 		interactee.isActive = true;
 		interactee.status = 1;
-		setInfluenceSprite(interactee);
+		interactionType.setInfluencedSprite(interactee);
+//		setInfluenceSprite(interactee);
 	}
 	
-	
-	private void setInfluenceSprite(HeadSprite interactee) {
-		
-		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(interactType));
-
-		handSign.setOrigin(handSign.getWidth()/2, handSign.getHeight()/2);
-		handSign.setPosition(interactee.getStartingX(), interactee.getStartingY());
-		
-		GameProperties.get().addActorToStage(handSign);
-	}
+//	
+//	private void setInfluenceSprite(HeadSprite interactee) {
+//		
+//		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(interactType));
+//
+//		handSign.setOrigin(handSign.getWidth()/2, handSign.getHeight()/2);
+//		handSign.setPosition(interactee.getStartingX(), interactee.getStartingY());
+//		
+//		GameProperties.get().addActorToStage(handSign);
+//	}
 	
 	private void setToLastFollower() {
 		if(ScoreState.validTouchAction()) {
