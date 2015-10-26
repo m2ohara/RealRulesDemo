@@ -20,14 +20,8 @@ public class GameGenerator {
 		rand = new Random();
 		skipPlacementProb = ((float)(PlayerState.get().getLevel())/10);
 	}
-
 	
-	public void populateCrowdScreen() {
-		
-//		Actor screen = getImage("GameScreen", "screens//screensPack");
-//		screen.setTouchable(Touchable.disabled);
-//		setToStage(screen, 0, 0);
-		
+	public void populateCrowdScreen() {	
 		
 		List<FollowerType> types = PlayerState.get().getFollowerTypes();
 		Random crowdSetter = new Random();
@@ -58,8 +52,6 @@ public class GameGenerator {
 		
 		GameProperties.get().getStage().addActor(GameProperties.get().getActorGroup());
 		GameProperties.get().getStage().addActor(GameProperties.get().getSoundWaveGroup());
-		
-//		setFollowerScreen();
 	
 	}
 	
@@ -87,6 +79,29 @@ public class GameGenerator {
 				GameProperties.get().addToActorGroup(current);
 			}
 		}
+	}
+	
+	private int levelWinAmount;
+	public int getLevelWinAmount() {
+		return levelWinAmount;
+	}
+	
+	public void populateLevelCrowdScreen() {
+		
+		//Set level placement proximity probability PlProb
+		
+		//Set core line of sprites, CoreLine, starting from bottom to top
+		
+		//Populate remaining sprites against core line based on PlProb
+		
+			//For each sprite place at random point beside CoreLine
+		
+	}
+	
+	public void SampleRandomWalkAlgorithm() {
+		
+		//
+		
 	}
 
 }
