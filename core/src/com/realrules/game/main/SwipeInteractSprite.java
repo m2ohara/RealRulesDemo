@@ -4,16 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.realrules.game.interact.IManualInteraction;
-import com.realrules.game.interact.ManualSupporterInteraction;
+import com.realrules.game.interact.IInteractionType;
 
-public class ManualInteractSprite extends Image{
+public class SwipeInteractSprite extends Image{
 	
 	private static String framesPath = "sprites//Meep//Effects//Effects.pack";
 	public boolean isInteracting = false;
@@ -22,11 +20,11 @@ public class ManualInteractSprite extends Image{
 	protected float interactionStateLength;
 	protected ScaleToAction scaleAction;
 	
-	private HeadSprite interactor;
-	private HeadSprite interactee;
-	private IManualInteraction interactionType;
+	private GameSprite interactor;
+	private GameSprite interactee;
+	private IInteractionType interactionType;
 
-	public ManualInteractSprite(float interactionStateLength, int interactionStages, HeadSprite interactor, HeadSprite interactee, IManualInteraction interactionType) {
+	public SwipeInteractSprite(float interactionStateLength, int interactionStages, GameSprite interactor, GameSprite interactee, IInteractionType interactionType) {
 		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 		
 		this.interactionType = interactionType;

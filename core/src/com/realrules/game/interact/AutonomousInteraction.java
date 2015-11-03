@@ -2,18 +2,18 @@ package com.realrules.game.interact;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.realrules.game.main.WorldSystem;
-import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem.Orientation;
 
 public class AutonomousInteraction {
 	
 	public IInteraction interactionBehaviour = null;
 
-	public void interact(HeadSprite interactor, Group actorGroup, Orientation orientation) {
+	public void interact(GameSprite interactor, Group actorGroup, Orientation orientation) {
 
 		// As long as interactor isn't neutral
 		if (interactor.status != 0) {
-			HeadSprite interactee = null;
+			GameSprite interactee = null;
 
 			// If facing towards the right
 			if (orientation == Orientation.E
@@ -71,7 +71,7 @@ public class AutonomousInteraction {
 
 	}
 
-	protected void interact(HeadSprite interactor, HeadSprite interactee) {
+	protected void interact(GameSprite interactor, GameSprite interactee) {
 
 		if (this.interactionBehaviour != null) {
 			this.interactionBehaviour.interact(interactor, interactee);

@@ -28,16 +28,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.realrules.game.gestures.GameGestures;
-import com.realrules.game.interact.IManualInteraction;
-import com.realrules.game.interact.ManualOpposerInteraction;
-import com.realrules.game.interact.ManualSupporterInteraction;
+import com.realrules.game.interact.IInteractionType;
+import com.realrules.game.interact.OpposerInteractionType;
+import com.realrules.game.interact.SupporterInteractionType;
 import com.realrules.game.main.ScoreState.State;
 import com.realrules.game.setup.GameGenerator;
 import com.realrules.game.state.Follower;
 import com.realrules.game.state.FollowerType;
 import com.realrules.game.state.PlayerState;
 
-public class DemoGame extends ApplicationAdapter {
+public class Game extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture background;
 	OrthographicCamera camera;
@@ -52,7 +52,7 @@ public class DemoGame extends ApplicationAdapter {
 	private ScoreState scoreState = null;
 	int winAmount = 0;
 	State winState = null;
-	IManualInteraction manualInteraction = null;
+	IInteractionType manualInteraction = null;
 	Label remainingVotesCounter = null;
 	Label endScoreCounter = null;
 	boolean isAssetsLoaded = false;
@@ -270,12 +270,12 @@ public class DemoGame extends ApplicationAdapter {
 		if(vType == 0) {
 			voteType = "PASS";
 			winState = State.WIN;
-			manualInteraction = new ManualSupporterInteraction();
+			manualInteraction = new SupporterInteractionType();
 		}
 		else {
 			voteType = "DEFEAT";
 			winState = State.LOSE;
-			manualInteraction = new ManualOpposerInteraction();
+			manualInteraction = new OpposerInteractionType();
 		}
 		
 		
@@ -301,7 +301,7 @@ public class DemoGame extends ApplicationAdapter {
 		screen.setTouchable(Touchable.disabled);
 		setToStage(screen, 0, 0);
 		
-		new GameGenerator().populateCrowdScreen();
+		new GameGenerator().populateFullCrowdScreen();
 		
 		GameProperties.get().getStage().addActor(GameProperties.get().getActorGroup());
 		GameProperties.get().getStage().addActor(GameProperties.get().getSoundWaveGroup());
@@ -372,7 +372,7 @@ public class DemoGame extends ApplicationAdapter {
 		
 		//Activate crowd members
 		for(Actor actor : GameProperties.get().getActorGroup().getChildren()) {
-			((HeadSprite)actor).setBehaviour(manualInteraction);
+			((GameSprite)actor).setBehaviour(manualInteraction);
 		}
 		
 		//Set remaining votes icon

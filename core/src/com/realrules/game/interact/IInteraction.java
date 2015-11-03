@@ -1,9 +1,9 @@
 package com.realrules.game.interact;
 
-import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.GameSprite;
 
 
 public interface IInteraction {
-	void interact(HeadSprite interactor, HeadSprite interactee);
+	void interact(GameSprite interactor, GameSprite interactee);
 	
 }

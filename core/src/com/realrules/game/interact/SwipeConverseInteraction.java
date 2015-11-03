@@ -1,35 +1,34 @@
 package com.realrules.game.interact;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.main.GameProperties;
-import com.realrules.game.main.HeadSprite;
-import com.realrules.game.main.ManualInteractSprite;
+import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.SwipeInteractSprite;
 import com.realrules.game.main.ScoreState;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
 
-public class ManualConverseInteraction {
+public class SwipeConverseInteraction {
 	//Interacting
-	HeadSprite interactor;
+	GameSprite interactor;
 	private int hitCount = 0;
-	HeadSprite lastHitActor = null;
+	GameSprite lastHitActor = null;
 	boolean invalidInteraction = false;
-	private IManualInteraction manualInteraction = null;
+	private IInteractionType manualInteraction = null;
 	private int connectorSprite;
 	private Orientation coordinate;
 	private float interactionStateLength = 3f;
 	private int interactionStages = 3;
 
-	public ManualConverseInteraction(IManualInteraction manualInteraction, int connectorSprite) {
+	public SwipeConverseInteraction(IInteractionType manualInteraction, int connectorSprite) {
 		this.manualInteraction = manualInteraction;
 		this.connectorSprite = connectorSprite == 0 ? 1  : 0;
 	}
 
-	public void interactHit(HeadSprite hitActor, boolean isFirst) {
+	public void interactHit(GameSprite hitActor, boolean isFirst) {
 		//If new actor is hit
 		if((lastHitActor == null || !hitActor.equals(lastHitActor))) {
 
@@ -80,7 +79,7 @@ public class ManualConverseInteraction {
 
 	}
 
-	private boolean validInteraction(HeadSprite hitActor, Orientation swipeDirection) {
+	private boolean validInteraction(GameSprite hitActor, Orientation swipeDirection) {
 
 		boolean isValid = false;
 
@@ -123,7 +122,7 @@ public class ManualConverseInteraction {
 
 	}
 
-	private void setConnectorSprite(HeadSprite lastHitActor) {
+	private void setConnectorSprite(GameSprite lastHitActor) {
 
 		Actor connector = new Image(new TextureAtlas(Gdx.files.internal("sprites//connectorPack.pack")).getRegions().get(connectorSprite));
 
@@ -144,14 +143,14 @@ public class ManualConverseInteraction {
 		GameProperties.get().addActorToStage(connector);
 	}
 	
-	public void interact(HeadSprite interactor, HeadSprite interactee) {
+	public void interact(GameSprite interactor, GameSprite interactee) {
 
 		//Influence if interactee is neutral and interactor isn't already interacting
 		if(interactee.status == 0) {
 			if(interactor.status == 1) {
 				interactor.isActive = true;
 			}
-			new ManualInteractSprite(interactionStateLength, interactionStages, interactor, interactee, manualInteraction);
+			new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, manualInteraction);
 
 		}
 	}

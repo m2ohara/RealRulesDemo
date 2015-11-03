@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.InteractSprite;
 
+//TODO: Not Implemented, remove
 public class OnAnimateInteractionAct implements IOnActing {
 	
 	private float interactionStateLength;

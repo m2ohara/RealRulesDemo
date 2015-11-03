@@ -17,12 +17,12 @@ import com.realrules.game.behaviour.PromoterBehaviour;
 import com.realrules.game.interact.AutonomousInteraction;
 import com.realrules.game.interact.DeceiverInteraction;
 import com.realrules.game.interact.GossiperInteraction;
-import com.realrules.game.interact.IManualInteraction;
+import com.realrules.game.interact.IInteractionType;
 import com.realrules.game.interact.PromoterInteraction;
-import com.realrules.game.main.DemoGame.Head;
+import com.realrules.game.main.Game.Head;
 import com.realrules.game.main.WorldSystem.Orientation;
 
-public class HeadSprite  extends Image  {
+public class GameSprite  extends Image  {
 	public IHeadBehaviour behaviour;
 	
 	public IHeadBehaviour getBehaviour() {
@@ -67,7 +67,7 @@ public class HeadSprite  extends Image  {
 		return behaviour.getOrientation();
 	}
 	
-	public HeadSprite(Head type, float x, float y, String framesPath, boolean isActive) {
+	public GameSprite(Head type, float x, float y, String framesPath, boolean isActive) {
 		super(new TextureAtlas(Gdx.files.internal(framesPath+defaultPack)).getRegions().get(0));
 
 		//Centre origin in frame for rotation;
@@ -83,7 +83,7 @@ public class HeadSprite  extends Image  {
 		setValidDirections();
 	}
 	
-	public void setBehaviour(IManualInteraction manInteraction) {
+	public void setBehaviour(IInteractionType manInteraction) {
 		
 		if(type == type.GOSSIPER) {
 			behaviour = new GossiperBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord(), manInteraction);

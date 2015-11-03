@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.realrules.game.main.DemoGame.Head;
+import com.realrules.game.main.Game.Head;
 import com.realrules.game.state.PlayerState;
 
 public class GameProperties {
@@ -75,8 +75,8 @@ public class GameProperties {
 			actorGroup.removeActor(actorToRemove);
 			actorToRemove.remove();
 			
-			HeadSprite actorToAdd = new HeadSprite(actor.getType(), actor.getCurrentX(), actor.getCurrentY(), actor.getFramesPath(), false);
-			if(((HeadSprite)actorToRemove).status == 1) {
+			GameSprite actorToAdd = new GameSprite(actor.getType(), actor.getCurrentX(), actor.getCurrentY(), actor.getFramesPath(), false);
+			if(((GameSprite)actorToRemove).status == 1) {
 				actorToAdd.status = 1;
 				actorToAdd.setColor(Color.YELLOW);
 			}

@@ -7,22 +7,22 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.realrules.game.interact.IManualInteraction;
-import com.realrules.game.interact.ManualOpposerInteraction;
+import com.realrules.game.interact.IInteractionType;
+import com.realrules.game.interact.OpposerInteractionType;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.GameProperties;
-import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem.Orientation;
 
 public class DeceiverTouchAction extends TouchAction {
 
 	private ArrayList<Integer> validXCoords = new ArrayList<Integer>();
 	private ArrayList<Integer> validYCoords = new ArrayList<Integer>();
-	private HeadSprite interacter;
-	private IManualInteraction manInteraction = null;
+	private GameSprite interacter;
+	private IInteractionType manInteraction = null;
 	
-	public DeceiverTouchAction(IManualInteraction manInteraction) {
-		this.manInteraction = new ManualOpposerInteraction();
+	public DeceiverTouchAction(IInteractionType manInteraction) {
+		this.manInteraction = new OpposerInteractionType();
 	}
 
 	//Two members ahead of interactor are valid
@@ -98,7 +98,7 @@ public class DeceiverTouchAction extends TouchAction {
 			manInteraction.setToMiddleFollower(interacter);
 			setConnectorSprite(interacter);
 			for(int i = 0; i < validXCoords.size(); i++) {
-				HeadSprite actor = WorldSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i));
+				GameSprite actor = WorldSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i));
 				if(i == validXCoords.size()-1) {
 					setToLastFollower(actor);
 				}
@@ -112,12 +112,12 @@ public class DeceiverTouchAction extends TouchAction {
 		
 	}
 		
-	private void setToLastFollower(HeadSprite actor) {
+	private void setToLastFollower(GameSprite actor) {
 		actor.setColor(Color.YELLOW);
 		actor.status = 1;
 	}
 	
-	private void setConnectorSprite(HeadSprite lastHitActor) {
+	private void setConnectorSprite(GameSprite lastHitActor) {
 		
 		Actor connector = new Image(new TextureAtlas(Gdx.files.internal("sprites//connectorPack.pack")).getRegions().get(0));
 

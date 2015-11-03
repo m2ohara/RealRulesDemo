@@ -3,7 +3,7 @@ package com.realrules.game.state;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.realrules.game.main.DemoGame.Head;
+import com.realrules.game.main.Game.Head;
 
 public class PlayerState {
 	

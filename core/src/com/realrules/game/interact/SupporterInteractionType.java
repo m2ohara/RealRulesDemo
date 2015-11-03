@@ -6,23 +6,21 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.main.GameProperties;
-import com.realrules.game.main.HeadSprite;
-import com.realrules.game.main.InteractSprite;
-import com.realrules.game.main.ManualInteractSprite;
+import com.realrules.game.main.GameSprite;
 
-public class ManualSupporterInteraction implements IManualInteraction {
+public class SupporterInteractionType implements IInteractionType {
 	
-	private HeadSprite interactor;
-	private HeadSprite interactee;
+	private GameSprite interactor;
+	private GameSprite interactee;
 	
-	public ManualSupporterInteraction() {}
+	public SupporterInteractionType() {}
 	
-	public ManualSupporterInteraction(HeadSprite interactor, HeadSprite interactee) {
+	public SupporterInteractionType(GameSprite interactor, GameSprite interactee) {
 		this.interactor = interactor;
 		this.interactee = interactee;
 	}
 	
-	public void setToMiddleFollower(HeadSprite hitActor) {
+	public void setToMiddleFollower(GameSprite hitActor) {
 		setInfluencedSprite(hitActor);
 		hitActor.status = 2;
 		hitActor.setColor(Color.WHITE);
@@ -36,7 +34,7 @@ public class ManualSupporterInteraction implements IManualInteraction {
 		setInfluencedSprite(interactee);
 	}
 	
-	public void setInfluencedSprite(HeadSprite interactee) {
+	public void setInfluencedSprite(GameSprite interactee) {
 		
 		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(0));
 

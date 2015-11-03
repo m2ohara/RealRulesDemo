@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.main.Assets;
 import com.realrules.game.main.GameProperties;
-import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.GameSprite;
 
 public class OnAnimateTalkingAct implements IOnAct{
 	
@@ -46,7 +46,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 	}
 
 	@Override
-	public void performActing(float delta, HeadSprite actor, ArrayList<Orientation> validDirections) {
+	public void performActing(float delta, GameSprite actor, ArrayList<Orientation> validDirections) {
 		
 		//Change actor's direction
 		if(animateStateTime >= animateStateLength) {
@@ -82,7 +82,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 		return this.direction;
 	}
 	
-	private void setFrame(HeadSprite actor, ArrayList<Orientation> validDirections) {
+	private void setFrame(GameSprite actor, ArrayList<Orientation> validDirections) {
 		//Based on rotation probability
 		if(rand.nextFloat() < this.rotateP) {
 			updateCurrentDirection(validDirections);
@@ -91,7 +91,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 		
 	}
 	
-	private void updateSprite(float delta, HeadSprite actor) {
+	private void updateSprite(float delta, GameSprite actor) {
 	
 		if(frameTime >= frameLength) {
 			frameTime = 0.0f;
@@ -112,7 +112,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 		direction = validDirections.get(choice);
 	}
 	
-	private void changeSpriteOrientation(HeadSprite actor) {
+	private void changeSpriteOrientation(GameSprite actor) {
 	
 		if(direction == Orientation.N) {
 			frames = animationFrames.get("TalkAbove");
@@ -128,7 +128,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 		}
 	}
 	
-	private void attemptAutonomousInteraction(HeadSprite actor) {
+	private void attemptAutonomousInteraction(GameSprite actor) {
 		Random rand = new Random();
 		if(rand.nextFloat() < this.interactP) {
 			actor.interaction.interact(actor, GameProperties.get().getActorGroup(), direction);
@@ -136,7 +136,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 		}
 	}
 	
-	private void continueAutonomousInteraction(HeadSprite actor) {
+	private void continueAutonomousInteraction(GameSprite actor) {
 		actor.interaction.interact(actor, GameProperties.get().getActorGroup(), direction);
 	}
 	

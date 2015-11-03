@@ -4,24 +4,24 @@ import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.realrules.game.interact.IManualInteraction;
-import com.realrules.game.interact.ManualConverseInteraction;
-import com.realrules.game.interact.ManualInteraction;
-import com.realrules.game.main.HeadSprite;
+import com.realrules.game.interact.IInteractionType;
+import com.realrules.game.interact.SwipeConverseInteraction;
+import com.realrules.game.interact.SwipeInteraction;
+import com.realrules.game.main.GameSprite;
 
 public class GameGestures  implements GestureListener {
 		
 		boolean isFirstHit = true;
 		private Stage stage = null;
-		ManualConverseInteraction interaction = null;
+		SwipeConverseInteraction interaction = null;
 		
 		public GameGestures(Stage stage) {
 			this.stage = stage;
 		}
 		
-		public GameGestures(Stage stage, IManualInteraction followerInteractAction, int influenceType) {
+		public GameGestures(Stage stage, IInteractionType followerInteractAction, int influenceType) {
 			this.stage = stage;
-			this.interaction = new ManualConverseInteraction(followerInteractAction, influenceType);
+			this.interaction = new SwipeConverseInteraction(followerInteractAction, influenceType);
 		}
 
 		@Override
@@ -53,9 +53,9 @@ public class GameGestures  implements GestureListener {
 			Vector2 coords = stage.screenToStageCoordinates(new Vector2(x, y));
 			Actor actor = stage.hit(coords.x, coords.y, true);
 			
-			if(actor != null && actor.getClass().equals(HeadSprite.class) && ((HeadSprite)actor).isActing()) {
+			if(actor != null && actor.getClass().equals(GameSprite.class) && ((GameSprite)actor).isActing()) {
 				//TODO: Refector interaction into HeadSprite
-				interaction.interactHit((HeadSprite)actor, isFirstHit);
+				interaction.interactHit((GameSprite)actor, isFirstHit);
 				isFirstHit = false;
 			}
 			

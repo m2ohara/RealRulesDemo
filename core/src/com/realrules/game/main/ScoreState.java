@@ -42,7 +42,7 @@ public class ScoreState {
 		int againstPoints = 0;
 		
 		for(Actor a : actors.getChildren()) {
-			HeadSprite actor = (HeadSprite) a;
+			GameSprite actor = (GameSprite) a;
 			if(actor.status == 1 || actor.status == 2) {
 				forPoints+=1;
 			}

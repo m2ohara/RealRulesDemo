@@ -101,7 +101,7 @@ public class WorldSystem {
 	}
 
 
-	public void setDirection(HeadSprite actor) {
+	public void setDirection(GameSprite actor) {
 		//TODO: Implement
 	}
 	
@@ -133,13 +133,13 @@ public class WorldSystem {
 		return null;
 	}
 	
-	public HeadSprite getMemberFromCoords(int gameXPos, int gameYPos) {
+	public GameSprite getMemberFromCoords(int gameXPos, int gameYPos) {
 		
 		if(GameProperties.get().getActorGroup() != null) {
 			if(gameXPos != -1 && gameXPos < systemWidth && gameYPos != -1 && gameYPos < systemHeight){
 				Array<Actor> actors = GameProperties.get().getActorGroup().getChildren();
 				for(Actor actor : actors) {
-						HeadSprite headSprite = (HeadSprite)actor;
+						GameSprite headSprite = (GameSprite)actor;
 						if(gameXCoords.indexOf(headSprite.getStartingX()) == gameXPos && gameYCoords.indexOf(headSprite.getStartingY()) == gameYPos)
 							return headSprite;
 				}

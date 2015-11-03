@@ -3,7 +3,7 @@ package com.realrules.game.setup;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.realrules.game.main.GameProperties;
-import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.ScoreState.State;
 
 public class VoteGameRules implements IGameRules {
@@ -50,7 +50,7 @@ public class VoteGameRules implements IGameRules {
 		int againstVotes = 0;
 		
 		for(Actor a : actors.getChildren()) {
-			HeadSprite actor = (HeadSprite) a;
+			GameSprite actor = (GameSprite) a;
 			if(actor.status == 1) {
 				if(winState == State.WIN) {
 					forVotes+=1;

@@ -3,7 +3,7 @@ package com.realrules.game.setup;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.realrules.game.main.GameProperties;
-import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.ScoreState.State;
 
 public class DefaultGameRules implements IGameRules {
@@ -30,7 +30,7 @@ public class DefaultGameRules implements IGameRules {
 		int againstPoints = 0;
 		
 		for(Actor a : actors.getChildren()) {
-			HeadSprite actor = (HeadSprite) a;
+			GameSprite actor = (GameSprite) a;
 			if(actor.status == 1 || actor.status == 2) {
 				forPoints+=1;
 			}

@@ -2,14 +2,7 @@ package com.realrules.game.interact;
 
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.realrules.game.act.IOnActing;
-import com.realrules.game.main.GameProperties;
-import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.InteractSprite;
 
 public class GossiperInteractBehaviour implements IInteraction {
@@ -20,10 +13,10 @@ public class GossiperInteractBehaviour implements IInteraction {
 	private float interactionStateLength = 3f;
 	private int interactionStages = 3;
 	private InteractSprite interactSprite;
-	private IManualInteraction interactionType;
+	private IInteractionType interactionType;
 	
 	@Override
-	public void interact(HeadSprite interactor, HeadSprite interactee) {
+	public void interact(GameSprite interactor, GameSprite interactee) {
 		
 		//Influence if interactee is neutral and interactor isn't already interacting
 		if(!interactor.isManualInteractor && !interactor.isInteracting && interactee.status == 0 && interactee.isActive && rand.nextFloat() > interactSuccess) {
@@ -38,16 +31,16 @@ public class GossiperInteractBehaviour implements IInteraction {
 		
 	}
 	
-	private void setInteractionResult(HeadSprite interactor, HeadSprite interactee) {
+	private void setInteractionResult(GameSprite interactor, GameSprite interactee) {
 		
 		if(interactee.status == 0 && interactee.isActive == true) {
 			//Oppose
 			if(rand.nextFloat() > promoteOpposeProb) {
-				interactionType = new ManualOpposerInteraction(interactor, interactee);
+				interactionType = new OpposerInteractionType(interactor, interactee);
 			}
 			//Promote
 			else {
-				interactionType = new ManualSupporterInteraction(interactor, interactee);
+				interactionType = new SupporterInteractionType(interactor, interactee);
 			}
 		}
 	}

@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.GameProperties;
-import com.realrules.game.main.HeadSprite;
+import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem.Orientation;
 
 public class OnAct implements IOnAct {
@@ -38,7 +38,7 @@ public class OnAct implements IOnAct {
 	}
 
 	@Override
-	public void performActing(float delta, HeadSprite actor, ArrayList<Orientation> validDirections) {
+	public void performActing(float delta, GameSprite actor, ArrayList<Orientation> validDirections) {
 		
 		if(stateTime >= stateLength) {
 			stateTime = 0.0f;		
@@ -55,7 +55,7 @@ public class OnAct implements IOnAct {
 
 	}
 	
-	private void setFrame(HeadSprite actor, ArrayList<Orientation> validDirections) {
+	private void setFrame(GameSprite actor, ArrayList<Orientation> validDirections) {
 		//Based on rotation probability
 		if(rand.nextFloat() < this.rotateP) {
 			updateCurrentDirection(validDirections);
@@ -86,13 +86,13 @@ public class OnAct implements IOnAct {
 		}
 	}
 	
-	private void changeRotation(HeadSprite actor) {
+	private void changeRotation(GameSprite actor) {
 		//Rotate this
 		actor.setRotation((float) (angle));	
 		actor.setDrawable(new TextureRegionDrawable(new TextureRegion(frames.get(direction))));
 	}
 	
-	private void performAutonomousInteraction(HeadSprite actor) {
+	private void performAutonomousInteraction(GameSprite actor) {
 		Random rand = new Random();
 		if(rand.nextFloat() < this.interactP) {
 			actor.interaction.interact(actor, GameProperties.get().getActorGroup(), WorldSystem.getCoordDirection(direction, angle));

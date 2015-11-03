@@ -9,8 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.realrules.game.interact.IManualInteraction;
-import com.realrules.game.interact.ManualSupporterInteraction;
+import com.realrules.game.interact.IInteractionType;
 
 public class InteractSprite extends Image {
 	
@@ -20,9 +19,9 @@ public class InteractSprite extends Image {
 	protected float currentScaleFactor;
 	protected float interactionStateLength;
 	protected ScaleToAction scaleAction;
-	private IManualInteraction interactionType;
+	private IInteractionType interactionType;
 	
-	public InteractSprite(float interactionStateLength, int interactionStages, HeadSprite interactor, IManualInteraction interactionType) {
+	public InteractSprite(float interactionStateLength, int interactionStages, GameSprite interactor, IInteractionType interactionType) {
 		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 		
 		this.interactionType = interactionType;
