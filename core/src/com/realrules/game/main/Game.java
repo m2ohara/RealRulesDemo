@@ -50,6 +50,7 @@ public class Game extends ApplicationAdapter {
 	
 	//Refactor to GameSetup
 	private ScoreState scoreState = null;
+	GameGenerator gameGenerator = null;
 	int winAmount = 0;
 	State winState = null;
 	IInteractionType manualInteraction = null;
@@ -278,9 +279,11 @@ public class Game extends ApplicationAdapter {
 			manualInteraction = new OpposerInteractionType();
 		}
 		
-		
-		int amount = WorldSystem.getSystemWidth() * WorldSystem.getSystemHeight();
+		int amount = WorldSystem.get().getSystemWidth() * WorldSystem.get().getSystemHeight();
 		winAmount = rand.nextInt(amount-8)+7;
+		
+		gameGenerator = new GameGenerator();
+		gameGenerator.setLevelWinAmount(winAmount);
 		
 		
 		final Skin skin = new Skin();
@@ -301,7 +304,8 @@ public class Game extends ApplicationAdapter {
 		screen.setTouchable(Touchable.disabled);
 		setToStage(screen, 0, 0);
 		
-		new GameGenerator().populateFullCrowdScreen();
+
+		gameGenerator.populateFullCrowdScreen();
 		
 		GameProperties.get().getStage().addActor(GameProperties.get().getActorGroup());
 		GameProperties.get().getStage().addActor(GameProperties.get().getSoundWaveGroup());

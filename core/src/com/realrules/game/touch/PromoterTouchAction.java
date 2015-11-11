@@ -43,7 +43,7 @@ public class PromoterTouchAction extends TouchAction {
 			//Determine direction
 			if(this.getInteractorDir() == Orientation.N) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.isValidYCoordinate(origY-1)) {
+				if(WorldSystem.get().isValidYCoordinate(origY-1)) {
 					validYCoords.add(origY-1);
 					validYCoords.add(origY-1);
 					
@@ -55,7 +55,7 @@ public class PromoterTouchAction extends TouchAction {
 			
 			if(this.getInteractorDir() == Orientation.E) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.isValidXCoordinate(origX+1)) {
+				if(WorldSystem.get().isValidXCoordinate(origX+1)) {
 					validXCoords.add(origX+1);
 					validXCoords.add(origX+1);
 					
@@ -66,7 +66,7 @@ public class PromoterTouchAction extends TouchAction {
 			
 			if(this.getInteractorDir() == Orientation.S) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.isValidYCoordinate(origY+1)) {
+				if(WorldSystem.get().isValidYCoordinate(origY+1)) {
 					validYCoords.add(origY+1);
 					validYCoords.add(origY+1);
 					
@@ -77,7 +77,7 @@ public class PromoterTouchAction extends TouchAction {
 			
 			if(this.getInteractorDir() == Orientation.W) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.isValidXCoordinate(origX-1)) {
+				if(WorldSystem.get().isValidXCoordinate(origX-1)) {
 					validXCoords.add(origX-1);
 					validXCoords.add(origX-1);
 					
@@ -91,7 +91,7 @@ public class PromoterTouchAction extends TouchAction {
 	
 	private void setValidXCoords(float randVal, int origX) {
 		if(randVal < 0.33) {
-			if(WorldSystem.isValidXCoordinate(origX-1)) {
+			if(WorldSystem.get().isValidXCoordinate(origX-1)) {
 				validXCoords.add(origX-1);
 				validXCoords.add(origX);
 			}
@@ -102,7 +102,7 @@ public class PromoterTouchAction extends TouchAction {
 		}
 		else if(randVal >= 0.33 && randVal <= 0.66) {
 			validXCoords.add(origX);
-			if(WorldSystem.isValidXCoordinate(origX-1)) {
+			if(WorldSystem.get().isValidXCoordinate(origX-1)) {
 				validXCoords.add(origX-1);
 			}
 			else {
@@ -110,7 +110,7 @@ public class PromoterTouchAction extends TouchAction {
 			}
 		}
 		else {
-			if(WorldSystem.isValidXCoordinate(origX+1)) {
+			if(WorldSystem.get().isValidXCoordinate(origX+1)) {
 				validXCoords.add(origX+1);
 				validXCoords.add(origX);
 			}
@@ -123,7 +123,7 @@ public class PromoterTouchAction extends TouchAction {
 	
 	private void setValidYCoords(float randVal, int origY) {
 		if(randVal < 0.33) {
-			if(WorldSystem.isValidYCoordinate(origY-1)) {
+			if(WorldSystem.get().isValidYCoordinate(origY-1)) {
 				validYCoords.add(origY-1);
 				validYCoords.add(origY);
 			}
@@ -134,7 +134,7 @@ public class PromoterTouchAction extends TouchAction {
 		}
 		else if(randVal >= 0.33 && randVal <= 0.66) {
 			validYCoords.add(origY);
-			if(WorldSystem.isValidYCoordinate(origY-1)) {
+			if(WorldSystem.get().isValidYCoordinate(origY-1)) {
 				validYCoords.add(origY-1);
 			}
 			else {
@@ -142,7 +142,7 @@ public class PromoterTouchAction extends TouchAction {
 			}
 		}
 		else {
-			if(WorldSystem.isValidXCoordinate(origY+1)) {
+			if(WorldSystem.get().isValidXCoordinate(origY+1)) {
 				validYCoords.add(origY+1);
 				validYCoords.add(origY);
 			}

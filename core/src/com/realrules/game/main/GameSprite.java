@@ -21,6 +21,7 @@ import com.realrules.game.interact.IInteractionType;
 import com.realrules.game.interact.PromoterInteraction;
 import com.realrules.game.main.Game.Head;
 import com.realrules.game.main.WorldSystem.Orientation;
+import com.realrules.game.state.PlayerState;
 
 public class GameSprite  extends Image  {
 	public IHeadBehaviour behaviour;
@@ -74,6 +75,9 @@ public class GameSprite  extends Image  {
 		TextureRegion currentFrame  = new TextureAtlas(Gdx.files.internal(framesPath+defaultPack)).getRegions().get(0);
 		this.setOrigin(currentFrame.getRegionWidth()/2, currentFrame.getRegionHeight()/2);
 		this.setPosition(x, y);
+		
+		float scaleFactor = WorldSystem.get().getLevelScaleFactor();
+		this.setScale(scaleFactor);
 		
 		this.startingX = x;
 		this.startingY = y;
@@ -139,13 +143,13 @@ public class GameSprite  extends Image  {
 		
 		validDirections = new ArrayList<Orientation> (Arrays.asList(Orientation.N, Orientation.E, Orientation.S, Orientation.W));
 		
-		if(getXGameCoord() == WorldSystem.getSystemWidth()-1) {
+		if(getXGameCoord() == WorldSystem.get().getSystemWidth()-1) {
 			validDirections.remove(Orientation.E);
 		}
 		if(getXGameCoord() == 0) {
 			validDirections.remove(Orientation.W);
 		}
-		if(getYGameCoord() == WorldSystem.getSystemHeight()-1) {
+		if(getYGameCoord() == WorldSystem.get().getSystemHeight()-1) {
 			validDirections.remove(Orientation.S);
 		}
 		if(getYGameCoord() == 0) {

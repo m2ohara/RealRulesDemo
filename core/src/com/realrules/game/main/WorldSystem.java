@@ -9,15 +9,16 @@ import com.realrules.game.state.PlayerState;
 
 public class WorldSystem {
 	
-	private static int systemWidth = 3;
-	private static int systemHeight = 4;
-	public static enum Orientation {N, NE, E, SE, S, SW, W, NW}
 	private static WorldSystem instance;
+	private int baseWidth = 3;
+	private int baseHeight = 3;
+	private int systemWidth;
+	private int systemHeight;
+	public static enum Orientation {N, NE, E, SE, S, SW, W, NW}
+	
 	//Properties related to setting sprites on game screen
-	public final int xGrid = systemWidth;
-	public final int yGrid = systemHeight;
-	public static float headSpriteH = 72;
-	public static int headSpriteW = 72;
+	public float headSpriteH;
+	public int headSpriteW;
 	private float hudYCoord;
 	
 	private ArrayList<Float> gameXCoords = new ArrayList<Float>();
@@ -34,6 +35,12 @@ public class WorldSystem {
 	}
 	
 	private WorldSystem() {
+		
+		headSpriteH = Math.round(72f * getLevelScaleFactor());
+		headSpriteW = Math.round(72f * getLevelScaleFactor());
+		
+		setWorldDimensions();
+		
 		setGameCoords();
 		
 		setHudCoords();
@@ -41,15 +48,15 @@ public class WorldSystem {
 	
 	private void setGameCoords() {
 		float centreX = (Gdx.graphics.getWidth()) / 2; 
-		float xSpan = headSpriteW*xGrid;
+		float xSpan = headSpriteW*systemWidth;
 		float startX = centreX - (xSpan/2);
 		float spanLengthX = startX + xSpan;
 		for(float x = startX; x < spanLengthX; x+=headSpriteW) {
-			getGameXCoords().add(x);
+			gameXCoords.add(x);
 		}
 		
 		float centreY = (Gdx.graphics.getHeight()-100) / 2; 
-		float ySpan = headSpriteH*yGrid;
+		float ySpan = headSpriteH*systemHeight;
 		float startY = centreY + (ySpan/2);
 		float spanLengthY = startY - ySpan;
 		for(float y = startY; y > spanLengthY; y-=headSpriteH) {
@@ -148,27 +155,15 @@ public class WorldSystem {
 		return null;
 	}
 	
-	public static int getSystemWidth() {
+	public int getSystemWidth() {
 		return systemWidth;
 	}
 
-	public static int getSystemHeight() {
+	public int getSystemHeight() {
 		return systemHeight;
 	}
 	
-//	//Determine direction object is facing
-//	public static Orientation getCoordinates(int dir, int rotation) {
-//		
-//		//TODO: dev logic for getting coordinates
-//		if(dir == 0){
-//
-//		}
-//		return null;
-//			
-//		
-//	}
-	
-	public static boolean isValidYCoordinate(int coordinate) {
+	public boolean isValidYCoordinate(int coordinate) {
 		if(coordinate >= 0 &&  coordinate < systemHeight)
 		{	
 			return true;
@@ -177,7 +172,7 @@ public class WorldSystem {
 	}
 		
 	
-	public static boolean isValidXCoordinate(int coordinate) {
+	public boolean isValidXCoordinate(int coordinate) {
 		if(coordinate >= 0 && coordinate < systemWidth)
 		{	
 			return true;
@@ -198,6 +193,27 @@ public class WorldSystem {
 		
 		_xCentreOffset = actorToSet.getX();
 		_yCentreOffset = actorToSet.getY();
+	}
+	
+	//Determine scaleFactor based on game level for every factor of 3
+	public float getLevelScaleFactor() {
+		
+		float scaleFactor = 1f;
+		int numerator = 0;
+		int denominator = PlayerState.get().getMaxLevel();
+		int level = PlayerState.get().getLevel();
+		numerator = level / 3;
+		
+		scaleFactor = (float)(denominator - numerator) / (float)denominator;
+		
+		return scaleFactor;
+	}
+	
+	public void setWorldDimensions() {
+		
+		int level = PlayerState.get().getLevel();
+		systemWidth = baseWidth + ((level+1)/2);
+		systemHeight = baseHeight + (level/2);
 	}
 
 }

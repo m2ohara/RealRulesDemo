@@ -41,11 +41,11 @@ public class GossiperTouchAction extends TouchAction{
 			//Determine direction
 			if(this.getInteractorDir() == Orientation.N) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.isValidYCoordinate(origY-1)) {
+				if(WorldSystem.get().isValidYCoordinate(origY-1)) {
 					validYCoords.add(origY-1);
 					validXCoords.add(origX);
 				}
-				if(WorldSystem.isValidYCoordinate(origY-2)) {
+				if(WorldSystem.get().isValidYCoordinate(origY-2)) {
 					validYCoords.add(origY-2);
 					validXCoords.add(origX);
 				}
@@ -53,11 +53,11 @@ public class GossiperTouchAction extends TouchAction{
 			
 			if(this.getInteractorDir() == Orientation.E) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.isValidXCoordinate(origX+1)) {
+				if(WorldSystem.get().isValidXCoordinate(origX+1)) {
 					validXCoords.add(origX+1);
 					validYCoords.add(origY);
 				}
-				if(WorldSystem.isValidXCoordinate(origX+2)) {
+				if(WorldSystem.get().isValidXCoordinate(origX+2)) {
 					validXCoords.add(origX+2);
 					validYCoords.add(origY);
 				}
@@ -65,11 +65,11 @@ public class GossiperTouchAction extends TouchAction{
 			
 			if(this.getInteractorDir() == Orientation.S) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.isValidYCoordinate(origY+1)) {
+				if(WorldSystem.get().isValidYCoordinate(origY+1)) {
 					validYCoords.add(origY+1);
 					validXCoords.add(origX);
 				}
-				if(WorldSystem.isValidYCoordinate(origY+2)) {
+				if(WorldSystem.get().isValidYCoordinate(origY+2)) {
 					validYCoords.add(origY+2);
 					validXCoords.add(origX);
 				}
@@ -77,11 +77,11 @@ public class GossiperTouchAction extends TouchAction{
 			
 			if(this.getInteractorDir() == Orientation.W) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.isValidXCoordinate(origX-1)) {
+				if(WorldSystem.get().isValidXCoordinate(origX-1)) {
 					validXCoords.add(origX-1);
 					validYCoords.add(origY);
 				}
-				if(WorldSystem.isValidXCoordinate(origX-2)) {
+				if(WorldSystem.get().isValidXCoordinate(origX-2)) {
 					validXCoords.add(origX-2);
 					validYCoords.add(origY);
 				} 

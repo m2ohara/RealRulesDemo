@@ -10,6 +10,7 @@ public class PlayerState {
 	private ArrayList<FollowerType> followerTypes = null;
 	private ArrayList<Follower> followers = null;
 	private int level;
+	private int maxLevel = 5;
 	private int reputation = 0;
 	private static PlayerState instance;
 	
@@ -35,7 +36,7 @@ public class PlayerState {
 		followers.add(new Follower(Head.GOSSIPER, 1, "sprites//Meep//Gossiper//Default.pack"));
 		followers.add(new Follower(Head.INFLUENCER, 2, "sprites//Meep//Promoter//Default.pack"));
 		followers.add(new Follower(Head.DECEIVER, 3, "sprites//Meep//Deceiver//Default.pack"));
-		level = 5;
+		level = 2;
 		reputation = 1000;
 	}
 	
@@ -51,6 +52,10 @@ public class PlayerState {
 	
 	public int getLevel() {
 		return level;
+	}
+	
+	public int getMaxLevel() {
+		return maxLevel;
 	}
 	
 	public List<Follower> getFollowers() {
