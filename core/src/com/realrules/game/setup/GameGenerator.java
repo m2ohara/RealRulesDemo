@@ -55,6 +55,7 @@ public class GameGenerator {
 		}
 		
 		populateLevelCrowdScreen();
+		setCrowdValidDirections();
 	}
 	
 	public void populateLevelCrowdScreen() {
@@ -75,6 +76,14 @@ public class GameGenerator {
 					}
 				}
 			}
+		}
+		
+	}
+	
+	private void setCrowdValidDirections() {
+		
+		for(GameSprite sprite : GameProperties.get().getGameSprites()) {
+			sprite.setValidDirections();
 		}
 		
 	}
@@ -109,7 +118,7 @@ public class GameGenerator {
 		
 		
 		GameMember current = startMember;
-		System.out.println("Start "+current.coords.x+" "+current.coords.y);
+//		System.out.println("Start "+current.coords.x+" "+current.coords.y);
 		int foundMembers = 1;
 		boolean startingPlacement = true;
 		int neighbourIdx = 0;
@@ -153,7 +162,7 @@ public class GameGenerator {
 		
 		gameMembers.clear();
 		
-		System.out.println("Is valid "+isValid);
+//		System.out.println("Is valid "+isValid);
 		return isValid;
 	}
 	

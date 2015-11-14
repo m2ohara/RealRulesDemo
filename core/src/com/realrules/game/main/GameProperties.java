@@ -1,5 +1,6 @@
 package com.realrules.game.main;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,8 +38,7 @@ public class GameProperties {
 	
 	public void Load() {
 		
-	}
-	
+	}	
 	
 	//TODO: Refactor into separate followers class
 	public List<Head> getFollowerType() {
@@ -58,6 +58,18 @@ public class GameProperties {
 	private Group actorGroup = new Group();
 	public Group getActorGroup() {
 		return actorGroup;
+	}
+	
+	private ArrayList<GameSprite> gameSprites;
+	public ArrayList<GameSprite> getGameSprites() {
+		if(gameSprites == null) {
+			gameSprites = new ArrayList<GameSprite>();
+			Actor[] actors = ((Actor[])actorGroup.getChildren().toArray());
+			for(Actor actor : actors) {
+				gameSprites.add((GameSprite) actor);
+			}
+		}
+		return gameSprites;	
 	}
 
 	public void addToActorGroup(Actor actor) {
@@ -90,17 +102,6 @@ public class GameProperties {
 		}
 	}
 	
-	private Group soundWaveGroup = new Group();
-
-	public Group getSoundWaveGroup() {
-		return soundWaveGroup;
-	}
-
-	public void addToSoundWaveGroup(Actor soundWave) {
-		this.soundWaveGroup.addActor(soundWave);
-	}
-	
-
 	private Stage stage = null;
 	public Stage getStage() {
 		return stage;
@@ -122,7 +123,7 @@ public class GameProperties {
 		stage.clear();
 		actorGroup = new Group();
 		actorsToReplace = Arrays.asList();
-		soundWaveGroup = new Group();
+		gameSprites = null;
 	}
 
 	

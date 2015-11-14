@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.realrules.game.interact.IInteractionType;
+import com.realrules.game.state.PlayerState;
 
 public class SwipeInteractSprite extends Image{
 	
@@ -19,6 +20,7 @@ public class SwipeInteractSprite extends Image{
 	protected float currentScaleFactor;
 	protected float interactionStateLength;
 	protected ScaleToAction scaleAction;
+	protected float finalScale;
 	
 	private GameSprite interactor;
 	private GameSprite interactee;
@@ -28,11 +30,18 @@ public class SwipeInteractSprite extends Image{
 		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 		
 		this.interactionType = interactionType;
-		this.interactionStateLength = interactionStateLength;
-		this.interactionScaleFactor = 1f/(float)(interactionStages);
-		this.currentScaleFactor = interactionScaleFactor;
-		setSprite(interactor.getStartingX()+35, interactor.getStartingY()+35);
 		
+		//Set interaction length based on level - faster for higher difficulty
+		this.interactionStateLength = (float)(interactionStateLength - (PlayerState.get().getLevel()/2));
+		if(this.interactionStateLength < 1) { this.interactionStateLength = 1; }
+		
+		//Scale sprite based on level - smaller for higher difficulty
+		finalScale = WorldSystem.get().getLevelScaleFactor();
+		
+		this.interactionScaleFactor = finalScale/(float)(interactionStages);
+		this.currentScaleFactor = interactionScaleFactor;
+		
+		setSprite(interactor.getStartingX()+35, interactor.getStartingY()+35);	
 		this.setDrawable(new TextureRegionDrawable(new TextureRegion(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0))));
 		
 		this.interactor = interactor;
@@ -71,7 +80,7 @@ public class SwipeInteractSprite extends Image{
 			setAction();
 		}
 	
-		if(interactor.isActive == true && this.scaleAction != null && this.getActions().size == 0 && currentScaleFactor == 1) {
+		if(interactor.isActive == true && this.scaleAction != null && this.getActions().size == 0 && currentScaleFactor >= finalScale) {
 			scaleAction.finish();
 			isComplete = true;
 			this.remove();
@@ -82,7 +91,7 @@ public class SwipeInteractSprite extends Image{
 				setToLastFollower();
 			}
 		}
-		else if(interactor.status == 1 && this.scaleAction != null && this.getActions().size == 0 && currentScaleFactor != 1) {
+		else if(interactor.status == 1 && this.scaleAction != null && this.getActions().size == 0 && currentScaleFactor < finalScale) {
 			currentScaleFactor += interactionScaleFactor;
 			scaleAction = Actions.scaleTo(currentScaleFactor, currentScaleFactor, interactionStateLength);
 			this.addAction(scaleAction);
@@ -94,6 +103,7 @@ public class SwipeInteractSprite extends Image{
 		interactee.isActive = true;
 		interactee.status = 1;
 		interactionType.setInfluencedSprite(interactee);
+		interactor.isManualInteractor = false;
 //		setInfluenceSprite(interactee);
 	}
 	
@@ -117,6 +127,7 @@ public class SwipeInteractSprite extends Image{
 		}
 		interactee.status = 1;
 		interactee.isActive = true;
+		interactor.isManualInteractor = false;
 	}
 	
 	protected boolean isComplete = false;

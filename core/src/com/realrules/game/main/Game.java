@@ -308,7 +308,6 @@ public class Game extends ApplicationAdapter {
 		gameGenerator.populateFullCrowdScreen();
 		
 		GameProperties.get().getStage().addActor(GameProperties.get().getActorGroup());
-		GameProperties.get().getStage().addActor(GameProperties.get().getSoundWaveGroup());
 		
 		setFollowerScreen();
 	

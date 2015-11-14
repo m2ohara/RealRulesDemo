@@ -84,7 +84,7 @@ public class GameSprite  extends Image  {
 		this.framesPath = framesPath;
 		this.type = type;
 		
-		setValidDirections();
+//		setValidDirections();
 	}
 	
 	public void setBehaviour(IInteractionType manInteraction) {
@@ -119,7 +119,6 @@ public class GameSprite  extends Image  {
 				if(ScoreState.validTouchAction()) {
 					System.out.println("Pressed at: x: "+x+", y: "+y+"");
 					behaviour.onTouch();
-					ScoreState.resetUserPoints();
 				}
 		    }
 			
@@ -139,22 +138,23 @@ public class GameSprite  extends Image  {
 		}
 	}
 	
-	private void setValidDirections() {
+	public void setValidDirections() {
 		
 		validDirections = new ArrayList<Orientation> (Arrays.asList(Orientation.N, Orientation.E, Orientation.S, Orientation.W));
 		
-		if(getXGameCoord() == WorldSystem.get().getSystemWidth()-1) {
+		if(getXGameCoord() == WorldSystem.get().getSystemWidth()-1 || WorldSystem.get().getMemberFromCoords(getXGameCoord() + 1, getYGameCoord()) == null) {
 			validDirections.remove(Orientation.E);
 		}
-		if(getXGameCoord() == 0) {
+		if(getXGameCoord() == 0 || WorldSystem.get().getMemberFromCoords(getXGameCoord() - 1, getYGameCoord()) == null) {
 			validDirections.remove(Orientation.W);
 		}
-		if(getYGameCoord() == WorldSystem.get().getSystemHeight()-1) {
+		if(getYGameCoord() == WorldSystem.get().getSystemHeight()-1 || WorldSystem.get().getMemberFromCoords(getXGameCoord(), getYGameCoord() + 1) == null) {
 			validDirections.remove(Orientation.S);
 		}
-		if(getYGameCoord() == 0) {
+		if(getYGameCoord() == 0 || WorldSystem.get().getMemberFromCoords(getXGameCoord(), getYGameCoord() - 1) == null) {
 			validDirections.remove(Orientation.N);
 		}
+
 	}
 	
 	

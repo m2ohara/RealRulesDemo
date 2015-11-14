@@ -66,7 +66,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 		}
 		
 		//If not interacting increment states
-		if(!actor.isInteracting) {
+		if(!actor.isInteracting && !actor.isManualInteractor) {
 			animateStateTime += delta;
 			attemptInteractStateTime += delta;
 		}

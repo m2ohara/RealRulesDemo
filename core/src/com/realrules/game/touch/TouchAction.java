@@ -1,5 +1,6 @@
 package com.realrules.game.touch;
 
+import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
 
 public abstract class TouchAction implements ITouchAction {
@@ -32,6 +33,13 @@ public abstract class TouchAction implements ITouchAction {
 
 	public void setInteractorDir(Orientation interactorDir) {
 		this.interactorDir = interactorDir;
+	}
+	
+	public boolean isValidInteractor() {
+		if(WorldSystem.get().getMemberFromCoords(getInteractorX(), getInteractorY()).status == 1) {;
+			return true;
+		}
+		return false;
 	}
 
 }

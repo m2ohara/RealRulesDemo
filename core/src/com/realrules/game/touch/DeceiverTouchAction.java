@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.interact.IInteractionType;
 import com.realrules.game.interact.OpposerInteractionType;
+import com.realrules.game.main.ScoreState;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
@@ -91,23 +92,28 @@ public class DeceiverTouchAction extends TouchAction {
 
 	@Override
 	public void interact() {
-		//Generate current crowd members that can be influenced
-		generateValidInteractees();
 		
-		if(validXCoords.size() > 0) {
-			manInteraction.setToMiddleFollower(interacter);
-			setConnectorSprite(interacter);
-			for(int i = 0; i < validXCoords.size(); i++) {
-				GameSprite actor = WorldSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i));
-				if(i == validXCoords.size()-1) {
-					setToLastFollower(actor);
+		if(isValidInteractor()) {
+			//Generate current crowd members that can be influenced
+			generateValidInteractees();
+			
+			if(validXCoords.size() > 0) {
+				manInteraction.setToMiddleFollower(interacter);
+				setConnectorSprite(interacter);
+				for(int i = 0; i < validXCoords.size(); i++) {
+					GameSprite actor = WorldSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i));
+					if(i == validXCoords.size()-1) {
+						setToLastFollower(actor);
+					}
+					else {
+						manInteraction.setToMiddleFollower(actor);
+						setConnectorSprite(actor);
+					}
+					
 				}
-				else {
-					manInteraction.setToMiddleFollower(actor);
-					setConnectorSprite(actor);
-				}
-				
 			}
+			
+			ScoreState.resetUserPoints();
 		}
 		
 	}

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.realrules.game.interact.IInteractionType;
+import com.realrules.game.state.PlayerState;
 
 public class InteractSprite extends Image {
 	
@@ -18,6 +19,7 @@ public class InteractSprite extends Image {
 	protected float interactionScaleFactor;
 	protected float currentScaleFactor;
 	protected float interactionStateLength;
+	protected float finalScale;
 	protected ScaleToAction scaleAction;
 	private IInteractionType interactionType;
 	
@@ -25,11 +27,18 @@ public class InteractSprite extends Image {
 		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 		
 		this.interactionType = interactionType;
-		this.interactionStateLength = interactionStateLength;
-		this.interactionScaleFactor = 1f/(float)(interactionStages);
-		this.currentScaleFactor = interactionScaleFactor;
-		setSprite(interactor.getStartingX()+35, interactor.getStartingY()+35);
+		//Set interaction length based on level - faster for higher difficulty
+		this.interactionStateLength = (float)(interactionStateLength - (PlayerState.get().getLevel()/2));
+		if(this.interactionStateLength < 1) { this.interactionStateLength = 1; }
 		
+		//Scale sprite based on level - smaller for higher difficulty
+		finalScale = WorldSystem.get().getLevelScaleFactor();
+		
+		this.interactionScaleFactor = finalScale/(float)(interactionStages);
+		this.currentScaleFactor = interactionScaleFactor;
+		
+		
+		setSprite(interactor.getStartingX()+35, interactor.getStartingY()+35);		
 		this.setDrawable(new TextureRegionDrawable(new TextureRegion(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0))));
 	}
 	
@@ -37,6 +46,7 @@ public class InteractSprite extends Image {
 
 		this.setPosition(xCoord, yCoord);
 		this.setTouchable(Touchable.disabled);
+		//Set scale to 0
 		this.scaleBy(-1);
 
 		GameProperties.get().addActorToStage(this);
@@ -57,16 +67,19 @@ public class InteractSprite extends Image {
 	public void act(float delta) {
 		super.act(delta);
 	
-		if(this.scaleAction != null && this.getActions().size == 0 && currentScaleFactor == 1) {
+		if(this.scaleAction != null && this.getActions().size == 0 && currentScaleFactor >= finalScale) {
+//			System.out.println("Finished interaction at scale "+currentScaleFactor);
 			scaleAction.finish();
 			isComplete = true;
 			interactionType.complete();
 			this.remove();
 		}
-		else if(this.scaleAction != null && this.getActions().size == 0 && currentScaleFactor != 1) {
+		else if(this.scaleAction != null && this.getActions().size == 0 && currentScaleFactor < finalScale) {
+//			System.out.println("Finished interaction stage at scale "+currentScaleFactor);
 			currentScaleFactor += interactionScaleFactor;
 			scaleAction = Actions.scaleTo(currentScaleFactor, currentScaleFactor, interactionStateLength);
 			this.addAction(scaleAction);
+//			System.out.println("Starting interaction stage at scale "+currentScaleFactor);
 		}
 	}
 	
