@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
-import com.realrules.game.main.ScoreState.State;
+import com.realrules.game.state.GameScoreState.State;
 
 public class DefaultGameRules implements IGameRules {
 	

@@ -7,9 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
-import com.realrules.game.main.ScoreState;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
+import com.realrules.game.state.GameScoreState;
 
 //TODO: Not Implemented, remove
 public class SwipeInteraction {
@@ -52,7 +52,7 @@ public class SwipeInteraction {
 						hitCount += 1;
 						setToLastFollower(hitActor);
 						//Update hit count
-						ScoreState.addUserPoints(1);
+						GameScoreState.addUserPoints(1);
 					}
 					else {
 						invalidInteraction = true;
@@ -119,7 +119,7 @@ public class SwipeInteraction {
 	}
 
 	private void setToLastFollower(GameSprite hitActor) {
-		if(ScoreState.validTouchAction()) {
+		if(GameScoreState.validTouchAction()) {
 			hitActor.setColor(Color.ORANGE);
 		}
 		else {

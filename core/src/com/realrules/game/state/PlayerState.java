@@ -12,6 +12,7 @@ public class PlayerState {
 	private int level;
 	private int maxLevel = 5;
 	private int reputation = 0;
+	private int levelUpLimit;
 	private static PlayerState instance;
 	
 	public static PlayerState get() {
@@ -36,8 +37,9 @@ public class PlayerState {
 		followers.add(new Follower(Head.GOSSIPER, 1, "sprites//Meep//Gossiper//Default.pack"));
 		followers.add(new Follower(Head.INFLUENCER, 2, "sprites//Meep//Promoter//Default.pack"));
 		followers.add(new Follower(Head.DECEIVER, 3, "sprites//Meep//Deceiver//Default.pack"));
-		level = 5;
+		level = 0;
 		reputation = 1000;
+		levelUpLimit = 1000;
 	}
 	
 	//TODO: Implement Load player data
@@ -52,6 +54,10 @@ public class PlayerState {
 	
 	public int getLevel() {
 		return level;
+	}
+	
+	public void setLevel(int level) {
+		this.level = level;
 	}
 	
 	public int getMaxLevel() {
@@ -76,6 +82,10 @@ public class PlayerState {
 	
 	public int getReputationPoints() {
 		return reputation;
+	}
+	
+	public int getLevelUpLimit() {
+		return levelUpLimit;
 	}
 	
 

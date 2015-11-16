@@ -10,11 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.interact.IInteractionType;
 import com.realrules.game.interact.SupporterInteractionType;
-import com.realrules.game.main.ScoreState;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem.Orientation;
+import com.realrules.game.state.GameScoreState;
 
 public class PromoterTouchAction extends TouchAction {
 
@@ -176,7 +176,7 @@ public class PromoterTouchAction extends TouchAction {
 				}
 			}
 			
-			ScoreState.resetUserPoints();
+			GameScoreState.resetUserPoints();
 		}
 		
 	}

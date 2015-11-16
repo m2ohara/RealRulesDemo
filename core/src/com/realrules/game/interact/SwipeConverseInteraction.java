@@ -7,9 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.SwipeInteractSprite;
-import com.realrules.game.main.ScoreState;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
+import com.realrules.game.state.GameScoreState;
 
 public class SwipeConverseInteraction {
 	//Interacting
@@ -51,7 +51,7 @@ public class SwipeConverseInteraction {
 						interact(lastHitActor, hitActor );
 						hitCount += 1;
 						//Update hit count
-						ScoreState.addUserPoints(1);
+						GameScoreState.addUserPoints(1);
 					}
 					else {
 						invalidInteraction = true;

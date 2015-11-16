@@ -22,6 +22,7 @@ import com.realrules.game.interact.PromoterInteraction;
 import com.realrules.game.main.Game.Head;
 import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.state.PlayerState;
+import com.realrules.game.state.GameScoreState;
 
 public class GameSprite  extends Image  {
 	public IHeadBehaviour behaviour;
@@ -116,7 +117,7 @@ public class GameSprite  extends Image  {
 			
 			public void clicked(InputEvent event, float x, float y) 
 		    {
-				if(ScoreState.validTouchAction()) {
+				if(GameScoreState.validTouchAction()) {
 					System.out.println("Pressed at: x: "+x+", y: "+y+"");
 					behaviour.onTouch();
 				}

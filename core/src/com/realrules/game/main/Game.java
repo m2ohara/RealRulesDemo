@@ -31,11 +31,13 @@ import com.realrules.game.gestures.GameGestures;
 import com.realrules.game.interact.IInteractionType;
 import com.realrules.game.interact.OpposerInteractionType;
 import com.realrules.game.interact.SupporterInteractionType;
-import com.realrules.game.main.ScoreState.State;
 import com.realrules.game.setup.GameGenerator;
 import com.realrules.game.state.Follower;
 import com.realrules.game.state.FollowerType;
 import com.realrules.game.state.PlayerState;
+import com.realrules.game.state.GameScoreState;
+import com.realrules.game.state.ScoreState;
+import com.realrules.game.state.GameScoreState.State;
 
 public class Game extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -49,7 +51,7 @@ public class Game extends ApplicationAdapter {
 	PlayerState plState = null;
 	
 	//Refactor to GameSetup
-	private ScoreState scoreState = null;
+	private GameScoreState scoreState = null;
 	GameGenerator gameGenerator = null;
 	int winAmount = 0;
 	State winState = null;
@@ -355,7 +357,7 @@ public class Game extends ApplicationAdapter {
 	
 	private void activateGame(List<MoveableSprite> followers, ArrayList<Image> placeHolders) {
 		
-		scoreState = new ScoreState(winAmount, winState, GameProperties.get().getActorGroup().getChildren().size);
+		scoreState = new GameScoreState(winAmount, winState, GameProperties.get().getActorGroup().getChildren().size);
 		
 		//Set dropped followers into game
 		for(MoveableSprite follower : followers) {
@@ -402,20 +404,20 @@ public class Game extends ApplicationAdapter {
 			remainingVotesCounter.setText(value);
 		}
 		
-		if(scoreState.getCurrentState() == ScoreState.State.WIN) {
+		if(scoreState.getCurrentState() == GameScoreState.State.WIN) {
 			Actor image = getImage("WinSprite", "sprites//textPack");
 			setScoreStateSprite(image);
 		}
-		else if(scoreState.getCurrentState() == ScoreState.State.LOSE) {
+		else if(scoreState.getCurrentState() == GameScoreState.State.LOSE) {
 			Actor image = getImage("LoseSprite", "sprites//textPack");
 			setScoreStateSprite(image);
 		}
-		else if(scoreState.getCurrentState() == ScoreState.State.DRAW) {
+		else if(scoreState.getCurrentState() == GameScoreState.State.DRAW) {
 			Actor image = getImage("DrawSprite", "sprites//textPack");
 			setScoreStateSprite(image);
 
 		}
-		else if(scoreState.getCurrentState() == ScoreState.State.FINISHED) {	
+		else if(scoreState.getCurrentState() == GameScoreState.State.FINISHED) {	
 			setEndGameScreen();
 		}
 	}
@@ -433,6 +435,8 @@ public class Game extends ApplicationAdapter {
 		setEndScoreValue();
 		
 		setFollowerRewards();
+		
+		ScoreState.get().setLevel();
 		
 		Actor btn = getButton("PlayGameBtn");
 		setToStage(btn, 0, -260);	
@@ -500,6 +504,7 @@ public class Game extends ApplicationAdapter {
 	private void disposeGame() {
 		scoreState = null;
 		GameProperties.get().dispose();
+		WorldSystem.get().dispose();
 		createNewGame();
 	}
 

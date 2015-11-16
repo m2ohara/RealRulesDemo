@@ -22,7 +22,7 @@ public class WorldSystem {
 	private float hudYCoord;
 	
 	private ArrayList<Float> gameXCoords = new ArrayList<Float>();
-	public static ArrayList<Float>  gameYCoords = new ArrayList<Float>();
+	private ArrayList<Float>  gameYCoords = new ArrayList<Float>();
 	
 	private ArrayList<Float> hudXCoords = new ArrayList<Float>();
 	private ArrayList<Float> hudYCoords = new ArrayList<Float>();
@@ -214,6 +214,17 @@ public class WorldSystem {
 		int level = PlayerState.get().getLevel();
 		systemWidth = baseWidth + ((level+1)/2);
 		systemHeight = baseHeight + (level/2);
+	}
+	
+	public void dispose() {
+		instance = null;
+		try {
+			this.finalize();
+		}
+		catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

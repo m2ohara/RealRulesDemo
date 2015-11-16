@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.realrules.game.interact.IInteractionType;
 import com.realrules.game.state.PlayerState;
+import com.realrules.game.state.GameScoreState;
 
 public class SwipeInteractSprite extends Image{
 	
@@ -119,7 +120,7 @@ public class SwipeInteractSprite extends Image{
 //	}
 	
 	private void setToLastFollower() {
-		if(ScoreState.validTouchAction()) {
+		if(GameScoreState.validTouchAction()) {
 			interactee.setColor(Color.ORANGE);
 		}
 		else {
