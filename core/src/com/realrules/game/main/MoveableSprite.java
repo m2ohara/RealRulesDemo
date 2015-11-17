@@ -42,6 +42,8 @@ public class MoveableSprite
 		currentFrame = frames.get(0);
 		
 		this.placeholderImage = sourceTargetImage;
+		this.placeholderImage.setScale(WorldSystem.get().getLevelScaleFactor());
+		this.placeholderImage.setOrigin(placeholderImage.getWidth()/2, placeholderImage.getWidth()/2);
 		
 		setSourceSprite(x, y);
 		
@@ -51,7 +53,8 @@ public class MoveableSprite
 	private void setSourceSprite(float x, float y) {
 		sourceSprite = new Image(currentFrame);
 		sourceSprite.setPosition(x, y);
-//		sourceSprite.setColor(Color.CYAN);
+		sourceSprite.setScale(WorldSystem.get().getLevelScaleFactor());
+		sourceSprite.setOrigin(sourceSprite.getWidth()/2, sourceSprite.getWidth()/2);
 		
 		GameProperties.get().getStage().addActor(sourceSprite);
 	}
@@ -67,7 +70,6 @@ public class MoveableSprite
 		
 		Group group = GameProperties.get().getActorGroup();
 		for(Actor actor : group.getChildren()) {
-			
 			addDropTarget(actor);
 		}
 		
@@ -108,9 +110,7 @@ public class MoveableSprite
 		});
 	}
 	
-	private void addDropTarget(Actor target) {
-		
-		
+	private void addDropTarget(final Actor target) {
 		dragAndDrop.addTarget(new Target(target) {			
 			public boolean drag (Source source, Payload payload, float x, float y, int pointer) {			
 				getActor().setColor(Color.RED);

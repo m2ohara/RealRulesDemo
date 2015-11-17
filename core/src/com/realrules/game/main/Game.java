@@ -349,6 +349,7 @@ public class Game extends ApplicationAdapter {
 		Image targetImage = new Image(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 		targetImage.setColor(Color.CYAN);
 		targetImage.setPosition(origX, origY);
+		targetImage.setScale(WorldSystem.get().getLevelScaleFactor());
 		GameProperties.get().getStage().addActor(targetImage);
 		targetImage.setTouchable(Touchable.disabled);
 		

@@ -84,8 +84,6 @@ public class GameSprite  extends Image  {
 		this.startingY = y;
 		this.framesPath = framesPath;
 		this.type = type;
-		
-//		setValidDirections();
 	}
 	
 	public void setBehaviour(IInteractionType manInteraction) {
