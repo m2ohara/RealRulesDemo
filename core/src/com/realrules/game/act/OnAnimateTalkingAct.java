@@ -51,6 +51,21 @@ public class OnAnimateTalkingAct implements IOnAct{
 		setFrame();
 		
 	}
+	
+	public OnAnimateTalkingAct(float rotateProbability, float interactProbability, GameSprite actor, ArrayList<Orientation> validDirections) 
+	{
+		this.rotateP = rotateProbability;
+		this.interactP = interactProbability;
+		this.actor = actor;
+		this.validDirections = validDirections;
+		
+		frames = new TextureAtlas(Gdx.files.internal(actor.getFramesPath()+"Default.pack")).getRegions();
+		
+		setFramePacks(actor.getFramesPath());
+		
+		setFrame();
+		
+	}
 
 	@Override
 	public void performActing(float delta) {

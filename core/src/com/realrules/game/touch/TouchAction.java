@@ -8,6 +8,11 @@ public abstract class TouchAction implements ITouchAction {
 	private int interactorX;
 	private int interactorY;
 	private Orientation interactorDir;
+	
+	public TouchAction(int x, int y) {
+		setInteractorX(x);
+		setInteractorY(y);
+	}
 
 	protected abstract void generateValidInteractees();
 

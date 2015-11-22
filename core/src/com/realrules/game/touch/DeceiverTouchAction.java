@@ -22,8 +22,10 @@ public class DeceiverTouchAction extends TouchAction {
 	private GameSprite interacter;
 	private IInteractionType manInteraction = null;
 	
-	public DeceiverTouchAction(IInteractionType manInteraction) {
+	public DeceiverTouchAction(IInteractionType manInteraction, int x, int y) {
+		super(x, y);
 		this.manInteraction = new OpposerInteractionType();
+		this.setInteractorDir(WorldSystem.getCoordDirection(0, 0));
 	}
 
 	//Two members ahead of interactor are valid

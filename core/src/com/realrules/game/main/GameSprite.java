@@ -10,10 +10,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.realrules.game.behaviour.DeceiverBehaviour;
-import com.realrules.game.behaviour.GossiperBehaviour;
+import com.realrules.game.act.OnAnimateTalkingAct;
+import com.realrules.game.behaviour.Behaviour;
+import com.realrules.game.behaviour.DeceiverProperties;
+import com.realrules.game.behaviour.GossiperProperties;
+import com.realrules.game.behaviour.IBehaviourProperties;
 import com.realrules.game.behaviour.IHeadBehaviour;
-import com.realrules.game.behaviour.PromoterBehaviour;
+import com.realrules.game.behaviour.PromoterProperties;
 import com.realrules.game.interact.AutonomousInteraction;
 import com.realrules.game.interact.DeceiverInteraction;
 import com.realrules.game.interact.GossiperInteraction;
@@ -21,8 +24,10 @@ import com.realrules.game.interact.IInteractionType;
 import com.realrules.game.interact.PromoterInteraction;
 import com.realrules.game.main.Game.Head;
 import com.realrules.game.main.WorldSystem.Orientation;
-import com.realrules.game.state.PlayerState;
 import com.realrules.game.state.GameScoreState;
+import com.realrules.game.touch.DeceiverTouchAction;
+import com.realrules.game.touch.GossiperTouchAction;
+import com.realrules.game.touch.PromoterTouchAction;
 
 public class GameSprite  extends Image  {
 	public IHeadBehaviour behaviour;
@@ -65,6 +70,10 @@ public class GameSprite  extends Image  {
 		return isActing;
 	}
 	
+	public String getFramesPath() {
+		return framesPath;
+	}
+	
 	public Orientation getOrientation() {
 		return behaviour.getOrientation();
 	}
@@ -93,16 +102,28 @@ public class GameSprite  extends Image  {
 		}
 		
 		if(type == type.GOSSIPER) {
-			behaviour = new GossiperBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord(), manInteraction, this, validDirections);
+			IBehaviourProperties properties = new GossiperProperties();
+			behaviour = new Behaviour(
+					isActive, 
+					new OnAnimateTalkingAct(properties.getRotateProbability(), properties.getInteractProbability(), this, validDirections),
+					new GossiperTouchAction(manInteraction, getXGameCoord(), getYGameCoord()), properties);
 			interaction = new GossiperInteraction();
 
 		}
 		if(type == type.DECEIVER) {
-			behaviour = new DeceiverBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord(), manInteraction, this, validDirections);
+			IBehaviourProperties properties = new DeceiverProperties();
+			behaviour = new Behaviour(
+					isActive, 
+					new OnAnimateTalkingAct(properties.getRotateProbability(), properties.getInteractProbability(), this, validDirections),
+					new DeceiverTouchAction(manInteraction, getXGameCoord(), getYGameCoord()), properties);
 			interaction = new DeceiverInteraction();
 		}
 		if(type == type.INFLUENCER) {
-			behaviour = new PromoterBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord(), manInteraction, this, validDirections);
+			IBehaviourProperties properties = new PromoterProperties();
+			behaviour = new Behaviour(
+					isActive, 
+					new OnAnimateTalkingAct(properties.getRotateProbability(), properties.getInteractProbability(), this, validDirections),
+					new PromoterTouchAction(manInteraction, getXGameCoord(), getYGameCoord()), properties);
 			interaction = new PromoterInteraction();
 		}
 		
@@ -141,6 +162,7 @@ public class GameSprite  extends Image  {
 		}
 	}
 	
+	//TODO: Refactor into IBehaviourProperties
 	public void setValidDirections() {
 		
 		validDirections = new ArrayList<Orientation> (Arrays.asList(Orientation.N, Orientation.E, Orientation.S, Orientation.W));

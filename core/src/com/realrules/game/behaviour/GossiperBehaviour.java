@@ -24,10 +24,7 @@ public class GossiperBehaviour implements IHeadBehaviour {
 		this.isActive = isActive;
 		
 		onAct = new OnAnimateTalkingAct(rotateP, interactP, framesPath, actor, validDirections);
-		onTouch = new GossiperTouchAction(manInteraction);
-		this.onTouch.setInteractorX(x);
-		this.onTouch.setInteractorY(y);
-		this.onTouch.setInteractorDir(onAct.getCurrentCoordinate());
+		onTouch = new GossiperTouchAction(manInteraction, x, y);
 		
 	}
 

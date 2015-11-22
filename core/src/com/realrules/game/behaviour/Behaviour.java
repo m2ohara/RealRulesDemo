@@ -3,36 +3,28 @@ package com.realrules.game.behaviour;
 import java.util.ArrayList;
 
 import com.realrules.game.act.IOnAct;
-import com.realrules.game.act.OnAnimateTalkingAct;
-import com.realrules.game.interact.IInteractionType;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem.Orientation;
-import com.realrules.game.touch.DeceiverTouchAction;
 import com.realrules.game.touch.TouchAction;
 
-public class DeceiverBehaviour implements IHeadBehaviour {
-	
+public class Behaviour implements IHeadBehaviour {
+
 	//Members
 	private boolean isActive = true;
-	private float rotateP = 0.8f;
-	private float interactP = 0.4f;
-	private int influenceAmount = 3;
+	private int influenceAmount;
 	private TouchAction onTouch;
 	private IOnAct onAct;
-
 	
-	public DeceiverBehaviour(boolean isActive, String framesPath, int x, int y, IInteractionType manInteraction, GameSprite actor, ArrayList<Orientation> validDirections) {
+	public Behaviour(boolean isActive, IOnAct onAct, TouchAction touchAction, IBehaviourProperties properties) {
+
+		this.influenceAmount = properties.getInfluenceAmount();
+		
 		this.isActive = isActive;
-		
-		onAct = new OnAnimateTalkingAct(rotateP, interactP, framesPath, actor, validDirections);
-		
-		this.onTouch = new DeceiverTouchAction(manInteraction, x, y);
-		this.onTouch.setInteractorX(x);
-		this.onTouch.setInteractorY(y);
-		this.onTouch.setInteractorDir(onAct.getCurrentCoordinate());
+		this.onAct = onAct;
+		this.onTouch = touchAction;
 		
 	}
-
+	
 	@Override
 	public void onTouch() {
 		
@@ -53,15 +45,14 @@ public class DeceiverBehaviour implements IHeadBehaviour {
 		}
 		
 	}
-	
+
 	@Override
 	public int getInfluenceAmount() {
 		return influenceAmount;
 	}
-
+	
 	@Override
 	public Orientation getOrientation() {
 		return onAct.getCurrentCoordinate();
 	}
-
 }

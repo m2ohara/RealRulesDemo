@@ -23,10 +23,9 @@ public class PromoterTouchAction extends TouchAction {
 	private GameSprite interacter;
 	private IInteractionType manInteraction = null;
 	
-	public PromoterTouchAction(int x, int y, IInteractionType manInteraction) {
+	public PromoterTouchAction(IInteractionType manInteraction, int x, int y) {
+		super(x, y);
 		this.manInteraction = new SupporterInteractionType();
-		this.setInteractorX(x);
-		this.setInteractorY(y);
 		this.setInteractorDir(WorldSystem.getCoordDirection(0, 0));
 	}
 	

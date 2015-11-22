@@ -26,7 +26,7 @@ public class PromoterBehaviour implements IHeadBehaviour {
 		
 		onAct = new OnAnimateTalkingAct(rotateP, interactP, framesPath, actor, validDirections);
 		
-		onTouch = new PromoterTouchAction(x, y, manInteraction);
+		onTouch = new PromoterTouchAction(manInteraction, x, y);
 		
 	}
 	

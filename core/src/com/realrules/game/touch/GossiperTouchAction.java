@@ -23,8 +23,10 @@ public class GossiperTouchAction extends TouchAction{
 	private IInteractionType manInteraction = null;
 	private int spriteType;
 	
-	public GossiperTouchAction(IInteractionType manInteraction) {
+	public GossiperTouchAction(IInteractionType manInteraction, int x, int y) {
+		super(x, y);
 		this.manInteraction = manInteraction;
+		this.setInteractorDir(WorldSystem.getCoordDirection(0, 0));
 		
 		spriteType = manInteraction instanceof OpposerInteractionType ? 0 : 1; 
 	}
