@@ -13,61 +13,59 @@ import com.realrules.game.main.Game.Head;
 import com.realrules.game.state.PlayerState;
 
 public class GameProperties {
-	
+
 	private static GameProperties instance;
 	private List<Head> followerType = null;
 	private List<Integer> followerTypeAmount = null;
 	private int rewardScore = 3500;
-	
+	private ArrayList<GameSprite> gameSprites = new ArrayList<GameSprite>();
+
 	private GameProperties() {
 		followerType = Arrays.asList(Head.GOSSIPER, Head.INFLUENCER, Head.DECEIVER);
 		followerTypeAmount = Arrays.asList(1, 1, 1);
 	}
-	
+
 	private GameProperties(PlayerState plState) {
-		
+
 	}
-	
+
 	public static GameProperties get() {
 		if(instance == null) {
 			instance = new GameProperties();
 		}
-		
+
 		return instance;
 	}
-	
+
 	public void Load() {
-		
+
 	}	
-	
+
 	//TODO: Refactor into separate followers class
 	public List<Head> getFollowerType() {
 		return followerType;
 	}
-	
+
 	public List<Integer> getfollowerTypeAmount() {
 		return followerTypeAmount;
 	}	
-	
+
 	private float universalTimeRatio = 0.7f;
-	
+
 	public float getUniversalTimeRatio() {
 		return universalTimeRatio;
 	}
-	
+
 	private Group actorGroup = new Group();
 	public Group getActorGroup() {
 		return actorGroup;
 	}
-	
-	private ArrayList<GameSprite> gameSprites;
+
 	public ArrayList<GameSprite> getGameSprites() {
-		if(gameSprites == null) {
-			gameSprites = new ArrayList<GameSprite>();
-			Actor[] actors = ((Actor[])actorGroup.getChildren().toArray());
-			for(Actor actor : actors) {
-				gameSprites.add((GameSprite) actor);
-			}
+		gameSprites.clear();
+		Actor[] actors = ((Actor[])actorGroup.getChildren().toArray());
+		for(Actor actor : actors) {
+			gameSprites.add((GameSprite) actor);
 		}
 		return gameSprites;	
 	}
@@ -75,9 +73,9 @@ public class GameProperties {
 	public void addToActorGroup(Actor actor) {
 		this.actorGroup.addActor(actor);
 	}
-	
+
 	public List<MoveableSprite> actorsToReplace = Arrays.asList();
-	
+
 	public void replaceActorInGroup(MoveableSprite actor) {
 		//Ensure HeadSprite actor gets hit
 		actor.getSourceSprite().setTouchable(Touchable.disabled);
@@ -86,7 +84,7 @@ public class GameProperties {
 			//Remove current actor at coordinates
 			actorGroup.removeActor(actorToRemove);
 			actorToRemove.remove();
-			
+
 			GameSprite actorToAdd = new GameSprite(actor.getType(), actor.getCurrentX(), actor.getCurrentY(), actor.getFramesPath(), false);
 			if(((GameSprite)actorToRemove).status == 1) {
 				actorToAdd.status = 1;
@@ -101,7 +99,7 @@ public class GameProperties {
 			System.out.println("Exception replacing actor on stage "+ex);
 		}
 	}
-	
+
 	private Stage stage = null;
 	public Stage getStage() {
 		return stage;
@@ -110,22 +108,22 @@ public class GameProperties {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
-	
+
 	public void addActorToStage(Actor actor) {
 		this.stage.addActor(actor);
 	}
-	
+
 	public int getRewardScore() {
 		return rewardScore;
 	}
-	
+
 	public void dispose() {
 		stage.clear();
 		actorGroup = new Group();
 		actorsToReplace = Arrays.asList();
-		gameSprites = null;
+		gameSprites.clear();
 	}
 
-	
+
 
 }

@@ -88,17 +88,21 @@ public class GameSprite  extends Image  {
 	
 	public void setBehaviour(IInteractionType manInteraction) {
 		
+		if(validDirections == null) {
+			setValidDirections();
+		}
+		
 		if(type == type.GOSSIPER) {
-			behaviour = new GossiperBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord(), manInteraction);
+			behaviour = new GossiperBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord(), manInteraction, this, validDirections);
 			interaction = new GossiperInteraction();
 
 		}
 		if(type == type.DECEIVER) {
-			behaviour = new DeceiverBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord(), manInteraction);
+			behaviour = new DeceiverBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord(), manInteraction, this, validDirections);
 			interaction = new DeceiverInteraction();
 		}
 		if(type == type.INFLUENCER) {
-			behaviour = new PromoterBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord(), manInteraction);
+			behaviour = new PromoterBehaviour(isActive, framesPath, getXGameCoord(), getYGameCoord(), manInteraction, this, validDirections);
 			interaction = new PromoterInteraction();
 		}
 		

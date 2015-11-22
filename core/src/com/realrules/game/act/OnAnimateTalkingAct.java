@@ -27,6 +27,9 @@ public class OnAnimateTalkingAct implements IOnAct{
 	private float frameTime = frameLength;
 	private int frameCount = 0;
 	
+	private GameSprite actor;
+	private ArrayList<Orientation> validDirections;
+	
 	private HashMap<String, Array<AtlasRegion>> animationFrames = new HashMap<String, Array<AtlasRegion>>();
 	private Array<AtlasRegion> frames;
 	
@@ -34,30 +37,34 @@ public class OnAnimateTalkingAct implements IOnAct{
 	private float rotateP;
 	private Orientation direction;
 	
-	public OnAnimateTalkingAct(float rotateProbability, float interactProbability, String framesPath) 
+	public OnAnimateTalkingAct(float rotateProbability, float interactProbability, String framesPath, GameSprite actor, ArrayList<Orientation> validDirections) 
 	{
-		rotateP = rotateProbability;
-		interactP = interactProbability;
+		this.rotateP = rotateProbability;
+		this.interactP = interactProbability;
+		this.actor = actor;
+		this.validDirections = validDirections;
 		
 		frames = new TextureAtlas(Gdx.files.internal(framesPath+"Default.pack")).getRegions();
 		
 		setFramePacks(framesPath);
 		
+		setFrame();
+		
 	}
 
 	@Override
-	public void performActing(float delta, GameSprite actor, ArrayList<Orientation> validDirections) {
+	public void performActing(float delta) {
 		
 		//Change actor's direction
 		if(animateStateTime >= animateStateLength) {
 			animateStateTime = 0.0f;		
-			setFrame(actor, validDirections);
+			setFrame();
 		}
 		
 		//Attempt interaction
 		else if( attemptInteractStateTime >= attemptInteractStateLength) {
 			attemptInteractStateTime = 0.0f;
-			attemptAutonomousInteraction(actor);
+			attemptAutonomousInteraction();
 		}
 		
 		//Animate frames for current direction
@@ -72,7 +79,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 		}
 		//Otherwise continue interaction
 		else {
-			continueAutonomousInteraction(actor);
+			continueAutonomousInteraction();
 		}
 		
 	}
@@ -82,11 +89,11 @@ public class OnAnimateTalkingAct implements IOnAct{
 		return this.direction;
 	}
 	
-	private void setFrame(GameSprite actor, ArrayList<Orientation> validDirections) {
+	private void setFrame() {
 		//Based on rotation probability
 		if(rand.nextFloat() < this.rotateP) {
-			updateCurrentDirection(validDirections);
-			changeSpriteOrientation(actor);
+			updateCurrentDirection();
+			changeSpriteOrientation();
 		}
 		
 	}
@@ -107,12 +114,12 @@ public class OnAnimateTalkingAct implements IOnAct{
 		frameTime += delta;
 	}
 	
-	private void updateCurrentDirection( ArrayList<Orientation> validDirections) {
-		int choice = rand.nextInt(validDirections.size());
-		direction = validDirections.get(choice);
+	private void updateCurrentDirection() {
+		int choice = rand.nextInt(this.validDirections.size());
+		direction = this.validDirections.get(choice);
 	}
 	
-	private void changeSpriteOrientation(GameSprite actor) {
+	private void changeSpriteOrientation() {
 	
 		if(direction == Orientation.N) {
 			frames = animationFrames.get("TalkAbove");
@@ -128,7 +135,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 		}
 	}
 	
-	private void attemptAutonomousInteraction(GameSprite actor) {
+	private void attemptAutonomousInteraction() {
 		Random rand = new Random();
 		if(rand.nextFloat() < this.interactP) {
 			actor.interaction.interact(actor, GameProperties.get().getActorGroup(), direction);
@@ -136,7 +143,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 		}
 	}
 	
-	private void continueAutonomousInteraction(GameSprite actor) {
+	private void continueAutonomousInteraction() {
 		actor.interaction.interact(actor, GameProperties.get().getActorGroup(), direction);
 	}
 	

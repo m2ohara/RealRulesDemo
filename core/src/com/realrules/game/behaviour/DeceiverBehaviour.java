@@ -21,10 +21,10 @@ public class DeceiverBehaviour implements IHeadBehaviour {
 	private IOnAct onAct;
 
 	
-	public DeceiverBehaviour(boolean isActive, String framesPath, int x, int y, IInteractionType manInteraction) {
+	public DeceiverBehaviour(boolean isActive, String framesPath, int x, int y, IInteractionType manInteraction, GameSprite actor, ArrayList<Orientation> validDirections) {
 		this.isActive = isActive;
 		
-		onAct = new OnAnimateTalkingAct(rotateP, interactP, framesPath);
+		onAct = new OnAnimateTalkingAct(rotateP, interactP, framesPath, actor, validDirections);
 		
 		this.onTouch = new DeceiverTouchAction(manInteraction);
 		this.onTouch.setInteractorX(x);
@@ -46,7 +46,7 @@ public class DeceiverBehaviour implements IHeadBehaviour {
 	public void onAct(float delta, GameSprite actor, ArrayList<Orientation> invalidDirections) {
 		
 		if(isActive) {
-			onAct.performActing(delta, actor, invalidDirections);
+			onAct.performActing(delta);
 			
 			//Update direction  for touch action
 			onTouch.setInteractorDir(onAct.getCurrentCoordinate());

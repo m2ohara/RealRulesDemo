@@ -377,8 +377,8 @@ public class Game extends ApplicationAdapter {
 		}
 		
 		//Activate crowd members
-		for(Actor actor : GameProperties.get().getActorGroup().getChildren()) {
-			((GameSprite)actor).setBehaviour(manualInteraction);
+		for(GameSprite actor : GameProperties.get().getGameSprites()) {
+			actor.setBehaviour(manualInteraction);
 		}
 		
 		//Set remaining votes icon

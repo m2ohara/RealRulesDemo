@@ -14,6 +14,7 @@ import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem.Orientation;
 
+//Not implemented
 public class OnAct implements IOnAct {
 	
 	private Random rand = new Random();
@@ -38,16 +39,16 @@ public class OnAct implements IOnAct {
 	}
 
 	@Override
-	public void performActing(float delta, GameSprite actor, ArrayList<Orientation> validDirections) {
+	public void performActing(float delta) {
 		
 		if(stateTime >= stateLength) {
 			stateTime = 0.0f;		
-			setFrame(actor, validDirections);
+//			setFrame(actor, validDirections);
 		}
 		
 		else if( interactStateTime >= interactStateLength) {
 			interactStateTime = 0.0f;
-			performAutonomousInteraction(actor);
+//			performAutonomousInteraction(actor);
 		}
 		
 		stateTime += delta;
