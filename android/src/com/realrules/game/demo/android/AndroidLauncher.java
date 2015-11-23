@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.realrules.data.SqlConnection;
 import com.realrules.game.main.Game;
 
 public class AndroidLauncher extends AndroidApplication {
@@ -14,5 +15,8 @@ public class AndroidLauncher extends AndroidApplication {
 		Game demo = new Game();
 		((Game) demo).setAndroid(true);
 		initialize(demo, config);
+		
+		//Obtain db connection from jdbc driver
+		new SqlConnection(new AndroidActionResolver(getContext()));
 	}
 }

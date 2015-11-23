@@ -15,7 +15,7 @@ public class AndroidActionResolver implements IActionResolver {
     Handler uiThread;
     Context appContext;
     String dbPath;
-    static String dbName = "sampleDB.db";
+    static String dbName = "GameAppDB.db";
 
     public AndroidActionResolver(Context appContext) {
             uiThread = new Handler();
