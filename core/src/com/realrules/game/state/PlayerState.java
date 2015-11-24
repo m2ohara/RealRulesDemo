@@ -26,7 +26,8 @@ public class PlayerState {
 	
 	private PlayerState() {
 		
-		FollowerRepo.getInstance();
+//		FollowerRepo.getInstance().createDB();
+		FollowerRepo.getInstance().getFollowers();
 		
 	}
 	
