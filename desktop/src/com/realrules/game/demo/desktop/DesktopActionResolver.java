@@ -11,6 +11,7 @@ public class DesktopActionResolver implements IActionResolver {
 	public Connection getConnection() {
 		String url = "jdbc:sqlite:GameAppDB.sqlite";
 		try {
+			System.out.println("Opened db successfully");
 			Class.forName("org.sqlite.JDBC");
 			return DriverManager.getConnection(url);
 		}
