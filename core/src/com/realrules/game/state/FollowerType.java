@@ -5,16 +5,27 @@ import com.realrules.game.main.Game.Head;
 public class FollowerType {
 	
 	public Head head;
-	public String directoryPath;
-	public int difficulty;
+	public String imagePath;
+
+	private int id;
 	
 	public FollowerType(String path, Head head) {
 		this.head = head;
-		this.directoryPath = path;
+		this.imagePath = path;
 	}
 	
-	public FollowerType(String path, Head head, int difficulty) {
-		
+	public FollowerType(int typeId, String imagePath) {
+		this.head = Head.values()[typeId];
+		this.id = typeId;
+		this.imagePath = imagePath;
+	}
+
+	public int getId() {
+		return id;
+	}
+	
+	public String getImagePath() {
+		return imagePath;
 	}
 	
 

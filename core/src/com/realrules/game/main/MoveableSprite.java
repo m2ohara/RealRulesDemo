@@ -37,7 +37,7 @@ public class MoveableSprite
 		this.type = follower.type.head;
 		this.origX = x;
 		this.origY = y;
-		this.framesPath = follower.type.directoryPath;
+		this.framesPath = follower.type.imagePath;
 		this.frames = new TextureAtlas(Gdx.files.internal(framesPath)).getRegions();
 		currentFrame = frames.get(0);
 		
@@ -192,7 +192,7 @@ public class MoveableSprite
 	}
 	
 	public String getFramesPath() {
-		return (String)PlayerState.get().getFollowerTypes().get(GameProperties.get().getFollowerType().indexOf(this.type)).directoryPath;
+		return (String)PlayerState.get().getFollowerTypes().get(GameProperties.get().getFollowerType().indexOf(this.type)).imagePath;
 	}
 	
 	public Actor getTargetImage() {

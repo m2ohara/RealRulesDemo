@@ -12,6 +12,9 @@ public abstract class BaseExecuter<E> implements IExecuter<E> {
 	protected String sql;
 	
 	public BaseExecuter() {
+		
+		this.setSql();
+		
 		try {
 			if(connection == null || connection.isClosed()) {
 				connection = SqlConnection.get();
@@ -36,7 +39,7 @@ public abstract class BaseExecuter<E> implements IExecuter<E> {
 			statement = connection.createStatement();
 			result = statement.executeQuery(sql);
 			
-			resultList = execute(result);
+			resultList = getResult(result);
 		}
 		catch(SQLException ex) {
 			//TO DO: Log error
@@ -58,6 +61,6 @@ public abstract class BaseExecuter<E> implements IExecuter<E> {
 		return resultList;
 	}
 	
-	public abstract void setSql(String sql);
-	public abstract List<E> execute(ResultSet result);
+	public abstract void setSql();
+	public abstract List<E> getResult(ResultSet result);
 }

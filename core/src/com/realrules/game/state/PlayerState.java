@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.realrules.data.FollowerRepo;
+import com.realrules.data.FollowerTypeRepo;
+import com.realrules.data.PlayerRepo;
+import com.realrules.data.PlayerStateEntity;
 import com.realrules.game.main.Game.Head;
 
 public class PlayerState {
 	
-	private ArrayList<FollowerType> followerTypes = new ArrayList<FollowerType>();
-	private ArrayList<Follower> followers = new ArrayList<Follower>();
-	private int level;
-	private int maxLevel = 5;
-	private int reputation = 0;
-	private int levelUpLimit;
+	private List<FollowerType> followerTypes = new ArrayList<FollowerType>();
+	private List<Follower> followers = new ArrayList<Follower>();
+	private PlayerStateEntity playerStateEntity = null;
 	private static PlayerState instance;
 	
 	public static PlayerState get() {
@@ -25,14 +25,18 @@ public class PlayerState {
 	}
 	
 	private PlayerState() {
-		
-//		FollowerRepo.getInstance().createDB();
-		FollowerRepo.get().getFollowers();
-		
+		load();
 	}
 	
-	public void generateDummyProperties() {
+	public void load() {
+		followers = FollowerRepo.instance().getFollowers();
+		followerTypes = FollowerTypeRepo.instance().get();
+		playerStateEntity = PlayerRepo.instance().get();
+	}
+	
+	public void loadDummy() {
 		
+		//Dummy data
 		followerTypes.add(new FollowerType("sprites//Meep//Gossiper//", Head.GOSSIPER));
 		followerTypes.add(new FollowerType("sprites//Meep//Promoter//", Head.INFLUENCER));
 		followerTypes.add(new FollowerType("sprites//Meep//Deceiver//", Head.DECEIVER));
@@ -40,36 +44,9 @@ public class PlayerState {
 		followers.add(new Follower(Head.GOSSIPER, 1, "sprites//Meep//Gossiper//Default.pack"));
 		followers.add(new Follower(Head.INFLUENCER, 2, "sprites//Meep//Promoter//Default.pack"));
 		followers.add(new Follower(Head.DECEIVER, 3, "sprites//Meep//Deceiver//Default.pack"));
-		level = 0;
-		reputation = 1000;
-		levelUpLimit = 1000;
-		maxLevel = 5;
+		this.playerStateEntity = new PlayerStateEntity(0, 0, 1000, 1000, 5);
 	}
-	
-	//TODO: Implement Load player data
-	public void load() {
-		
-		//Get followers
-		followers = FollowerRepo.get().getFollowers();
-		followerTypes = FollowerRepo.get().getFollowerTypes();
-		
-		//Get level
-		
-		//Hardcoded
-		generateDummyProperties();
-	}
-	
-	public int getLevel() {
-		return level;
-	}
-	
-	public void setLevel(int level) {
-		this.level = level;
-	}
-	
-	public int getMaxLevel() {
-		return maxLevel;
-	}
+
 	
 	public List<Follower> getFollowers() {
 		return followers;
@@ -83,16 +60,28 @@ public class PlayerState {
 		return followerTypes;
 	}
 	
+	public int getLevel() {
+		return this.playerStateEntity.getLevel();
+	}
+	
+	public void setLevel(int level) {
+		this.playerStateEntity.setLevel(level);
+	}
+	
+	public int getMaxLevel() {
+		return this.playerStateEntity.getMaxLevel();
+	}
+	
 	public void setReputationPoints(int points) {
-		reputation = points;
+		this.playerStateEntity.setReputation(points);
 	}
 	
 	public int getReputationPoints() {
-		return reputation;
+		return this.playerStateEntity.getReputation();
 	}
 	
-	public int getLevelUpLimit() {
-		return levelUpLimit;
+	public int getLevelUpThreshold() {
+		return this.playerStateEntity.getLevelUpThreshold();
 	}
 	
 

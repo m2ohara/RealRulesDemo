@@ -324,7 +324,7 @@ public class Game extends ApplicationAdapter {
 		List<FollowerType> types = plState.getFollowerTypes();
 		
 		for(int i = 0; i < types.size(); i++) {
-			Image placeHolder = createTargetImage(types.get(i).directoryPath+"Default.pack",WorldSystem.get().getHudXCoords().get(i), WorldSystem.get().getHudYCoords().get(i));
+			Image placeHolder = createTargetImage(types.get(i).imagePath+"Default.pack",WorldSystem.get().getHudXCoords().get(i), WorldSystem.get().getHudYCoords().get(i));
 			placeHolders.add(placeHolder);
 			for(Follower follower : plFollowers) {
 				if(follower.type.head == types.get(i).head) {
@@ -480,7 +480,7 @@ public class Game extends ApplicationAdapter {
 		Random rand = new Random();
 		for(int i =0; i < count; i++) {
 			FollowerType type = types.get(rand.nextInt(types.size()));
-			rewardedFollowers.add(new Follower(type.head, 0, type.directoryPath+"Default.pack"));
+			rewardedFollowers.add(new Follower(type.head, 0, type.imagePath+"Default.pack"));
 		}
 		
 		plState.addFollowers(rewardedFollowers);
@@ -491,7 +491,7 @@ public class Game extends ApplicationAdapter {
 	private void setRewardFollowers(List<Follower> rewardedFollowers) {
 		
 		for(int count = 0; count < rewardedFollowers.size(); count++) {
-			setRewardImage(rewardedFollowers.get(count).type.directoryPath, WorldSystem.get().getHudXCoords().get(count), WorldSystem.get().getHudYCoords().get(count));
+			setRewardImage(rewardedFollowers.get(count).type.imagePath, WorldSystem.get().getHudXCoords().get(count), WorldSystem.get().getHudYCoords().get(count));
 		}
 	}
 	

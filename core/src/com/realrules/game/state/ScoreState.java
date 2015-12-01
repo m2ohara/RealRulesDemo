@@ -25,7 +25,7 @@ public class ScoreState {
 	
 	public void setLevel() {
 		//If level points are reached
-		if(plState.getReputationPoints() > plState.getLevelUpLimit()) {
+		if(plState.getReputationPoints() > plState.getLevelUpThreshold()) {
 			if(plState.getLevel() < plState.getMaxLevel()) {
 				plState.setLevel(plState.getLevel() + 1);
 			}
@@ -51,7 +51,7 @@ public class ScoreState {
 		Random rand = new Random();
 		for(int i =0; i < count; i++) {
 			FollowerType type = types.get(rand.nextInt(types.size()));
-			rewardedFollowers.add(new Follower(type.head, 0, type.directoryPath+"Default.pack"));
+			rewardedFollowers.add(new Follower(type.head, 0, type.imagePath+"Default.pack"));
 		}
 		
 		plState.addFollowers(rewardedFollowers);
@@ -62,7 +62,7 @@ public class ScoreState {
 	private void setRewardFollowers(List<Follower> rewardedFollowers) {
 		
 		for(int count = 0; count < rewardedFollowers.size(); count++) {
-			setRewardImage(rewardedFollowers.get(count).type.directoryPath, WorldSystem.get().getHudXCoords().get(count), WorldSystem.get().getHudYCoords().get(count));
+			setRewardImage(rewardedFollowers.get(count).type.imagePath, WorldSystem.get().getHudXCoords().get(count), WorldSystem.get().getHudYCoords().get(count));
 		}
 	}
 	

@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface IExecuter<E> {
 	
-	void setSql(String sql);
+	void setSql();
 	
-	List<E> execute(ResultSet result); 
+	List<E> getResult(ResultSet result); 
 
 }
