@@ -15,6 +15,7 @@ public class Follower {
 	public Follower(int id, FollowerType type) {
 		this.id = id;
 		this.type = type;
+		this.type.imagePath += "Default.pack";
 	}
 
 	public int getId() {

@@ -15,7 +15,7 @@ public class FollowerType {
 	}
 	
 	public FollowerType(int typeId, String imagePath) {
-		this.head = Head.values()[typeId];
+		this.head = Head.values()[typeId-1];
 		this.id = typeId;
 		this.imagePath = imagePath;
 	}

@@ -52,7 +52,7 @@ public class FollowerRepo {
 
 		@Override
 		public void setSql() {
-			this.sql = "SELECT f.rowid, ft.ID, ft.IMAGE_PATH FROM FOLLOWER f JOIN FOLLOWERTYPE ft ON f.TYPE_ID = ft.ID;";
+			this.sql = "SELECT f.rowid, ft._id, ft.IMAGE_PATH FROM FOLLOWER f JOIN FOLLOWERTYPE ft ON f._id = ft._id;";
 		}
 
 		@Override
@@ -61,7 +61,7 @@ public class FollowerRepo {
 			
 			try {
 				while(result.next()) {
-					resultList.add(new Follower(result.getInt("rowid"), new FollowerType(result.getInt("ID"), result.getString("IMAGE_PATH"))));
+					resultList.add(new Follower(result.getInt("rowid"), new FollowerType(result.getInt("_id"), result.getString("IMAGE_PATH"))));
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -115,88 +115,4 @@ public class FollowerRepo {
 		}
 		
 	}
-
-	
-//	public ArrayList<Follower> getFollowers() {
-//	
-//	Statement getFollowersStatement = null;
-//	
-//	//Initialise
-//	ResultSet result = null;
-//	ArrayList<Follower> followers = new ArrayList<Follower>();	
-//	String SQL = "SELECT ft.ID, ft.IMAGE_PATH FROM FOLLOWER f JOIN FOLLOWERTYPE ft ON f.TYPE_ID = ft.ID;";
-//	
-//	
-//	try {
-//		
-//		//Create user
-//		getFollowersStatement = connection.createStatement();
-//		result = getFollowersStatement.executeQuery(SQL);
-//		
-//		while(result.next()) {
-//			int id = result.getInt("ID");
-//			String imagePath = result.getString("IMAGE_PATH");
-//			followers.add(new Follower(Head.GOSSIPER, id, imagePath));
-//		}
-//	}
-//	catch(SQLException ex) {
-//		//TO DO: Log error
-//		System.out.println("Error: "+ex);
-//	}
-//	finally {
-//		try {
-//			getFollowersStatement.close();
-//			result.close();
-//			connection.close();
-//		}
-//		catch(SQLException e) {
-//			//TO DO: Log error
-//			System.out.println("Error closing statement: "+e);
-//		}
-//	}
-//	
-//	
-//	return followers;
-//}
-//	public ArrayList<FollowerType> getFollowerTypes() {
-//		
-//		Statement getFollowersStatement = null;
-//		
-//		//Initialise
-//		ResultSet result = null;
-//		ArrayList<FollowerType> followerTypes = new ArrayList<FollowerType>();	
-//		String SQL = "SELECT * FROM FOLLOWERTYPE;";
-//		
-//		
-//		try {
-//			
-//			//Create user
-//			getFollowersStatement = connection.createStatement();
-//			result = getFollowersStatement.executeQuery(SQL);
-//			
-//			while(result.next()) {
-//				String imagePath = result.getString("IMAGE_PATH");
-//				followerTypes.add(new FollowerType(imagePath, Head.GOSSIPER));
-//			}
-//		}
-//		catch(SQLException ex) {
-//			//TO DO: Log error
-//			System.out.println("Error: "+ex);
-//		}
-//		finally {
-//			try {
-//				getFollowersStatement.close();
-//				result.close();
-//				connection.close();
-//			}
-//			catch(SQLException e) {
-//				//TO DO: Log error
-//				System.out.println("Error closing statement: "+e);
-//			}
-//		}
-//		
-//		
-//		return followerTypes;
-//	}
-
 }

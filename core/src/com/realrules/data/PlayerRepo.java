@@ -41,7 +41,7 @@ public class PlayerRepo {
 
 		@Override
 		public void setSql() {
-			this.sql = "SELECT * FROM PLAYER;";
+			this.sql = "SELECT * FROM PLAYERSTATE";
 			
 		}
 
@@ -51,7 +51,7 @@ public class PlayerRepo {
 			try {
 				while(result.next()) {
 					
-					resultList.add(new PlayerStateEntity(result.getInt("ID"), result.getInt("LEVEL"), result.getInt("LEVELUPTHRESHOLD"), result.getInt("REPUTATION"), result.getInt("MAXLEVEL")));
+					resultList.add(new PlayerStateEntity(result.getInt("_id"), result.getInt("LEVEL"), result.getInt("LEVEL_UP_THRESHOLD"), result.getInt("REPUTATION"), result.getInt("MAX_LEVEL")));
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -74,7 +74,7 @@ public class PlayerRepo {
 
 		@Override
 		public void setSql() {
-			this.sql = "INSERT INTO PLAYER STATE VALUES ("+entity.getId()+", "+entity.getLevel()+", "+entity.getLevelUpThreshold()+", "+entity.getReputation()+", "+entity.getMaxLevel()+";)";
+			this.sql = "INSERT INTO PLAYERSTATE VALUES ("+entity.getId()+", "+entity.getLevel()+", "+entity.getLevelUpThreshold()+", "+entity.getReputation()+", "+entity.getMaxLevel()+";)";
 			
 		}
 

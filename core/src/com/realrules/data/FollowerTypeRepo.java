@@ -57,7 +57,7 @@ public class FollowerTypeRepo {
 			
 			try {
 				while(result.next()) {
-					resultList.add(new FollowerType(result.getInt("ID"), result.getString("IMAGE_PATH")));
+					resultList.add(new FollowerType(result.getInt("_id"), result.getString("IMAGE_PATH")));
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -101,7 +101,7 @@ public class FollowerTypeRepo {
 
 		@Override
 		public void setSql() {
-			this.sql = "UPDATE FOLLOWERTYPE SET IMAGE_PATH = "+entity.getImagePath()+" WHERE ID = "+entity.getId()+";";
+			this.sql = "UPDATE FOLLOWERTYPE SET IMAGE_PATH = "+entity.getImagePath()+" WHERE _id = "+entity.getId()+";";
 			
 		}
 
