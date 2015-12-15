@@ -23,7 +23,7 @@ public class AndroidActionResolver implements IActionResolver {
     Handler uiThread;
     Context appContext;
     static String dbPath;
-    static String dbName = "GameAppDB.db";
+    static String dbName = "GameAppDB.sqlite";
 
     public AndroidActionResolver(Context appContext) {
             uiThread = new Handler();
@@ -39,14 +39,14 @@ public class AndroidActionResolver implements IActionResolver {
 
     @Override
     public Connection getConnection() {
-            String url = "jdbc:sqldroid:"+dbPath;
+            String url = "jdbc:sqlite:"+dbPath;
             try {
-                    Class.forName("org.sqldroid.SQLDroidDriver").newInstance();
+                    Class.forName("org.sqlite.JDBC");
                     return DriverManager.getConnection(url);
-            } catch (InstantiationException e) {
-                    Log.e("sql", e.getMessage());
-            } catch (IllegalAccessException e) {
-                    Log.e("sql", e.getMessage());
+//            } catch (InstantiationException e) {
+//                    Log.e("sql", e.getMessage());
+//            } catch (IllegalAccessException e) {
+//                    Log.e("sql", e.getMessage());
             } catch (ClassNotFoundException e) {
                     Log.e("sql", e.getMessage());
             } catch (SQLException e) {
@@ -61,7 +61,7 @@ public class AndroidActionResolver implements IActionResolver {
         //The Android's default system path of your application database.
         private String DB_PATH;
      
-        private static final String DB_NAME = "GameAppDB";
+        private static final String DB_NAME = "GameAppDB.sqlite";
      
         private SQLiteDatabase myDataBase; 
      
