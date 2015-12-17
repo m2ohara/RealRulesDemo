@@ -1,8 +1,10 @@
 package com.realrules.game.demo.desktop;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.badlogic.gdx.Gdx;
 import com.realrules.data.IActionResolver;
 
 public class DesktopActionResolver implements IActionResolver {

@@ -49,7 +49,7 @@ public abstract class BaseExecuter<E> implements IExecuter<E> {
 			try {
 				statement.close();
 				result.close();
-				connection.close();
+//				connection.close();
 			}
 			catch(SQLException e) {
 				//TO DO: Log error

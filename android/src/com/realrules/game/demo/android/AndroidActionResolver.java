@@ -24,13 +24,15 @@ public class AndroidActionResolver implements IActionResolver {
     Context appContext;
     static String dbPath;
     static String dbName = "GameAppDB.sqlite";
+    private DataBaseHelper DBHelper;
 
     public AndroidActionResolver(Context appContext) {
             uiThread = new Handler();
             this.appContext = appContext;
             dbPath = appContext.getFilesDir().getAbsolutePath().replace("files", "databases")+File.separator + dbName;
             try {
-				new DataBaseHelper(appContext).createDataBase();
+				DBHelper = new DataBaseHelper(appContext);
+				DBHelper.createDataBase();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -39,21 +41,22 @@ public class AndroidActionResolver implements IActionResolver {
 
     @Override
     public Connection getConnection() {
-            String url = "jdbc:sqlite:"+dbPath;
-            try {
-                    Class.forName("org.sqlite.JDBC");
-                    return DriverManager.getConnection(url);
-//            } catch (InstantiationException e) {
-//                    Log.e("sql", e.getMessage());
-//            } catch (IllegalAccessException e) {
-//                    Log.e("sql", e.getMessage());
-            } catch (ClassNotFoundException e) {
-                    Log.e("sql", e.getMessage());
-            } catch (SQLException e) {
-                    Log.e("sql", e.getMessage());
-            }
-            return null;
+        String url = "jdbc:sqldroid:"+dbPath;
+        try {
+                Class.forName("org.sqldroid.SQLDroidDriver").newInstance();
+                return DriverManager.getConnection(url);
+        } catch (InstantiationException e) {
+                Log.e("sql", e.getMessage());
+        } catch (IllegalAccessException e) {
+                Log.e("sql", e.getMessage());
+        } catch (ClassNotFoundException e) {
+                Log.e("sql", e.getMessage());
+        } catch (SQLException e) {
+                Log.e("sql", e.getMessage());
+        }
+        return null;
     }
+
     
     
     class DataBaseHelper extends SQLiteOpenHelper{
