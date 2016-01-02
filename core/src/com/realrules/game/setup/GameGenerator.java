@@ -51,6 +51,9 @@ public class GameGenerator {
 					current.setColor(Color.YELLOW);
 				}
 				GameProperties.get().addToActorGroup(current);
+				
+				if(y == WorldSystem.get().getSystemHeight()-1) { 
+					System.out.println("Setting actor at coords "+current.getX()+", "+current.getY()); }
 			}
 		}
 		

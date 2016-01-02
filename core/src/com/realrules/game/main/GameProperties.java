@@ -77,8 +77,11 @@ public class GameProperties {
 	public List<MoveableSprite> actorsToReplace = Arrays.asList();
 
 	public void replaceActorInGroup(MoveableSprite actor) {
+		
 		//Ensure HeadSprite actor gets hit
+		setActorGroupOriginToZero();
 		actor.getSourceSprite().setTouchable(Touchable.disabled);
+		System.out.println("replacing actor at "+actor.getCurrentX()+", "+actor.getCurrentY());
 		Actor actorToRemove = stage.hit(actor.getCurrentX(), actor.getCurrentY(), true);
 		try {
 			//Remove current actor at coordinates
@@ -97,6 +100,20 @@ public class GameProperties {
 		}
 		catch(Exception ex) {
 			System.out.println("Exception replacing actor on stage "+ex);
+		}
+		setActorGroupOriginToCentre();
+	}
+	
+	//Hack for hitting scaled actors. NB always reset to centre when finished hit
+	private void setActorGroupOriginToZero() {
+		for(Actor actor : actorGroup.getChildren()) {
+			actor.setOrigin(0f, 0f);
+		}
+	}
+	
+	private void setActorGroupOriginToCentre() {
+		for(Actor actor : actorGroup.getChildren()) {
+			actor.setOrigin(actor.getWidth()/2, actor.getHeight()/2);
 		}
 	}
 

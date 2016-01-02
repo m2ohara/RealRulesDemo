@@ -52,9 +52,11 @@ public class MoveableSprite
 	
 	private void setSourceSprite(float x, float y) {
 		sourceSprite = new Image(currentFrame);
+		sourceSprite.setOrigin(sourceSprite.getWidth()/2, sourceSprite.getWidth()/2);
 		sourceSprite.setPosition(x, y);
 		sourceSprite.setScale(WorldSystem.get().getLevelScaleFactor());
-		sourceSprite.setOrigin(sourceSprite.getWidth()/2, sourceSprite.getWidth()/2);
+		
+		System.out.println("Setting source sprite coords "+sourceSprite.getX()+", "+sourceSprite.getY());
 		
 		GameProperties.get().getStage().addActor(sourceSprite);
 	}
@@ -126,7 +128,7 @@ public class MoveableSprite
 
 			public void drop (Source source, Payload payload, float x, float y, int pointer) {
 				
-				System.out.println("Accepted: " + payload.getObject() + " " + x + ", " + y);
+				System.out.println("Dropped at " + x + ", " + y);
 
 				//Hide original drop target if displayed
 				hidePlaceholderTarget();

@@ -510,7 +510,7 @@ public class Game extends ApplicationAdapter {
 	}
 
 
-	public enum Head { GOSSIPER, DECEIVER, INFLUENCER}
+	public enum Head { GOSSIPER, INFLUENCER, DECEIVER}
 
 	public enum Interact { SOUNDWAVE }
 }
