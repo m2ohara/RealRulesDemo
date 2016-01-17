@@ -54,7 +54,7 @@ public class GameGestures  implements GestureListener {
 			Actor actor = stage.hit(coords.x, coords.y, true);
 			
 			if(actor != null && actor.getClass().equals(GameSprite.class) && ((GameSprite)actor).isActing()) {
-				//TODO: Refector interaction into HeadSprite
+				//TODO: Refactor interaction into GameSprite
 				interaction.interactHit((GameSprite)actor, isFirstHit);
 				isFirstHit = false;
 			}

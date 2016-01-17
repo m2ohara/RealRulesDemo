@@ -22,6 +22,7 @@ public class SwipeConverseInteraction {
 	private Orientation coordinate;
 	private float interactionStateLength = 3f;
 	private int interactionStages = 3;
+	SwipeInteractSprite firstInteraction = null;
 
 	public SwipeConverseInteraction(IInteractionType manualInteraction, int connectorSprite) {
 		this.manualInteraction = manualInteraction;
@@ -44,6 +45,7 @@ public class SwipeConverseInteraction {
 				//Interactee
 				else if(interactor != null && !isFirst && !invalidInteraction && interactor.behaviour.getInfluenceAmount() > hitCount && hitActor.status == 0) {
 					if(validInteraction(hitActor, lastHitActor.getOrientation())) {
+						lastHitActor.isActive = false;
 						hitActor.isActive = false;
 						//Set previous hit actor to passive follower
 						setConnectorSprite(lastHitActor);
@@ -73,10 +75,11 @@ public class SwipeConverseInteraction {
 	}
 
 	public void reset() {
+		if(firstInteraction != null) {firstInteraction.startInteraction();}
 		interactor = null;
 		hitCount = 0;
 		lastHitActor = null;
-
+		firstInteraction = null;
 	}
 
 	private boolean validInteraction(GameSprite hitActor, Orientation swipeDirection) {
@@ -147,10 +150,16 @@ public class SwipeConverseInteraction {
 
 		//Influence if interactee is neutral and interactor isn't already interacting
 		if(interactee.status == 0) {
-			if(interactor.status == 1) {
-				interactor.isActive = true;
+//			if(interactor.status == 1) {
+//				interactor.isActive = true;
+//			}
+			if(firstInteraction == null) {
+				System.out.println("Assigning first interaction");
+				firstInteraction = new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, manualInteraction);
 			}
-			new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, manualInteraction);
+			else {
+				new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, manualInteraction);
+			}
 
 		}
 	}

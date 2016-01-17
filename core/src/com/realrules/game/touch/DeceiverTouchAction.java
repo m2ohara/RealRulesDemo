@@ -17,7 +17,6 @@ import com.realrules.game.state.GameScoreState;
 
 public class DeceiverTouchAction extends TouchAction {
 
-	private GameSprite interacter;
 	private IInteractionType manInteraction = null;
 	
 	public DeceiverTouchAction(IInteractionType manInteraction, int x, int y) {
@@ -34,7 +33,7 @@ public class DeceiverTouchAction extends TouchAction {
 			int origX = this.getInteractorX();
 			int origY = this.getInteractorY();
 			
-			interacter = WorldSystem.get().getMemberFromCoords(origX, origY);
+			interactor = WorldSystem.get().getMemberFromCoords(origX, origY);
 			
 			//Determine direction
 			if(this.getInteractorDir() == Orientation.N) {
@@ -93,13 +92,13 @@ public class DeceiverTouchAction extends TouchAction {
 	@Override
 	public void interact() {
 		
-		if(isValidInteractor()) {
+		if(isSelectedInteractor()) {
 			//Generate current crowd members that can be influenced
 			generateValidInteractees();
 			
 			if(validXCoords.size() > 0) {
-				manInteraction.setToMiddleFollower(interacter);
-				setConnectorSprite(interacter);
+				manInteraction.setToMiddleFollower(interactor);
+				setConnectorSprite(interactor);
 				for(int i = 0; i < validXCoords.size(); i++) {
 					GameSprite actor = WorldSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i));
 					if(i == validXCoords.size()-1) {
@@ -114,6 +113,10 @@ public class DeceiverTouchAction extends TouchAction {
 			}
 			
 			GameScoreState.resetUserPoints();
+		}
+		
+		else if(isNeutralInteractor()) {
+			setRandomOrientation();
 		}
 		
 	}

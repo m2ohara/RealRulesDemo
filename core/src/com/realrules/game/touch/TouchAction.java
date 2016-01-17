@@ -2,6 +2,7 @@ package com.realrules.game.touch;
 
 import java.util.ArrayList;
 
+import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
 
@@ -12,6 +13,7 @@ public abstract class TouchAction implements ITouchAction {
 	private Orientation interactorDir;
 	protected ArrayList<Integer> validXCoords = new ArrayList<Integer>();
 	protected ArrayList<Integer> validYCoords = new ArrayList<Integer>();
+	protected GameSprite interactor = null;
 	
 	public TouchAction(int x, int y) {
 		setInteractorX(x);
@@ -44,8 +46,15 @@ public abstract class TouchAction implements ITouchAction {
 		this.interactorDir = interactorDir;
 	}
 	
-	public boolean isValidInteractor() {
+	public boolean isSelectedInteractor() {
 		if(WorldSystem.get().getMemberFromCoords(getInteractorX(), getInteractorY()).status == 1) {;
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isNeutralInteractor() {
+		if(WorldSystem.get().getMemberFromCoords(getInteractorX(), getInteractorY()).status == 0) {;
 			return true;
 		}
 		return false;
@@ -58,6 +67,10 @@ public abstract class TouchAction implements ITouchAction {
 				validYCoords.remove(idx);
 			}
 		}
+	}
+	
+	public void setRandomOrientation() {
+		interactor.behaviour.getActType().setFrame();
 	}
 
 }

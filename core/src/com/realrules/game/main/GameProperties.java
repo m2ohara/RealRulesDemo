@@ -19,6 +19,7 @@ public class GameProperties {
 	private List<Integer> followerTypeAmount = null;
 	private int rewardScore = 3500;
 	private ArrayList<GameSprite> gameSprites = new ArrayList<GameSprite>();
+	public boolean IsSwipeInteraction = false;
 
 	private GameProperties() {
 		followerType = Arrays.asList(Head.GOSSIPER, Head.INFLUENCER, Head.DECEIVER);//TODO: Set from DB

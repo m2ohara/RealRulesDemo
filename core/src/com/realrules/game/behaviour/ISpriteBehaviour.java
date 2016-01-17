@@ -2,10 +2,11 @@ package com.realrules.game.behaviour;
 
 import java.util.ArrayList;
 
+import com.realrules.game.act.IOnAct;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem.Orientation;
 
-public interface IHeadBehaviour {
+public interface ISpriteBehaviour {
 	
 	//Touch behaviour
 	void onTouch();
@@ -16,5 +17,7 @@ public interface IHeadBehaviour {
 	int getInfluenceAmount();
 	
 	public Orientation getOrientation();
+	
+	public IOnAct getActType();
 	
 }

@@ -10,7 +10,7 @@ import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.touch.PromoterTouchAction;
 import com.realrules.game.touch.TouchAction;
 
-public class PromoterBehaviour implements IHeadBehaviour {
+public class PromoterBehaviour implements ISpriteBehaviour {
 
 	//Members
 	private boolean isActive = true;
@@ -18,13 +18,13 @@ public class PromoterBehaviour implements IHeadBehaviour {
 	private float interactP = 0.4f;
 	private int influenceAmount = 3;
 	private TouchAction onTouch;
-	private IOnAct onAct;
+	private IOnAct actType;
 	
 	
 	public PromoterBehaviour(boolean isActive, String framesPath, int x, int y, IInteractionType manInteraction, GameSprite actor, ArrayList<Orientation> validDirections) {
 		this.isActive = isActive;
 		
-		onAct = new OnAnimateTalkingAct(rotateP, interactP, framesPath, actor, validDirections);
+		actType = new OnAnimateTalkingAct(rotateP, interactP, framesPath, actor, validDirections);
 		
 		onTouch = new PromoterTouchAction(manInteraction, x, y);
 		
@@ -43,10 +43,10 @@ public class PromoterBehaviour implements IHeadBehaviour {
 	public void onAct(float delta, GameSprite actor, ArrayList<Orientation> invalidDirections) {
 		
 		if(isActive) {
-			onAct.performActing(delta);
+			actType.performActing(delta);
 			
 			//Update direction  for touch action
-			onTouch.setInteractorDir(onAct.getCurrentCoordinate());
+			onTouch.setInteractorDir(actType.getCurrentCoordinate());
 		}
 		
 	}
@@ -58,7 +58,12 @@ public class PromoterBehaviour implements IHeadBehaviour {
 	
 	@Override
 	public Orientation getOrientation() {
-		return onAct.getCurrentCoordinate();
+		return actType.getCurrentCoordinate();
+	}
+	
+	@Override
+	public IOnAct getActType() {
+		return this.actType;
 	}
 
 }

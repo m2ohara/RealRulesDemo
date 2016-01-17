@@ -10,7 +10,7 @@ import com.realrules.game.main.GameSprite;
 import com.realrules.game.touch.GossiperTouchAction;
 import com.realrules.game.touch.TouchAction;
 
-public class GossiperBehaviour implements IHeadBehaviour {
+public class GossiperBehaviour implements ISpriteBehaviour {
 	
 	//Members
 	private boolean isActive = false;
@@ -18,12 +18,12 @@ public class GossiperBehaviour implements IHeadBehaviour {
 	private float interactP = 0.2f;
 	private int influenceAmount = 2;
 	private TouchAction onTouch;
-	private IOnAct onAct;
+	private IOnAct actType;
 	
 	public GossiperBehaviour(boolean isActive, String framesPath, int x, int y, IInteractionType manInteraction, GameSprite actor, ArrayList<Orientation> validDirections) {
 		this.isActive = isActive;
 		
-		onAct = new OnAnimateTalkingAct(rotateP, interactP, framesPath, actor, validDirections);
+		actType = new OnAnimateTalkingAct(rotateP, interactP, framesPath, actor, validDirections);
 		onTouch = new GossiperTouchAction(manInteraction, x, y);
 		
 	}
@@ -41,10 +41,10 @@ public class GossiperBehaviour implements IHeadBehaviour {
 	public void onAct(float delta, GameSprite actor, ArrayList<Orientation> invalidDirections) {
 
 		if(isActive) {
-			onAct.performActing(delta);
+			actType.performActing(delta);
 			
 			//Update direction  for touch action
-			onTouch.setInteractorDir(onAct.getCurrentCoordinate());
+			onTouch.setInteractorDir(actType.getCurrentCoordinate());
 		}
 		
 	}
@@ -56,8 +56,12 @@ public class GossiperBehaviour implements IHeadBehaviour {
 
 	@Override
 	public Orientation getOrientation() {
-		return onAct.getCurrentCoordinate();
+		return actType.getCurrentCoordinate();
 	}
 	
+	@Override
+	public IOnAct getActType() {
+		return this.actType;
+	}
 }
 

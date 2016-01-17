@@ -17,7 +17,6 @@ import com.realrules.game.state.GameScoreState;
 
 public class GossiperTouchAction extends TouchAction{
 	
-	private GameSprite interacter;
 	private IInteractionType manInteraction = null;
 	private int spriteType;
 	
@@ -37,7 +36,7 @@ public class GossiperTouchAction extends TouchAction{
 			int origX = this.getInteractorX();
 			int origY = this.getInteractorY();
 			
-			interacter = WorldSystem.get().getMemberFromCoords(origX, origY);
+			interactor = WorldSystem.get().getMemberFromCoords(origX, origY);
 			
 			//Determine direction
 			if(this.getInteractorDir() == Orientation.N) {
@@ -96,14 +95,14 @@ public class GossiperTouchAction extends TouchAction{
 	@Override
 	public void interact() {
 		
-		if(isValidInteractor()) {
+		if(isSelectedInteractor()) {
 			
 			//Generate current crowd members that can be influenced
 			generateValidInteractees();
 			
 			if(validXCoords.size() > 0) {
-				manInteraction.setToMiddleFollower(interacter);
-				setConnectorSprite(interacter);
+				manInteraction.setToMiddleFollower(interactor);
+				setConnectorSprite(interactor);
 				for(int i = 0; i < validXCoords.size(); i++) {
 					GameSprite actor = WorldSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i));
 					if(i == validXCoords.size()-1) {
@@ -118,6 +117,10 @@ public class GossiperTouchAction extends TouchAction{
 			}
 			
 			GameScoreState.resetUserPoints();
+		}
+		
+		else if(isNeutralInteractor()) {
+			setRandomOrientation();
 		}
 		
 	}

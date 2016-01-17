@@ -7,20 +7,20 @@ import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.touch.TouchAction;
 
-public class Behaviour implements IHeadBehaviour {
+public class Behaviour implements ISpriteBehaviour {
 
 	//Members
 	private boolean isActive = true;
 	private int influenceAmount;
 	private TouchAction onTouch;
-	private IOnAct onAct;
+	public IOnAct actType;
 	
 	public Behaviour(boolean isActive, IOnAct onAct, TouchAction touchAction, IBehaviourProperties properties) {
 
 		this.influenceAmount = properties.getInfluenceAmount();
 		
 		this.isActive = isActive;
-		this.onAct = onAct;
+		this.actType = onAct;
 		this.onTouch = touchAction;
 		
 	}
@@ -38,10 +38,10 @@ public class Behaviour implements IHeadBehaviour {
 	public void onAct(float delta, GameSprite actor, ArrayList<Orientation> invalidDirections) {
 		
 		if(isActive) {
-			onAct.performActing(delta);
+			actType.performActing(delta);
 			
 			//Update direction  for touch action
-			onTouch.setInteractorDir(onAct.getCurrentCoordinate());
+			onTouch.setInteractorDir(actType.getCurrentCoordinate());
 		}
 		
 	}
@@ -53,6 +53,11 @@ public class Behaviour implements IHeadBehaviour {
 	
 	@Override
 	public Orientation getOrientation() {
-		return onAct.getCurrentCoordinate();
+		return actType.getCurrentCoordinate();
+	}
+
+	@Override
+	public IOnAct getActType() {
+		return this.actType;
 	}
 }

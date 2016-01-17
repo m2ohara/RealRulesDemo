@@ -106,6 +106,12 @@ public class OnAct implements IOnAct {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void setFrame() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 

@@ -15,7 +15,7 @@ import com.realrules.game.behaviour.Behaviour;
 import com.realrules.game.behaviour.DeceiverProperties;
 import com.realrules.game.behaviour.GossiperProperties;
 import com.realrules.game.behaviour.IBehaviourProperties;
-import com.realrules.game.behaviour.IHeadBehaviour;
+import com.realrules.game.behaviour.ISpriteBehaviour;
 import com.realrules.game.behaviour.PromoterProperties;
 import com.realrules.game.interact.AutonomousInteraction;
 import com.realrules.game.interact.DeceiverInteraction;
@@ -30,9 +30,9 @@ import com.realrules.game.touch.GossiperTouchAction;
 import com.realrules.game.touch.PromoterTouchAction;
 
 public class GameSprite  extends Image  {
-	public IHeadBehaviour behaviour;
+	public ISpriteBehaviour behaviour;
 	
-	public IHeadBehaviour getBehaviour() {
+	public ISpriteBehaviour getBehaviour() {
 		return behaviour;
 	}
 

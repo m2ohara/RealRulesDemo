@@ -49,7 +49,7 @@ public class SwipeInteractSprite extends Image{
 		this.interactee = interactee;
 		
 		if(interactor.status == 1) {
-			setAction();
+//			setAction();
 			interactionType.setInfluencedSprite(interactor);
 			interactor.setColor(Color.WHITE);
 		}
@@ -65,6 +65,12 @@ public class SwipeInteractSprite extends Image{
 		this.scaleBy(-1);
 
 		GameProperties.get().addActorToStage(this);
+	}
+	
+	public void startInteraction() {
+
+		interactor.isActive = true;
+		GameProperties.get().IsSwipeInteraction = true;
 	}
 	
 	public void setAction() {
@@ -89,6 +95,7 @@ public class SwipeInteractSprite extends Image{
 				setNextInteractSprite();
 			}
 			else {
+				GameProperties.get().IsSwipeInteraction = false;
 				setToLastFollower();
 			}
 		}
@@ -105,19 +112,8 @@ public class SwipeInteractSprite extends Image{
 		interactee.status = 1;
 		interactionType.setInfluencedSprite(interactee);
 		interactor.isManualInteractor = false;
-//		setInfluenceSprite(interactee);
 	}
 	
-//	
-//	private void setInfluenceSprite(HeadSprite interactee) {
-//		
-//		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(interactType));
-//
-//		handSign.setOrigin(handSign.getWidth()/2, handSign.getHeight()/2);
-//		handSign.setPosition(interactee.getStartingX(), interactee.getStartingY());
-//		
-//		GameProperties.get().addActorToStage(handSign);
-//	}
 	
 	private void setToLastFollower() {
 		if(GameScoreState.validTouchAction()) {

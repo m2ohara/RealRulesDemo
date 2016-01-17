@@ -77,7 +77,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 		}
 		
 		//Attempt interaction
-		else if( attemptInteractStateTime >= attemptInteractStateLength) {
+		else if( attemptInteractStateTime >= attemptInteractStateLength && GameProperties.get().IsSwipeInteraction == true) {
 			attemptInteractStateTime = 0.0f;
 			attemptAutonomousInteraction();
 		}
@@ -104,7 +104,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 		return this.direction;
 	}
 	
-	private void setFrame() {
+	public void setFrame() {
 		//Based on rotation probability
 		if(rand.nextFloat() < this.rotateP) {
 			updateCurrentDirection();
