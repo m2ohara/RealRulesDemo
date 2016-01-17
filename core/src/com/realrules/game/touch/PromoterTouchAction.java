@@ -18,8 +18,6 @@ import com.realrules.game.state.GameScoreState;
 
 public class PromoterTouchAction extends TouchAction {
 
-	private ArrayList<Integer> validXCoords = new ArrayList<Integer>();
-	private ArrayList<Integer> validYCoords = new ArrayList<Integer>();
 	private GameSprite interacter;
 	private IInteractionType manInteraction = null;
 	
@@ -86,6 +84,8 @@ public class PromoterTouchAction extends TouchAction {
 				} 
 			}
 		}
+		
+		removeEmptyCoordinates();
 		
 	}
 	

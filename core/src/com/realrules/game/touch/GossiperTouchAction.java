@@ -17,8 +17,6 @@ import com.realrules.game.state.GameScoreState;
 
 public class GossiperTouchAction extends TouchAction{
 	
-	private ArrayList<Integer> validXCoords = new ArrayList<Integer>();
-	private ArrayList<Integer> validYCoords = new ArrayList<Integer>();
 	private GameSprite interacter;
 	private IInteractionType manInteraction = null;
 	private int spriteType;
@@ -44,11 +42,11 @@ public class GossiperTouchAction extends TouchAction{
 			//Determine direction
 			if(this.getInteractorDir() == Orientation.N) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.get().isValidYCoordinate(origY-1)) {
+				if(WorldSystem.get().isValidYCoordinate(origY-1) && WorldSystem.get().getMemberFromCoords(origX, origY-1) != null) {
 					validYCoords.add(origY-1);
 					validXCoords.add(origX);
 				}
-				if(WorldSystem.get().isValidYCoordinate(origY-2)) {
+				if(WorldSystem.get().isValidYCoordinate(origY-2) && WorldSystem.get().getMemberFromCoords(origX, origY-2) != null) {
 					validYCoords.add(origY-2);
 					validXCoords.add(origX);
 				}
@@ -56,11 +54,11 @@ public class GossiperTouchAction extends TouchAction{
 			
 			if(this.getInteractorDir() == Orientation.E) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.get().isValidXCoordinate(origX+1)) {
+				if(WorldSystem.get().isValidXCoordinate(origX+1) && WorldSystem.get().getMemberFromCoords(origX+1, origY) != null) {
 					validXCoords.add(origX+1);
 					validYCoords.add(origY);
 				}
-				if(WorldSystem.get().isValidXCoordinate(origX+2)) {
+				if(WorldSystem.get().isValidXCoordinate(origX+2) && WorldSystem.get().getMemberFromCoords(origX+2, origY) != null) {
 					validXCoords.add(origX+2);
 					validYCoords.add(origY);
 				}
@@ -68,11 +66,11 @@ public class GossiperTouchAction extends TouchAction{
 			
 			if(this.getInteractorDir() == Orientation.S) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.get().isValidYCoordinate(origY+1)) {
+				if(WorldSystem.get().isValidYCoordinate(origY+1) && WorldSystem.get().getMemberFromCoords(origX, origY+1) != null) {
 					validYCoords.add(origY+1);
 					validXCoords.add(origX);
 				}
-				if(WorldSystem.get().isValidYCoordinate(origY+2)) {
+				if(WorldSystem.get().isValidYCoordinate(origY+2) && WorldSystem.get().getMemberFromCoords(origX, origY+2) != null) {
 					validYCoords.add(origY+2);
 					validXCoords.add(origX);
 				}
@@ -80,11 +78,11 @@ public class GossiperTouchAction extends TouchAction{
 			
 			if(this.getInteractorDir() == Orientation.W) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.get().isValidXCoordinate(origX-1)) {
+				if(WorldSystem.get().isValidXCoordinate(origX-1) && WorldSystem.get().getMemberFromCoords(origX-1, origY) != null) {
 					validXCoords.add(origX-1);
 					validYCoords.add(origY);
 				}
-				if(WorldSystem.get().isValidXCoordinate(origX-2)) {
+				if(WorldSystem.get().isValidXCoordinate(origX-2) && WorldSystem.get().getMemberFromCoords(origX-2, origY) != null) {
 					validXCoords.add(origX-2);
 					validYCoords.add(origY);
 				} 

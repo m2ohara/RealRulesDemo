@@ -56,7 +56,7 @@ public class MoveableSprite
 		sourceSprite.setPosition(x, y);
 		sourceSprite.setScale(WorldSystem.get().getLevelScaleFactor());
 		
-		System.out.println("Setting source sprite coords "+sourceSprite.getX()+", "+sourceSprite.getY());
+//		System.out.println("Setting source sprite coords "+sourceSprite.getX()+", "+sourceSprite.getY());
 		
 		GameProperties.get().getStage().addActor(sourceSprite);
 	}
@@ -153,7 +153,7 @@ public class MoveableSprite
 
 			public void drop (Source source, Payload payload, float x, float y, int pointer) {
 				
-				System.out.println("Accepted: " + payload.getObject() + " " + x + ", " + y);
+//				System.out.println("Accepted: " + payload.getObject() + " " + x + ", " + y);
 				
 				hidePlaceholderTarget();
 				

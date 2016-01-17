@@ -1,5 +1,7 @@
 package com.realrules.game.touch;
 
+import java.util.ArrayList;
+
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
 
@@ -8,6 +10,8 @@ public abstract class TouchAction implements ITouchAction {
 	private int interactorX;
 	private int interactorY;
 	private Orientation interactorDir;
+	protected ArrayList<Integer> validXCoords = new ArrayList<Integer>();
+	protected ArrayList<Integer> validYCoords = new ArrayList<Integer>();
 	
 	public TouchAction(int x, int y) {
 		setInteractorX(x);
@@ -45,6 +49,15 @@ public abstract class TouchAction implements ITouchAction {
 			return true;
 		}
 		return false;
+	}
+	
+	public void removeEmptyCoordinates() {
+		for(int idx = 0; idx < validXCoords.size(); idx++) {
+			if(WorldSystem.get().getMemberFromCoords(validXCoords.get(idx), validYCoords.get(idx)) != null) {
+				validXCoords.remove(idx);
+				validYCoords.remove(idx);
+			}
+		}
 	}
 
 }

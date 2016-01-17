@@ -21,7 +21,7 @@ public class GameProperties {
 	private ArrayList<GameSprite> gameSprites = new ArrayList<GameSprite>();
 
 	private GameProperties() {
-		followerType = Arrays.asList(Head.GOSSIPER, Head.INFLUENCER, Head.DECEIVER);
+		followerType = Arrays.asList(Head.GOSSIPER, Head.INFLUENCER, Head.DECEIVER);//TODO: Set from DB
 		followerTypeAmount = Arrays.asList(1, 1, 1);
 	}
 
