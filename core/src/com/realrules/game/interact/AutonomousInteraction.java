@@ -12,7 +12,7 @@ public class AutonomousInteraction {
 	public void interact(GameSprite interactor, Group actorGroup, Orientation orientation) {
 
 		// As long as interactor isn't neutral
-		if (interactor.status != 0) {
+		if (interactor.status > 1) {
 			GameSprite interactee = null;
 
 			// If facing towards the right

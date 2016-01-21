@@ -1,6 +1,5 @@
 package com.realrules.game.behaviour;
 
-import com.realrules.game.act.IOnAct;
 
 public interface IBehaviourProperties {
 	

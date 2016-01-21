@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.realrules.game.interact.SwipeInteraction;
 import com.realrules.game.main.Game.Head;
 import com.realrules.game.state.PlayerState;
 
@@ -20,6 +21,7 @@ public class GameProperties {
 	private int rewardScore = 3500;
 	private ArrayList<GameSprite> gameSprites = new ArrayList<GameSprite>();
 	public boolean IsSwipeInteraction = false;
+	public SwipeInteraction swipeInteraction = null;
 
 	private GameProperties() {
 		followerType = Arrays.asList(Head.GOSSIPER, Head.INFLUENCER, Head.DECEIVER);//TODO: Set from DB
@@ -41,6 +43,14 @@ public class GameProperties {
 	public void Load() {
 
 	}	
+	
+	public void setSwipeInteraction(SwipeInteraction swipeInteraction) {
+		this.swipeInteraction = swipeInteraction;
+	}
+	
+	public SwipeInteraction getSwipeInteraction() {
+		return this.swipeInteraction;
+	}
 
 	//TODO: Refactor into separate followers class
 	public List<Head> getFollowerType() {

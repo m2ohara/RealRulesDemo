@@ -1,15 +1,19 @@
 package com.realrules.game.behaviour;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Observer;
 
 import com.realrules.game.act.IOnAct;
 import com.realrules.game.act.OnAnimateTalkingAct;
 import com.realrules.game.interact.IInteractionType;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem.Orientation;
+import com.realrules.game.touch.OrientationOnTouch;
 import com.realrules.game.touch.PromoterTouchAction;
 import com.realrules.game.touch.TouchAction;
 
+//Not implemented
 public class PromoterBehaviour implements ISpriteBehaviour {
 
 	//Members
@@ -34,20 +38,24 @@ public class PromoterBehaviour implements ISpriteBehaviour {
 	public void onTouch() {
 		
 		if(isActive) {
-			onTouch.interact();
+			onTouch.onAction();
 		}
 		
 	}
 
 	@Override
 	public void onAct(float delta, GameSprite actor, ArrayList<Orientation> invalidDirections) {
-		
-		if(isActive) {
-			actType.performActing(delta);
-			
-			//Update direction  for touch action
-			onTouch.setInteractorDir(actType.getCurrentCoordinate());
-		}
+//		
+//		if(isActive) {
+//			actType.performActing(delta);
+//			
+//			//Update direction  for touch action
+//			onTouch.setInteractorDir(actType.getCurrentCoordinate());
+//			
+//			//Review
+////			delta = !actor.isInteracting && !actor.isManualInteractor ? delta : 0;
+//			changeOrientation.onAct(delta);
+//		}
 		
 	}
 
@@ -59,11 +67,6 @@ public class PromoterBehaviour implements ISpriteBehaviour {
 	@Override
 	public Orientation getOrientation() {
 		return actType.getCurrentCoordinate();
-	}
-	
-	@Override
-	public IOnAct getActType() {
-		return this.actType;
 	}
 
 }

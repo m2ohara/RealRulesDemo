@@ -1,7 +1,5 @@
 package com.realrules.game.touch;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -9,9 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.interact.IInteractionType;
 import com.realrules.game.interact.OpposerInteractionType;
-import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.state.GameScoreState;
 
@@ -20,7 +18,7 @@ public class DeceiverTouchAction extends TouchAction {
 	private IInteractionType manInteraction = null;
 	
 	public DeceiverTouchAction(IInteractionType manInteraction, int x, int y) {
-		super(x, y);
+		super( x, y);
 		this.manInteraction = new OpposerInteractionType();
 		this.setInteractorDir(WorldSystem.getCoordDirection(0, 0));
 	}
@@ -90,7 +88,7 @@ public class DeceiverTouchAction extends TouchAction {
 	}
 
 	@Override
-	public void interact() {
+	public void onAction() {
 		
 		if(isSelectedInteractor()) {
 			//Generate current crowd members that can be influenced
@@ -113,10 +111,6 @@ public class DeceiverTouchAction extends TouchAction {
 			}
 			
 			GameScoreState.resetUserPoints();
-		}
-		
-		else if(isNeutralInteractor()) {
-			setRandomOrientation();
 		}
 		
 	}

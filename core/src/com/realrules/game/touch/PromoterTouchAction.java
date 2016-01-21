@@ -1,6 +1,5 @@
 package com.realrules.game.touch;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
@@ -10,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.interact.IInteractionType;
 import com.realrules.game.interact.SupporterInteractionType;
-import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.state.GameScoreState;
 
@@ -153,7 +152,7 @@ public class PromoterTouchAction extends TouchAction {
 	}
 	
 	@Override
-	public void interact() {
+	public void onAction() {
 		
 		if(isSelectedInteractor()) {
 			//Generate current crowd members that can be influenced
@@ -175,10 +174,6 @@ public class PromoterTouchAction extends TouchAction {
 			}
 			
 			GameScoreState.resetUserPoints();
-		}
-		
-		else if(isNeutralInteractor()) {
-			setRandomOrientation();
 		}
 		
 	}

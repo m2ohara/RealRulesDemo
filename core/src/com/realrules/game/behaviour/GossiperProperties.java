@@ -1,6 +1,5 @@
 package com.realrules.game.behaviour;
 
-import com.realrules.game.act.IOnAct;
 
 public class GossiperProperties implements IBehaviourProperties {
 	

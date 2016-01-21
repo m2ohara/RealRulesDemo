@@ -1,10 +1,14 @@
 package com.realrules.game.behaviour;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 import com.realrules.game.act.IOnAct;
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
+import com.realrules.game.touch.ChangeOrientation;
 import com.realrules.game.touch.TouchAction;
 
 public class Behaviour implements ISpriteBehaviour {
@@ -14,8 +18,11 @@ public class Behaviour implements ISpriteBehaviour {
 	private int influenceAmount;
 	private TouchAction onTouch;
 	public IOnAct actType;
+//	private ArrayList<Orientation> validDirections;
+	private ChangeOrientation changeOrientation;
+	private Random rand = new Random();
 	
-	public Behaviour(boolean isActive, IOnAct onAct, TouchAction touchAction, IBehaviourProperties properties) {
+	public Behaviour(boolean isActive, IOnAct onAct, TouchAction touchAction, IBehaviourProperties properties, ChangeOrientation changeOrientation) {
 
 		this.influenceAmount = properties.getInfluenceAmount();
 		
@@ -23,13 +30,33 @@ public class Behaviour implements ISpriteBehaviour {
 		this.actType = onAct;
 		this.onTouch = touchAction;
 		
+		this.changeOrientation = changeOrientation;
+		
+		
+		
+//		setValidDirections(xGameCoord, yGameCoord);
 	}
+	
+//	public Behaviour(boolean isActive, IOnAct onAct, TouchAction touchAction, IBehaviourProperties properties, OrientationOnTouch changeOrientation) {
+//
+//		this.influenceAmount = properties.getInfluenceAmount();
+//		
+//		this.isActive = isActive;
+//		this.actType = onAct;
+//		this.onTouch = touchAction;
+//		
+//		this.changeOrientation = changeOrientation;
+//		
+//	}
 	
 	@Override
 	public void onTouch() {
 		
 		if(isActive) {
-			onTouch.interact();
+			onTouch.onAction();
+		}
+		if(changeOrientation.changeOnTouch()) {
+			actType.changeSpriteOrientation();
 		}
 		
 	}
@@ -38,10 +65,13 @@ public class Behaviour implements ISpriteBehaviour {
 	public void onAct(float delta, GameSprite actor, ArrayList<Orientation> invalidDirections) {
 		
 		if(isActive) {
+			
 			actType.performActing(delta);
 			
+			//Orientation logic
 			//Update direction  for touch action
-			onTouch.setInteractorDir(actType.getCurrentCoordinate());
+//			onTouch.setInteractorDir(actType.getCurrentCoordinate());
+			
 		}
 		
 	}
@@ -51,13 +81,9 @@ public class Behaviour implements ISpriteBehaviour {
 		return influenceAmount;
 	}
 	
+	//Orientation logic
 	@Override
 	public Orientation getOrientation() {
-		return actType.getCurrentCoordinate();
-	}
-
-	@Override
-	public IOnAct getActType() {
-		return this.actType;
+		return changeOrientation.getOrientation();
 	}
 }

@@ -2,7 +2,6 @@ package com.realrules.game.behaviour;
 
 import java.util.ArrayList;
 
-import com.realrules.game.act.IOnAct;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem.Orientation;
 
@@ -17,7 +16,5 @@ public interface ISpriteBehaviour {
 	int getInfluenceAmount();
 	
 	public Orientation getOrientation();
-	
-	public IOnAct getActType();
 	
 }

@@ -2,6 +2,8 @@ package com.realrules.game.main;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Observable;
+import java.util.Observer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -27,12 +29,12 @@ import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.state.GameScoreState;
 import com.realrules.game.touch.DeceiverTouchAction;
 import com.realrules.game.touch.GossiperTouchAction;
+import com.realrules.game.touch.ChangeOrientation;
 import com.realrules.game.touch.PromoterTouchAction;
 
-public class GameSprite  extends Image  {
+public class GameSprite  extends Image {
 	public ISpriteBehaviour behaviour;
-	
-	public ISpriteBehaviour getBehaviour() {
+	private ISpriteBehaviour getBehaviour() {
 		return behaviour;
 	}
 
@@ -42,7 +44,9 @@ public class GameSprite  extends Image  {
 	public boolean isActive = true;
 	public int status = 0; //0 : neutral, 1 : for 2 : against
 	public boolean isManualInteractor = false;
+	
 	private ArrayList<Orientation> validDirections;
+	private ChangeOrientation changeOrientation;
 	
 	public boolean isInteracting = false;
 	private boolean isActing = false;
@@ -74,10 +78,6 @@ public class GameSprite  extends Image  {
 		return framesPath;
 	}
 	
-	public Orientation getOrientation() {
-		return behaviour.getOrientation();
-	}
-	
 	public GameSprite(Head type, float x, float y, String framesPath, boolean isActive) {
 		super(new TextureAtlas(Gdx.files.internal(framesPath+defaultPack)).getRegions().get(0));
 
@@ -95,35 +95,58 @@ public class GameSprite  extends Image  {
 		this.type = type;
 	}
 	
+	public void setValidOrientations() {
+		changeOrientation = new ChangeOrientation(getXGameCoord(), getYGameCoord());
+	}
+	
 	public void setBehaviour(IInteractionType manInteraction) {
 		
-		if(validDirections == null) {
-			setValidDirections();
-		}
+		//Orientation logic
+//		if(validDirections == null) {
+//			setValidDirections();
+//		}
+		
+//		orientationOnTouch = new OrientationOnTouch(validDirections, (Observer)this);
+//		orientationOnTouch.onTouch();
 		
 		if(type == type.GOSSIPER) {
 			IBehaviourProperties properties = new GossiperProperties();
+			//Review
+			OnAnimateTalkingAct actType = new OnAnimateTalkingAct(properties.getRotateProbability(), properties.getInteractProbability(), this, changeOrientation);
+//			orientationOnTouch.addObserver(actType);
 			behaviour = new Behaviour(
 					isActive, 
-					new OnAnimateTalkingAct(properties.getRotateProbability(), properties.getInteractProbability(), this, validDirections),
-					new GossiperTouchAction(manInteraction, getXGameCoord(), getYGameCoord()), properties);
+					actType,
+					new GossiperTouchAction(manInteraction, getXGameCoord(), getYGameCoord()), 
+					properties,
+					changeOrientation);
 			interaction = new GossiperInteraction();
 
 		}
 		if(type == type.DECEIVER) {
 			IBehaviourProperties properties = new DeceiverProperties();
+			//Review
+			OnAnimateTalkingAct actType = new OnAnimateTalkingAct(properties.getRotateProbability(), properties.getInteractProbability(), this, changeOrientation);
+//			orientationOnTouch.addObserver(actType);
 			behaviour = new Behaviour(
 					isActive, 
-					new OnAnimateTalkingAct(properties.getRotateProbability(), properties.getInteractProbability(), this, validDirections),
-					new DeceiverTouchAction(manInteraction, getXGameCoord(), getYGameCoord()), properties);
+					actType,
+					new DeceiverTouchAction(manInteraction, getXGameCoord(), getYGameCoord()),
+					properties,
+					changeOrientation);
 			interaction = new DeceiverInteraction();
 		}
 		if(type == type.INFLUENCER) {
 			IBehaviourProperties properties = new PromoterProperties();
+			//Review
+			OnAnimateTalkingAct actType = new OnAnimateTalkingAct(properties.getRotateProbability(), properties.getInteractProbability(), this, changeOrientation);
+//			orientationOnTouch.addObserver(actType);
 			behaviour = new Behaviour(
 					isActive, 
-					new OnAnimateTalkingAct(properties.getRotateProbability(), properties.getInteractProbability(), this, validDirections),
-					new PromoterTouchAction(manInteraction, getXGameCoord(), getYGameCoord()), properties);
+					actType,
+					new PromoterTouchAction(manInteraction, getXGameCoord(), getYGameCoord()),
+					properties,
+					changeOrientation);
 			interaction = new PromoterInteraction();
 		}
 		
@@ -162,24 +185,9 @@ public class GameSprite  extends Image  {
 		}
 	}
 	
-	//TODO: Refactor into IBehaviourProperties
-	public void setValidDirections() {
-		
-		validDirections = new ArrayList<Orientation> (Arrays.asList(Orientation.N, Orientation.E, Orientation.S, Orientation.W));
-		
-		if(getXGameCoord() == WorldSystem.get().getSystemWidth()-1 || WorldSystem.get().getMemberFromCoords(getXGameCoord() + 1, getYGameCoord()) == null) {
-			validDirections.remove(Orientation.E);
-		}
-		if(getXGameCoord() == 0 || WorldSystem.get().getMemberFromCoords(getXGameCoord() - 1, getYGameCoord()) == null) {
-			validDirections.remove(Orientation.W);
-		}
-		if(getYGameCoord() == WorldSystem.get().getSystemHeight()-1 || WorldSystem.get().getMemberFromCoords(getXGameCoord(), getYGameCoord() + 1) == null) {
-			validDirections.remove(Orientation.S);
-		}
-		if(getYGameCoord() == 0 || WorldSystem.get().getMemberFromCoords(getXGameCoord(), getYGameCoord() - 1) == null) {
-			validDirections.remove(Orientation.N);
-		}
-
+	//TODO: Refactor out
+	public Orientation getOrientation() {
+		return behaviour.getOrientation();
 	}
 	
 	

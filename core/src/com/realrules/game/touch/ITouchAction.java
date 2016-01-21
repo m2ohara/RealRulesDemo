@@ -11,6 +11,6 @@ public interface ITouchAction {
 	
 	void setInteractorDir(Orientation interactorDir);
 	
-	void interact();
+	void onAction();
 
 }

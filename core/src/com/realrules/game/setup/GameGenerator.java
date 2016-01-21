@@ -86,7 +86,7 @@ public class GameGenerator {
 	private void setCrowdValidDirections() {
 		
 		for(GameSprite sprite : GameProperties.get().getGameSprites()) {
-			sprite.setValidDirections();
+			sprite.setValidOrientations();
 		}
 		
 	}

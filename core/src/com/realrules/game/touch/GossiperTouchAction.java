@@ -1,7 +1,5 @@
 package com.realrules.game.touch;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -9,9 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.interact.IInteractionType;
 import com.realrules.game.interact.OpposerInteractionType;
-import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.state.GameScoreState;
 
@@ -19,6 +17,7 @@ public class GossiperTouchAction extends TouchAction{
 	
 	private IInteractionType manInteraction = null;
 	private int spriteType;
+//	private ChangeOrientation onTouch;
 	
 	public GossiperTouchAction(IInteractionType manInteraction, int x, int y) {
 		super(x, y);
@@ -41,11 +40,11 @@ public class GossiperTouchAction extends TouchAction{
 			//Determine direction
 			if(this.getInteractorDir() == Orientation.N) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.get().isValidYCoordinate(origY-1) && WorldSystem.get().getMemberFromCoords(origX, origY-1) != null) {
+				if(WorldSystem.get().isValidYCoordinate(origY-1)) {
 					validYCoords.add(origY-1);
 					validXCoords.add(origX);
 				}
-				if(WorldSystem.get().isValidYCoordinate(origY-2) && WorldSystem.get().getMemberFromCoords(origX, origY-2) != null) {
+				if(WorldSystem.get().isValidYCoordinate(origY-2)) {
 					validYCoords.add(origY-2);
 					validXCoords.add(origX);
 				}
@@ -53,11 +52,11 @@ public class GossiperTouchAction extends TouchAction{
 			
 			if(this.getInteractorDir() == Orientation.E) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.get().isValidXCoordinate(origX+1) && WorldSystem.get().getMemberFromCoords(origX+1, origY) != null) {
+				if(WorldSystem.get().isValidXCoordinate(origX+1)) {
 					validXCoords.add(origX+1);
 					validYCoords.add(origY);
 				}
-				if(WorldSystem.get().isValidXCoordinate(origX+2) && WorldSystem.get().getMemberFromCoords(origX+2, origY) != null) {
+				if(WorldSystem.get().isValidXCoordinate(origX+2)) {
 					validXCoords.add(origX+2);
 					validYCoords.add(origY);
 				}
@@ -65,11 +64,11 @@ public class GossiperTouchAction extends TouchAction{
 			
 			if(this.getInteractorDir() == Orientation.S) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.get().isValidYCoordinate(origY+1) && WorldSystem.get().getMemberFromCoords(origX, origY+1) != null) {
+				if(WorldSystem.get().isValidYCoordinate(origY+1)) {
 					validYCoords.add(origY+1);
 					validXCoords.add(origX);
 				}
-				if(WorldSystem.get().isValidYCoordinate(origY+2) && WorldSystem.get().getMemberFromCoords(origX, origY+2) != null) {
+				if(WorldSystem.get().isValidYCoordinate(origY+2)) {
 					validYCoords.add(origY+2);
 					validXCoords.add(origX);
 				}
@@ -77,23 +76,23 @@ public class GossiperTouchAction extends TouchAction{
 			
 			if(this.getInteractorDir() == Orientation.W) {
 				//Set related coordinates for valid interactees
-				if(WorldSystem.get().isValidXCoordinate(origX-1) && WorldSystem.get().getMemberFromCoords(origX-1, origY) != null) {
+				if(WorldSystem.get().isValidXCoordinate(origX-1)) {
 					validXCoords.add(origX-1);
 					validYCoords.add(origY);
 				}
-				if(WorldSystem.get().isValidXCoordinate(origX-2) && WorldSystem.get().getMemberFromCoords(origX-2, origY) != null) {
+				if(WorldSystem.get().isValidXCoordinate(origX-2)) {
 					validXCoords.add(origX-2);
 					validYCoords.add(origY);
 				} 
 			}
 		}
 
-		
+		removeEmptyCoordinates();
 		
 	}
 
 	@Override
-	public void interact() {
+	public void onAction() {
 		
 		if(isSelectedInteractor()) {
 			
@@ -119,9 +118,9 @@ public class GossiperTouchAction extends TouchAction{
 			GameScoreState.resetUserPoints();
 		}
 		
-		else if(isNeutralInteractor()) {
-			setRandomOrientation();
-		}
+//		else if(isNeutralInteractor()) {
+//			setRandomOrientation();
+//		}
 		
 	}
 	

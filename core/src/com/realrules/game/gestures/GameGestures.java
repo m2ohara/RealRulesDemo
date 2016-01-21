@@ -5,15 +5,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.realrules.game.interact.IInteractionType;
-import com.realrules.game.interact.SwipeConverseInteraction;
 import com.realrules.game.interact.SwipeInteraction;
+import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
 
 public class GameGestures  implements GestureListener {
 		
 		boolean isFirstHit = true;
 		private Stage stage = null;
-		SwipeConverseInteraction interaction = null;
+		//TODO: Fully refactor into GameProperties
+		public static SwipeInteraction interaction = null;
 		
 		public GameGestures(Stage stage) {
 			this.stage = stage;
@@ -21,7 +22,8 @@ public class GameGestures  implements GestureListener {
 		
 		public GameGestures(Stage stage, IInteractionType followerInteractAction, int influenceType) {
 			this.stage = stage;
-			this.interaction = new SwipeConverseInteraction(followerInteractAction, influenceType);
+			interaction = new SwipeInteraction(followerInteractAction, influenceType);
+			GameProperties.get().setSwipeInteraction(interaction);
 		}
 
 		@Override
