@@ -14,13 +14,6 @@ public abstract class TouchAction implements ITouchAction {
 	protected ArrayList<Integer> validXCoords = new ArrayList<Integer>();
 	protected ArrayList<Integer> validYCoords = new ArrayList<Integer>();
 	protected GameSprite interactor = null;
-//	protected Orientation orientationOnTouch;
-	
-//	public TouchAction(Orientation orientationOnTouch, int x, int y) {
-//		this.orientationOnTouch = orientationOnTouch;
-//		setInteractorX(x);
-//		setInteractorY(y);
-//	}
 	
 	public TouchAction(int x, int y) {
 		setInteractorX(x);
@@ -68,17 +61,5 @@ public abstract class TouchAction implements ITouchAction {
 			}
 		}
 	}
-	
-	//TODO: Remove
-//	public boolean isNeutralInteractor() {
-//		if(WorldSystem.get().getMemberFromCoords(getInteractorX(), getInteractorY()).status == 0) {;
-//			return true;
-//		}
-//		return false;
-//	}
-	
-//	public void setRandomOrientation() {
-//		orientationOnTouch.onTouch();
-//	}
 
 }

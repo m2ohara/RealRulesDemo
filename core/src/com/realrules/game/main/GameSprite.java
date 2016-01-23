@@ -33,10 +33,8 @@ import com.realrules.game.touch.ChangeOrientation;
 import com.realrules.game.touch.PromoterTouchAction;
 
 public class GameSprite  extends Image {
-	public ISpriteBehaviour behaviour;
-	private ISpriteBehaviour getBehaviour() {
-		return behaviour;
-	}
+	
+	public Behaviour behaviour;
 
 	public AutonomousInteraction interaction;
 	public float startingX;
@@ -184,10 +182,13 @@ public class GameSprite  extends Image {
 			behaviour.onAct(delta, this, validDirections);
 		}
 	}
-	
-	//TODO: Refactor out
+
 	public Orientation getOrientation() {
 		return behaviour.getOrientation();
+	}
+	
+	public void setOrientation() {
+		behaviour.setOrientation();
 	}
 	
 	

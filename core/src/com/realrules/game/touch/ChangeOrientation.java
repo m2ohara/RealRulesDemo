@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Observer;
 import java.util.Random;
 
+import com.realrules.game.interact.Interactee;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
@@ -18,12 +19,14 @@ public class ChangeOrientation {
 	private Random rand = new Random();
 	private int xGameCoord;
 	private int yGameCoord;
+	private Interactee interactee;
 	
 	public ChangeOrientation(int xGameCoord, int yGameCoord) 
 	{
 		this.xGameCoord = xGameCoord;
 		this.yGameCoord = yGameCoord;
 		setValidDirections(xGameCoord, yGameCoord);
+		interactee = new Interactee();
 	}
 	
 	public boolean changeOnTouch() {
@@ -32,12 +35,32 @@ public class ChangeOrientation {
 			return false;
 		}
 		else {
-			onChange();
+			onCyclicChange();
 			return true;
 		}
 	}
 	
-	public Orientation onChange() {
+	public void onCyclicChange() {
+		Orientation firstOrientation = orientation;
+		//Change orientation to next value in list while it is valid until end
+		setNextOrientation();
+		while(!isValidInteractee() && orientation != firstOrientation) {
+			setNextOrientation();
+		}
+	}
+	
+	private void setNextOrientation() {
+		int index = validDirections.indexOf(orientation)+1 == validDirections.size() ? 0 : validDirections.indexOf(orientation)+1;
+		orientation = this.validDirections.get(index);
+		System.out.println("Switching orientation to "+orientation+" at idx "+index);
+	}
+	
+	private boolean isValidInteractee() {
+		//Check that facing gamesprite is able to interact
+		return interactee.isInteracteeNeutral(xGameCoord, yGameCoord, orientation);
+	}
+	
+	public Orientation onRandomChange() {
 		//Change actor's orientation
 		int choice = rand.nextInt(this.validDirections.size());
 		orientation = this.validDirections.get(choice);

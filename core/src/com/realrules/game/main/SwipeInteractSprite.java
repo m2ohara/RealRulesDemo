@@ -49,7 +49,6 @@ public class SwipeInteractSprite extends Image{
 		this.interactee = interactee;
 		
 		if(interactor.status == 1) {
-//			setAction();
 			interactionType.setInfluencedSprite(interactor);
 			interactor.setColor(Color.WHITE);
 		}
@@ -122,6 +121,7 @@ public class SwipeInteractSprite extends Image{
 		else {
 			interactee.setColor(Color.YELLOW);
 		}
+		interactee.setOrientation();
 		interactee.status = 1;
 		interactee.isActive = true;
 		interactor.isManualInteractor = false;

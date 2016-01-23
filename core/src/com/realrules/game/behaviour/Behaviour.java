@@ -18,9 +18,7 @@ public class Behaviour implements ISpriteBehaviour {
 	private int influenceAmount;
 	private TouchAction onTouch;
 	public IOnAct actType;
-//	private ArrayList<Orientation> validDirections;
 	private ChangeOrientation changeOrientation;
-	private Random rand = new Random();
 	
 	public Behaviour(boolean isActive, IOnAct onAct, TouchAction touchAction, IBehaviourProperties properties, ChangeOrientation changeOrientation) {
 
@@ -31,23 +29,9 @@ public class Behaviour implements ISpriteBehaviour {
 		this.onTouch = touchAction;
 		
 		this.changeOrientation = changeOrientation;
-		
-		
-		
-//		setValidDirections(xGameCoord, yGameCoord);
 	}
 	
-//	public Behaviour(boolean isActive, IOnAct onAct, TouchAction touchAction, IBehaviourProperties properties, OrientationOnTouch changeOrientation) {
-//
-//		this.influenceAmount = properties.getInfluenceAmount();
-//		
-//		this.isActive = isActive;
-//		this.actType = onAct;
-//		this.onTouch = touchAction;
-//		
-//		this.changeOrientation = changeOrientation;
-//		
-//	}
+
 	
 	@Override
 	public void onTouch() {
@@ -66,12 +50,7 @@ public class Behaviour implements ISpriteBehaviour {
 		
 		if(isActive) {
 			
-			actType.performActing(delta);
-			
-			//Orientation logic
-			//Update direction  for touch action
-//			onTouch.setInteractorDir(actType.getCurrentCoordinate());
-			
+			actType.performActing(delta);		
 		}
 		
 	}
@@ -85,5 +64,10 @@ public class Behaviour implements ISpriteBehaviour {
 	@Override
 	public Orientation getOrientation() {
 		return changeOrientation.getOrientation();
+	}
+	
+	public void setOrientation() {
+		changeOrientation.onCyclicChange();
+		actType.changeSpriteOrientation();
 	}
 }
