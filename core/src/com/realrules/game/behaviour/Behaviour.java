@@ -8,7 +8,7 @@ import com.realrules.game.act.IOnAct;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
-import com.realrules.game.touch.ChangeOrientation;
+import com.realrules.game.touch.SpriteOrientation;
 import com.realrules.game.touch.TouchAction;
 
 public class Behaviour implements ISpriteBehaviour {
@@ -18,9 +18,9 @@ public class Behaviour implements ISpriteBehaviour {
 	private int influenceAmount;
 	private TouchAction onTouch;
 	public IOnAct actType;
-	private ChangeOrientation changeOrientation;
+	private SpriteOrientation changeOrientation;
 	
-	public Behaviour(boolean isActive, IOnAct onAct, TouchAction touchAction, IBehaviourProperties properties, ChangeOrientation changeOrientation) {
+	public Behaviour(boolean isActive, IOnAct onAct, TouchAction touchAction, IBehaviourProperties properties, SpriteOrientation changeOrientation) {
 
 		this.influenceAmount = properties.getInfluenceAmount();
 		
@@ -39,7 +39,7 @@ public class Behaviour implements ISpriteBehaviour {
 		if(isActive) {
 			onTouch.onAction();
 		}
-		if(changeOrientation.changeOnTouch()) {
+		if(changeOrientation.cyclicChange()) {
 			actType.changeSpriteOrientation();
 		}
 		
@@ -66,8 +66,14 @@ public class Behaviour implements ISpriteBehaviour {
 		return changeOrientation.getOrientation();
 	}
 	
-	public void setOrientation() {
+	public void changeOrientationOnInvalid() {
+		if(changeOrientation.cyclicChangeOnInvalidInteractee()) {
+			actType.changeSpriteOrientation();	
+		}
+	}
+	
+	public void changeOrientation() {
 		changeOrientation.onCyclicChange();
-		actType.changeSpriteOrientation();
+		actType.changeSpriteOrientation();	
 	}
 }

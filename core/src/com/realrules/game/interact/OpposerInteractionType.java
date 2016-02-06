@@ -11,12 +11,6 @@ import com.realrules.game.main.GameSprite;
 public class OpposerInteractionType implements IInteractionType {
 	private GameSprite interactor;
 	private GameSprite interactee;
-
-	public void setToMiddleFollower(GameSprite hitActor) {
-		setInfluencedSprite(hitActor);
-		hitActor.status = 3;		
-		hitActor.setColor(Color.WHITE);
-	}
 	
 	public OpposerInteractionType() {}; //TODO: Remove
 	
@@ -25,12 +19,20 @@ public class OpposerInteractionType implements IInteractionType {
 		this.interactee = interactee;
 	}
 	
-	@Override
+	//Swipe interaction
+	public void setInteractorStatus(GameSprite interactor) {
+		interactor.status = 3;		
+		System.out.println("Setting middle opposer");
+	}
+	
+	//On autonomous interaction complete
 	public void complete() {
-		interactor.isInteracting = false;
 		interactee.status = 3;
+		interactor.setOrientation();
+		interactor.isInteracting = false;
 		interactee.isActive = true;
 		setInfluencedSprite(interactee);
+		System.out.println("opposer interaction complete");
 	}
 	
 	public void setInfluencedSprite(GameSprite interactee) {

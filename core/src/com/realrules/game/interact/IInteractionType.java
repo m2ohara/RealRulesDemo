@@ -4,7 +4,7 @@ import com.realrules.game.main.GameSprite;
 
 public interface IInteractionType {
 	
-	void setToMiddleFollower(GameSprite hitActor);
+	void setInteractorStatus(GameSprite interactor);
 	
 	void setInfluencedSprite(GameSprite interactee);
 	

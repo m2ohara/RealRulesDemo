@@ -20,18 +20,20 @@ public class SupporterInteractionType implements IInteractionType {
 		this.interactee = interactee;
 	}
 	
-	public void setToMiddleFollower(GameSprite hitActor) {
-		setInfluencedSprite(hitActor);
-		hitActor.status = 2;
-		hitActor.setColor(Color.WHITE);
+	//Swipe interaction
+	public void setInteractorStatus(GameSprite interactor) {
+		interactor.status = 2;
+		System.out.println("Setting middle opposer");
 	}
 	
-	@Override
+	//On autonomous interaction complete
 	public void complete() {
-		interactor.isInteracting = false;
 		interactee.status = 2;
+		interactor.setOrientation();
+		interactor.isInteracting = false;
 		interactee.isActive = true;
 		setInfluencedSprite(interactee);
+		System.out.println("supporter interaction complete");
 	}
 	
 	public void setInfluencedSprite(GameSprite interactee) {

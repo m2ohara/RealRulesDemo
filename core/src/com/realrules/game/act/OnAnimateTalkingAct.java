@@ -13,7 +13,7 @@ import com.realrules.game.main.Assets;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem.Orientation;
-import com.realrules.game.touch.ChangeOrientation;
+import com.realrules.game.touch.SpriteOrientation;
 
 public class OnAnimateTalkingAct implements IOnAct{
 	
@@ -31,12 +31,12 @@ public class OnAnimateTalkingAct implements IOnAct{
 	
 	private GameSprite actor;
 	
-	private ChangeOrientation changeOrientation;
+	private SpriteOrientation changeOrientation;
 	private float interactP;
 	private float rotateP;
 	private Random rand = new Random();
 	
-	public OnAnimateTalkingAct(float rotateProbability, float interactProbability, GameSprite actor, ChangeOrientation onRandom) 
+	public OnAnimateTalkingAct(float rotateProbability, float interactProbability, GameSprite actor, SpriteOrientation onRandom) 
 	{
 
 		this.rotateP = rotateProbability;
@@ -74,7 +74,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 		}
 		
 		//If not interacting increment states
-		if(!actor.isInteracting && !actor.isManualInteractor) {
+		if(!actor.isInteracting && !actor.isIntermediateInteractor) {
 			animateStateTime += delta;
 			attemptInteractStateTime += delta;
 		}
@@ -133,7 +133,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 	public void setFrame() {
 		//Based on rotation probability
 		if(actor.status > 1 && rand.nextFloat() < this.rotateP) {
-			this.changeOrientation.onRandomChange();
+			this.changeOrientation.onCyclicChange();
 			changeSpriteOrientation();
 		}
 		

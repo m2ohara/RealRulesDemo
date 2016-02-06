@@ -29,7 +29,7 @@ import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.state.GameScoreState;
 import com.realrules.game.touch.DeceiverTouchAction;
 import com.realrules.game.touch.GossiperTouchAction;
-import com.realrules.game.touch.ChangeOrientation;
+import com.realrules.game.touch.SpriteOrientation;
 import com.realrules.game.touch.PromoterTouchAction;
 
 public class GameSprite  extends Image {
@@ -41,10 +41,10 @@ public class GameSprite  extends Image {
 	public float startingY;
 	public boolean isActive = true;
 	public int status = 0; //0 : neutral, 1 : for 2 : against
-	public boolean isManualInteractor = false;
+	public boolean isIntermediateInteractor = false;
 	
 	private ArrayList<Orientation> validDirections;
-	private ChangeOrientation changeOrientation;
+	private SpriteOrientation changeOrientation;
 	
 	public boolean isInteracting = false;
 	private boolean isActing = false;
@@ -94,7 +94,7 @@ public class GameSprite  extends Image {
 	}
 	
 	public void setValidOrientations() {
-		changeOrientation = new ChangeOrientation(getXGameCoord(), getYGameCoord());
+		changeOrientation = new SpriteOrientation(getXGameCoord(), getYGameCoord());
 	}
 	
 	public void setBehaviour(IInteractionType manInteraction) {
@@ -188,7 +188,7 @@ public class GameSprite  extends Image {
 	}
 	
 	public void setOrientation() {
-		behaviour.setOrientation();
+		behaviour.changeOrientationOnInvalid();
 	}
 	
 	

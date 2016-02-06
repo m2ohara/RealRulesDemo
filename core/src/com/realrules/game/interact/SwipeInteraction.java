@@ -1,12 +1,10 @@
 package com.realrules.game.interact;
 
-import java.util.Observable;
-import java.util.Observer;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Array;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.SwipeInteractSprite;
@@ -20,17 +18,17 @@ public class SwipeInteraction {
 	private int hitCount = 0;
 	GameSprite lastHitActor = null;
 	boolean invalidInteraction = false;
-	private IInteractionType manualInteraction = null;
+	private IInteractionType interactionType = null;
 	private int connectorSprite;
 	private float interactionStateLength = 3f;
 	private int interactionStages = 3;
 	//TODO: Clean up orientation logic
 	SwipeInteractSprite firstInteraction = null;
-//	private Orientation coordinate;
 	private Orientation orientation = null;
+	private Array<Actor> connectors = new Array<Actor>();
 
-	public SwipeInteraction(IInteractionType manualInteraction, int connectorSprite) {
-		this.manualInteraction = manualInteraction;
+	public SwipeInteraction(IInteractionType interactionType, int connectorSprite) {
+		this.interactionType = interactionType;
 		this.connectorSprite = connectorSprite == 0 ? 1  : 0;
 	}
 
@@ -48,18 +46,18 @@ public class SwipeInteraction {
 
 					System.out.println("First follower hit facing "+hitActor.getOrientation());
 				}
-				//Interactee
+				//If next
 				else if(interactor != null && !isFirst && !invalidInteraction && interactor.behaviour.getInfluenceAmount() > hitCount && hitActor.status == 0) {
 					this.orientation = lastHitActor.getOrientation();
 					if(validInteraction(hitActor)) {
 						lastHitActor.isActive = false;
 						hitActor.isActive = false;
 						//Set previous hit actor to passive follower
-						setConnectorSprite(lastHitActor);
-						lastHitActor.isManualInteractor = true;
+						lastHitActor.isIntermediateInteractor = true;
 						interact(lastHitActor, hitActor );
+						
+						setConnectorSprite(lastHitActor);
 						hitCount += 1;
-						//Update hit count
 						GameScoreState.addUserPoints(1);
 					}
 					else {
@@ -87,6 +85,7 @@ public class SwipeInteraction {
 		hitCount = 0;
 		lastHitActor = null;
 		firstInteraction = null;
+		removeConnectors();
 	}
 
 	private boolean validInteraction(GameSprite hitActor) {
@@ -99,14 +98,14 @@ public class SwipeInteraction {
 				if(WorldSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (WorldSystem.get().getGameXCoords().indexOf(hitActor.startingX)-1) 
 						&& WorldSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  WorldSystem.get().getGameYCoords().indexOf(hitActor.startingY)) {
 					isValid = true;
-					System.out.println("Follower hit to the right. Last Hit x : "+WorldSystem.get().getGameXCoords().indexOf(lastHitActor.startingX)+", Hit X "+WorldSystem.get().getGameXCoords().indexOf(hitActor.startingX));
+//					System.out.println("Follower hit to the right. Last Hit x : "+WorldSystem.get().getGameXCoords().indexOf(lastHitActor.startingX)+", Hit X "+WorldSystem.get().getGameXCoords().indexOf(hitActor.startingX));
 				}
 			}
 			else if(orientation == Orientation.N) {
 				if(WorldSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == WorldSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
 						&& WorldSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (WorldSystem.get().getGameYCoords().indexOf(hitActor.startingY)+1)) {
 					isValid = true;
-					System.out.println("Follower hit above");
+//					System.out.println("Follower hit above");
 				}
 
 			}
@@ -114,14 +113,14 @@ public class SwipeInteraction {
 				if(WorldSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == WorldSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
 						&& WorldSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (WorldSystem.get().getGameYCoords().indexOf(hitActor.startingY)-1)) {
 					isValid = true;
-					System.out.println("Follower hit below");
+//					System.out.println("Follower hit below");
 				}
 			}
 			else if(orientation == Orientation.W) {
 				if(WorldSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (WorldSystem.get().getGameXCoords().indexOf(hitActor.startingX)+1) 
 						&& WorldSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  WorldSystem.get().getGameYCoords().indexOf(hitActor.startingY)) {
 					isValid = true;
-					System.out.println("Follower hit to the left");
+//					System.out.println("Follower hit to the left");
 				}
 			}
 		}
@@ -133,6 +132,7 @@ public class SwipeInteraction {
 	private void setConnectorSprite(GameSprite lastHitActor) {
 
 		Actor connector = new Image(new TextureAtlas(Gdx.files.internal("sprites//connectorPack.pack")).getRegions().get(connectorSprite));
+		connectors.add(connector);
 
 		connector.setOrigin(connector.getWidth()/2, connector.getHeight()/2);
 		connector.setPosition(lastHitActor.getStartingX() - 20, lastHitActor.getStartingY() -22);
@@ -151,19 +151,21 @@ public class SwipeInteraction {
 		GameProperties.get().addActorToStage(connector);
 	}
 	
+	private void removeConnectors() {
+		GameProperties.get().getStage().getActors().removeAll(connectors, false);
+	}
+	
 	public void interact(GameSprite interactor, GameSprite interactee) {
 
 		//Influence if interactee is neutral and interactor isn't already interacting
 		if(interactee.status == 0) {
-//			if(interactor.status == 1) {
-//				interactor.isActive = true;
-//			}
 			if(firstInteraction == null) {
 				System.out.println("Assigning first interaction");
-				firstInteraction = new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, manualInteraction);
+				firstInteraction = new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, interactionType);
 			}
 			else {
-				new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, manualInteraction);
+				System.out.println("Assigning next interaction");
+				new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, interactionType);
 			}
 
 		}

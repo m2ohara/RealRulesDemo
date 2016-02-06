@@ -18,7 +18,7 @@ public class PromoterInteractBehaviour implements IInteraction {
 	public void interact(GameSprite interactor, GameSprite interactee) {
 		
 		//Influence if interactee is neutral and interactor isn't already interacting
-		if(!interactor.isManualInteractor && !interactor.isInteracting && interactee.status == 0 && interactee.isActive && rand.nextFloat() > interactSuccess) {
+		if(!interactor.isIntermediateInteractor && !interactor.isInteracting && interactee.status == 0 && interactee.isActive && rand.nextFloat() > interactSuccess) {
 			setInteractionResult(interactor, interactee);
 			
 			interactor.isInteracting = true; //TODO: Replace with isInteracting

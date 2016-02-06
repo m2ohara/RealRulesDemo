@@ -384,6 +384,17 @@ public class Game extends ApplicationAdapter {
 		//Set remaining votes icon
 		setVoteCount();
 		
+		setReputationCount();
+		
+	}
+	
+	private void setReputationCount() {
+		final Skin skin = new Skin();
+		BitmapFont font = new BitmapFont();
+		font.scale(1.5f);
+		skin.add("default", new LabelStyle(font, Color.YELLOW));
+		String value = Integer.toString(PlayerState.get().getReputationPoints());
+		setToStage(new Label(value, skin), 40, 270);
 	}
 	
 	private void setVoteCount() {
@@ -393,7 +404,7 @@ public class Game extends ApplicationAdapter {
 		skin.add("default", new LabelStyle(font, Color.YELLOW));
 		String value = scoreState.getRemaingVotes() < 10 ? "0"+Integer.toString(scoreState.getRemaingVotes()) : Integer.toString(scoreState.getRemaingVotes());
 		remainingVotesCounter = new Label(value, skin);
-		setToStage(remainingVotesCounter, 160, 180);
+		setToStage(remainingVotesCounter, 40, 200);
 	}
 	
 	private void updateScoreState() {

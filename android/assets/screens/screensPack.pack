@@ -3,7 +3,7 @@ screensPack.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-CrowdScreen
+GameScreen
   rotate: false
   xy: 1, 1
   size: 420, 600
@@ -29,7 +29,7 @@ EndScreen
   orig: 420, 600
   offset: 0, 0
   index: -1
-GameScreen
+TitleScreen
   rotate: false
   xy: 423, 1
   size: 420, 600
@@ -44,13 +44,6 @@ repeat: none
 SpeechScreen
   rotate: false
   xy: 1, 1
-  size: 420, 600
-  orig: 420, 600
-  offset: 0, 0
-  index: -1
-TitleScreen
-  rotate: false
-  xy: 423, 1
   size: 420, 600
   orig: 420, 600
   offset: 0, 0

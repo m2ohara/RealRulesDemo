@@ -11,9 +11,8 @@ import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
 
-public class ChangeOrientation {
+public class SpriteOrientation {
 	
-	private List<Observer> observers = new ArrayList<Observer>();
 	private ArrayList<Orientation> validDirections;
 	private Orientation orientation;
 	private Random rand = new Random();
@@ -21,7 +20,7 @@ public class ChangeOrientation {
 	private int yGameCoord;
 	private Interactee interactee;
 	
-	public ChangeOrientation(int xGameCoord, int yGameCoord) 
+	public SpriteOrientation(int xGameCoord, int yGameCoord) 
 	{
 		this.xGameCoord = xGameCoord;
 		this.yGameCoord = yGameCoord;
@@ -29,7 +28,7 @@ public class ChangeOrientation {
 		interactee = new Interactee();
 	}
 	
-	public boolean changeOnTouch() {
+	public boolean cyclicChange() {
 		GameSprite sprite = WorldSystem.get().getMemberFromCoords(xGameCoord, yGameCoord);
 		if(sprite != null && sprite.status != 0) {
 			return false;
@@ -49,15 +48,20 @@ public class ChangeOrientation {
 		}
 	}
 	
-	private void setNextOrientation() {
-		int index = validDirections.indexOf(orientation)+1 == validDirections.size() ? 0 : validDirections.indexOf(orientation)+1;
-		orientation = this.validDirections.get(index);
-		System.out.println("Switching orientation to "+orientation+" at idx "+index);
-	}
-	
-	private boolean isValidInteractee() {
-		//Check that facing gamesprite is able to interact
-		return interactee.isInteracteeNeutral(xGameCoord, yGameCoord, orientation);
+	public boolean cyclicChangeOnInvalidInteractee() {
+		Orientation firstOrientation = orientation;
+		//If current orientation invalid
+		if(!isValidInteractee()) {
+			//Change orientation to next value in list while it is valid until end
+			setNextOrientation();
+			while(!isValidInteractee() && orientation != firstOrientation) {
+				setNextOrientation();
+			}
+			return true;
+		}
+		
+		return false;
+		
 	}
 	
 	public Orientation onRandomChange() {
@@ -66,6 +70,17 @@ public class ChangeOrientation {
 		orientation = this.validDirections.get(choice);
 		return orientation;
 	
+	}
+	
+	private void setNextOrientation() {
+		int index = validDirections.indexOf(orientation)+1 == validDirections.size() ? 0 : validDirections.indexOf(orientation)+1;
+		orientation = this.validDirections.get(index);
+//		System.out.println("Switching orientation to "+orientation+" at idx "+index);
+	}
+	
+	private boolean isValidInteractee() {
+		//Check that facing gamesprite is able to interact
+		return interactee.isInteracteeNeutral(xGameCoord, yGameCoord, orientation);
 	}
 	
 	public Orientation getOrientation() {

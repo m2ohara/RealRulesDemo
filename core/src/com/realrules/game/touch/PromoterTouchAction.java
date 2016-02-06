@@ -159,7 +159,7 @@ public class PromoterTouchAction extends TouchAction {
 			generateValidInteractees();
 			
 			if(validXCoords.size() > 0) {
-				manInteraction.setToMiddleFollower(interactor);
+				manInteraction.setInteractorStatus(interactor);
 				setConnectorSprite(interactor);
 				for(int i = 0; i < validXCoords.size(); i++) {
 					GameSprite actor = WorldSystem.get().getMemberFromCoords(validXCoords.get(i), validYCoords.get(i));
@@ -167,7 +167,7 @@ public class PromoterTouchAction extends TouchAction {
 						setToLastFollower(actor);
 					}
 					else {
-						manInteraction.setToMiddleFollower(actor);
+						manInteraction.setInteractorStatus(actor);
 					}
 					
 				}

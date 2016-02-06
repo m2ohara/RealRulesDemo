@@ -10,7 +10,7 @@ public class AutonomousInteraction {
 	public IInteraction interactionBehaviour = null;
 
 	public void interact(GameSprite interactor, Group actorGroup, Orientation orientation) {
-
+//		System.out.println("Interactor with status "+interactor.status);
 		// As long as interactor isn't neutral
 		if (interactor.status > 1) {
 			GameSprite interactee = null;
