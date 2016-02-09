@@ -64,7 +64,8 @@ public class Interactee {
 		
 		GameSprite interactee = getInteractee(xGameCoord, yGameCoord, orientation);
 
-		if(interactee != null && interactee.status == 0) {
+		//Does interactee exist, isn't influenced and isn't being influenced
+		if(interactee != null && interactee.status == 0 && interactee.isActive) {
 			return true;
 		}
 		

@@ -54,13 +54,18 @@ public class SpriteOrientation {
 		if(!isValidInteractee()) {
 			//Change orientation to next value in list while it is valid until end
 			setNextOrientation();
-			while(!isValidInteractee() && orientation != firstOrientation) {
-				setNextOrientation();
+			while(!isValidInteractee()) {
+				if(orientation == firstOrientation) {
+					return false;
+				}
+				else 
+					setNextOrientation();
 			}
 			return true;
 		}
-		
-		return false;
+		else {
+			return true;
+		}
 		
 	}
 	

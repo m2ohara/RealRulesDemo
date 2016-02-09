@@ -68,7 +68,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 		}
 		
 		//Attempt interaction
-		if( attemptInteractStateTime >= attemptInteractStateLength && GameProperties.get().IsSwipeInteraction == true) {
+		if( attemptInteractStateTime >= attemptInteractStateLength && GameProperties.get().isAutoInteractionAllowed == true) {
 			attemptInteractStateTime = 0.0f;
 			attemptAutonomousInteraction();
 		}

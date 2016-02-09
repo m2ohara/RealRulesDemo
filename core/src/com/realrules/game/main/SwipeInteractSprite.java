@@ -53,10 +53,6 @@ public class SwipeInteractSprite extends Image{
 			interactionType.setInfluencedSprite(interactor);
 			interactor.setColor(Color.WHITE);
 		}
-		//Otherwise 
-//		else {
-//			scaleAction = null;
-//		}
 	}
 	
 	private void setSprite(float xCoord, float yCoord) {
@@ -71,7 +67,7 @@ public class SwipeInteractSprite extends Image{
 	public void startInteraction() {
 //		System.out.println("Starting interaction");
 		interactor.isActive = true;
-		GameProperties.get().IsSwipeInteraction = true;
+		GameProperties.get().isAutoInteractionAllowed = true;
 	}
 	
 	public void setAction() {
@@ -101,7 +97,6 @@ public class SwipeInteractSprite extends Image{
 			}
 			//Last interaction
 			else {
-				GameProperties.get().IsSwipeInteraction = false;
 				setInteractor();
 				setInteracteeToSelected();
 			}
@@ -135,14 +130,13 @@ public class SwipeInteractSprite extends Image{
 		else {
 			interactee.setColor(Color.YELLOW);
 		}
-		interactee.setOrientation();
+		
+		//Can last interactee interact on next swipe
+		if(interactee.isOrientationSet()) {
+			GameProperties.get().isAutoInteractionAllowed = false;
+		}		
 		interactee.status = 1;
 		interactee.isActive = true;
 	}
-	
-//	protected boolean isComplete = false;
-//	private boolean isComplete() {
-//		return isComplete;
-//	}
 
 }

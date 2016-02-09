@@ -99,19 +99,10 @@ public class GameSprite  extends Image {
 	
 	public void setBehaviour(IInteractionType manInteraction) {
 		
-		//Orientation logic
-//		if(validDirections == null) {
-//			setValidDirections();
-//		}
-		
-//		orientationOnTouch = new OrientationOnTouch(validDirections, (Observer)this);
-//		orientationOnTouch.onTouch();
-		
 		if(type == type.GOSSIPER) {
 			IBehaviourProperties properties = new GossiperProperties();
 			//Review
 			OnAnimateTalkingAct actType = new OnAnimateTalkingAct(properties.getRotateProbability(), properties.getInteractProbability(), this, changeOrientation);
-//			orientationOnTouch.addObserver(actType);
 			behaviour = new Behaviour(
 					isActive, 
 					actType,
@@ -125,7 +116,6 @@ public class GameSprite  extends Image {
 			IBehaviourProperties properties = new DeceiverProperties();
 			//Review
 			OnAnimateTalkingAct actType = new OnAnimateTalkingAct(properties.getRotateProbability(), properties.getInteractProbability(), this, changeOrientation);
-//			orientationOnTouch.addObserver(actType);
 			behaviour = new Behaviour(
 					isActive, 
 					actType,
@@ -138,7 +128,6 @@ public class GameSprite  extends Image {
 			IBehaviourProperties properties = new PromoterProperties();
 			//Review
 			OnAnimateTalkingAct actType = new OnAnimateTalkingAct(properties.getRotateProbability(), properties.getInteractProbability(), this, changeOrientation);
-//			orientationOnTouch.addObserver(actType);
 			behaviour = new Behaviour(
 					isActive, 
 					actType,
@@ -187,8 +176,8 @@ public class GameSprite  extends Image {
 		return behaviour.getOrientation();
 	}
 	
-	public void setOrientation() {
-		behaviour.changeOrientationOnInvalid();
+	public boolean isOrientationSet() {
+		return behaviour.changeOrientationOnInvalid();
 	}
 	
 	

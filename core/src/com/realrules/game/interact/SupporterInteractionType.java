@@ -29,7 +29,7 @@ public class SupporterInteractionType implements IInteractionType {
 	//On autonomous interaction complete
 	public void complete() {
 		interactee.status = 2;
-		interactor.setOrientation();
+		interactor.isOrientationSet();
 		interactor.isInteracting = false;
 		interactee.isActive = true;
 		setInfluencedSprite(interactee);

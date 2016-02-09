@@ -37,7 +37,7 @@ public class Behaviour implements ISpriteBehaviour {
 	public void onTouch() {
 		
 		if(isActive) {
-			onTouch.onAction();
+//			onTouch.onAction();
 		}
 		if(changeOrientation.cyclicChange()) {
 			actType.changeSpriteOrientation();
@@ -66,10 +66,12 @@ public class Behaviour implements ISpriteBehaviour {
 		return changeOrientation.getOrientation();
 	}
 	
-	public void changeOrientationOnInvalid() {
+	public boolean changeOrientationOnInvalid() {
 		if(changeOrientation.cyclicChangeOnInvalidInteractee()) {
 			actType.changeSpriteOrientation();	
+			return true;
 		}
+		return false;
 	}
 	
 	public void changeOrientation() {

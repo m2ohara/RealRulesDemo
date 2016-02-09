@@ -28,7 +28,7 @@ public class OpposerInteractionType implements IInteractionType {
 	//On autonomous interaction complete
 	public void complete() {
 		interactee.status = 3;
-		interactor.setOrientation();
+		interactor.isOrientationSet();
 		interactor.isInteracting = false;
 		interactee.isActive = true;
 		setInfluencedSprite(interactee);

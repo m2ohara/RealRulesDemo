@@ -20,7 +20,7 @@ public class GameProperties {
 	private List<Integer> followerTypeAmount = null;
 	private int rewardScore = 3500;
 	private ArrayList<GameSprite> gameSprites = new ArrayList<GameSprite>();
-	public boolean IsSwipeInteraction = false;
+	public boolean isAutoInteractionAllowed = false;
 	public SwipeInteraction swipeInteraction = null;
 
 	private GameProperties() {
@@ -100,6 +100,7 @@ public class GameProperties {
 			actorToRemove.remove();
 
 			GameSprite actorToAdd = new GameSprite(actor.getType(), actor.getCurrentX(), actor.getCurrentY(), actor.getFramesPath(), false);
+			actorToAdd.setValidOrientations();
 			if(((GameSprite)actorToRemove).status == 1) {
 				actorToAdd.status = 1;
 				actorToAdd.setColor(Color.YELLOW);
