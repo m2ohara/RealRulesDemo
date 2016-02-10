@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import com.realrules.game.act.IOnAct;
+import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
@@ -15,14 +16,14 @@ public class Behaviour implements ISpriteBehaviour {
 
 	//Members
 	private boolean isActive = true;
-	private int influenceAmount;
+//	private int influenceAmount;
 	private TouchAction onTouch;
 	public IOnAct actType;
 	private SpriteOrientation changeOrientation;
 	
 	public Behaviour(boolean isActive, IOnAct onAct, TouchAction touchAction, IBehaviourProperties properties, SpriteOrientation changeOrientation) {
 
-		this.influenceAmount = properties.getInfluenceAmount();
+//		this.influenceAmount = properties.getInfluenceAmount();
 		
 		this.isActive = isActive;
 		this.actType = onAct;
@@ -39,8 +40,9 @@ public class Behaviour implements ISpriteBehaviour {
 		if(isActive) {
 //			onTouch.onAction();
 		}
-		if(changeOrientation.cyclicChange()) {
+		if(GameProperties.get().isTapAllowed(this.hashCode()) && changeOrientation.cyclicChange()) {
 			actType.changeSpriteOrientation();
+			GameProperties.get().updateTapCount(this.hashCode());
 		}
 		
 	}
@@ -55,10 +57,10 @@ public class Behaviour implements ISpriteBehaviour {
 		
 	}
 
-	@Override
-	public int getInfluenceAmount() {
-		return influenceAmount;
-	}
+//	@Override
+//	public int getInfluenceAmount() {
+//		return influenceAmount;
+//	}
 	
 	//Orientation logic
 	@Override

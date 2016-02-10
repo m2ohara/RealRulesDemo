@@ -11,6 +11,7 @@ import com.realrules.game.main.SwipeInteractSprite;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.state.GameScoreState;
+import com.realrules.game.state.PlayerState;
 
 public class SwipeInteraction {
 	//Interacting
@@ -47,7 +48,7 @@ public class SwipeInteraction {
 					System.out.println("First follower hit facing "+hitActor.getOrientation());
 				}
 				//If next
-				else if(interactor != null && !isFirst && !invalidInteraction && interactor.behaviour.getInfluenceAmount() > hitCount && hitActor.status == 0) {
+				else if(interactor != null && !isFirst && !invalidInteraction && PlayerState.get().getInfluenceLimit() > hitCount && hitActor.status == 0) {
 					this.orientation = lastHitActor.getOrientation();
 					if(validInteraction(hitActor)) {
 						lastHitActor.isActive = false;

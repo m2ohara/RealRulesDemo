@@ -84,5 +84,14 @@ public class PlayerState {
 		return this.playerStateEntity.getLevelUpThreshold();
 	}
 	
+	//TODO: Implement player state entity
+	public int getInfluenceLimit() {
+		return 2;
+	}
+	
+	public int getTapLimit() {
+		return 1;
+	}
+	
 
 }

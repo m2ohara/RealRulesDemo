@@ -99,6 +99,7 @@ public class SwipeInteractSprite extends Image{
 			else {
 				setInteractor();
 				setInteracteeToSelected();
+				GameProperties.get().resetTapCount();
 			}
 		}
 		

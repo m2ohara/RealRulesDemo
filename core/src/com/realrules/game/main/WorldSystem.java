@@ -92,7 +92,7 @@ public class WorldSystem {
 	
 	private void setYHudCoord() {
 		//Start from centre
-		float centreY = (Gdx.graphics.getHeight() / 2); 
+		float centreY = (Gdx.graphics.getHeight() / 2) - 50; 
 		float ySpan = headSpriteH*5;
 		float startY = centreY + (ySpan/2);
 		float spanLengthY = startY - 370;

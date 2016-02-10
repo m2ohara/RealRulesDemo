@@ -32,32 +32,32 @@ public class ScoreState {
 		}
 	}
 	
-	private void setFollowerRewards() {
-		int rewardPoints = GameProperties.get().getRewardScore();
-		int points = plState.getReputationPoints();
-		if(points >= rewardPoints) {
-			generateRewardFollowers(points / rewardPoints);
-			plState.setReputationPoints(points % rewardPoints);
-		}
-	}
+//	private void setFollowerRewards() {
+//		int rewardPoints = GameProperties.get().getRewardScore();
+//		int points = plState.getReputationPoints();
+//		if(points >= rewardPoints) {
+//			generateRewardFollowers(points / rewardPoints);
+//			plState.setReputationPoints(points % rewardPoints);
+//		}
+//	}
 	
-	private void generateRewardFollowers(int amount) {	
-		
-		List<Follower> rewardedFollowers = new ArrayList<Follower>();
-		List<FollowerType> types = plState.getFollowerTypes();
-		
-		int count = amount > 3 ? 3 : amount;
-		
-		Random rand = new Random();
-		for(int i =0; i < count; i++) {
-			FollowerType type = types.get(rand.nextInt(types.size()));
-			rewardedFollowers.add(new Follower(type.head, 0, type.imagePath+"Default.pack"));
-		}
-		
-		plState.addFollowers(rewardedFollowers);
-		
-		setRewardFollowers(rewardedFollowers);
-	}
+//	private void generateRewardFollowers(int amount) {	
+//		
+//		List<Follower> rewardedFollowers = new ArrayList<Follower>();
+//		List<FollowerType> types = plState.getFollowerTypes();
+//		
+//		int count = amount > 3 ? 3 : amount;
+//		
+//		Random rand = new Random();
+//		for(int i =0; i < count; i++) {
+//			FollowerType type = types.get(rand.nextInt(types.size()));
+//			rewardedFollowers.add(new Follower(type.head, 0, type.imagePath+"Default.pack"));
+//		}
+//		
+//		plState.addFollowers(rewardedFollowers);
+//		
+//		setRewardFollowers(rewardedFollowers);
+//	}
 	
 	private void setRewardFollowers(List<Follower> rewardedFollowers) {
 		

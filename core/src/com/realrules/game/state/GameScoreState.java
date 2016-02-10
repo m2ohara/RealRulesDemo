@@ -8,7 +8,7 @@ public class GameScoreState {
 	public enum State {PLAYING, WIN, LOSE, DRAW, NOTPLAYING, FINISHED}
 	
 	static int totalPoints = 0;
-	private static int touchActionPoints = 4;
+	private static int touchActionPoints = 4;//TODO: Add to DB
 	private static int userPoints = touchActionPoints;
 	private IGameRules scoreSystem = null;
 	private State winState = null;

@@ -55,7 +55,7 @@ public class Game extends ApplicationAdapter {
 	GameGenerator gameGenerator = null;
 	int winAmount = 0;
 	State winState = null;
-	IInteractionType manualInteraction = null;
+	IInteractionType interactionType = null;
 	Label remainingVotesCounter = null;
 	Label endScoreCounter = null;
 	boolean isAssetsLoaded = false;
@@ -273,12 +273,12 @@ public class Game extends ApplicationAdapter {
 		if(vType == 0) {
 			voteType = "PASS";
 			winState = State.WIN;
-			manualInteraction = new SupporterInteractionType();
+			interactionType = new SupporterInteractionType();
 		}
 		else {
 			voteType = "DEFEAT";
 			winState = State.LOSE;
-			manualInteraction = new OpposerInteractionType();
+			interactionType = new OpposerInteractionType();
 		}
 		
 		int amount = WorldSystem.get().getSystemWidth() * WorldSystem.get().getSystemHeight();
@@ -297,7 +297,7 @@ public class Game extends ApplicationAdapter {
 		Label label2 = new Label("BY "+winAmount+" VOTES TO WIN", skin);
 		setToStage(label2, 0, -90);
 		
-		setGestureDetector(new GestureDetector(new GameGestures(stage, manualInteraction, vType)));
+		setGestureDetector(new GestureDetector(new GameGestures(stage, interactionType, vType)));
 	}
 	
 	private void setCrowdScreen() {
@@ -335,7 +335,7 @@ public class Game extends ApplicationAdapter {
 		}
 		
 		final Actor btn = getButton("PlayGameBtn");
-		setToStage(btn, 0, -260);
+		setToStage(btn, 0, -290);
 		
 		btn.addListener(new ClickListener() {
 			 public void clicked(InputEvent event, float x, float y) {
@@ -378,7 +378,7 @@ public class Game extends ApplicationAdapter {
 		
 		//Activate crowd members
 		for(GameSprite actor : GameProperties.get().getGameSprites()) {
-			actor.setBehaviour(manualInteraction);
+			actor.setBehaviour(interactionType);
 		}
 		
 		//Set remaining votes icon
@@ -473,11 +473,11 @@ public class Game extends ApplicationAdapter {
 	}
 	
 	private void setFollowerRewards() {
-		int rewardPoints = GameProperties.get().getRewardScore();
+		int levelUpPoints = plState.getLevelUpThreshold();
 		int points = plState.getReputationPoints();
-		if(points >= rewardPoints) {
-			generateRewardFollowers(points / rewardPoints);
-			plState.setReputationPoints(points % rewardPoints);
+		if(points >= levelUpPoints) {
+			generateRewardFollowers(points / levelUpPoints);
+			plState.setReputationPoints(points % levelUpPoints);
 		}
 	}
 	

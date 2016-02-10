@@ -16,21 +16,23 @@ import com.realrules.game.state.PlayerState;
 public class GameProperties {
 
 	private static GameProperties instance;
-	private List<Head> followerType = null;
-	private List<Integer> followerTypeAmount = null;
-	private int rewardScore = 3500;
+//	private List<Head> followerType = null;
+//	private List<Integer> followerTypeAmount = null;
+//	private int rewardScore = 3500; //TODO: Place in DB
 	private ArrayList<GameSprite> gameSprites = new ArrayList<GameSprite>();
 	public boolean isAutoInteractionAllowed = false;
 	public SwipeInteraction swipeInteraction = null;
+	private int tapLimit;
 
 	private GameProperties() {
-		followerType = Arrays.asList(Head.GOSSIPER, Head.INFLUENCER, Head.DECEIVER);//TODO: Set from DB
-		followerTypeAmount = Arrays.asList(1, 1, 1);
+//		followerType = Arrays.asList(Head.GOSSIPER, Head.INFLUENCER, Head.DECEIVER);//TODO: Set from DB
+//		followerTypeAmount = Arrays.asList(1, 1, 1);
+		tapLimit = PlayerState.get().getTapLimit();
 	}
 
-	private GameProperties(PlayerState plState) {
-
-	}
+//	private GameProperties(PlayerState plState) {
+//
+//	}
 
 	public static GameProperties get() {
 		if(instance == null) {
@@ -40,9 +42,9 @@ public class GameProperties {
 		return instance;
 	}
 
-	public void Load() {
-
-	}	
+//	public void Load() {
+//
+//	}	
 	
 	public void setSwipeInteraction(SwipeInteraction swipeInteraction) {
 		this.swipeInteraction = swipeInteraction;
@@ -53,13 +55,13 @@ public class GameProperties {
 	}
 
 	//TODO: Refactor into separate followers class
-	public List<Head> getFollowerType() {
-		return followerType;
-	}
-
-	public List<Integer> getfollowerTypeAmount() {
-		return followerTypeAmount;
-	}	
+//	public List<Head> getFollowerType() {
+//		return followerType;
+//	}
+//
+//	public List<Integer> getfollowerTypeAmount() {
+//		return followerTypeAmount;
+//	}	
 
 	private float universalTimeRatio = 0.7f;
 
@@ -142,8 +144,34 @@ public class GameProperties {
 		this.stage.addActor(actor);
 	}
 
-	public int getRewardScore() {
-		return rewardScore;
+//	public int getRewardScore() {
+//		return rewardScore;
+//	}
+	
+	private int tapCount = 0;
+	private ArrayList<Integer> tappedObjects = new ArrayList<Integer>();
+	public void updateTapCount(int tappedObj) {
+		if(!isAutoInteractionAllowed && tapCount < tapLimit) {
+			System.out.println("Updating tap count from "+tapCount+". Can interact "+isAutoInteractionAllowed);
+			tapCount++;
+			tappedObjects.add(tappedObj);
+		}
+	}
+	
+	public void resetTapCount() {
+		tapCount = 0;
+		tappedObjects.clear();
+	}
+	
+	public boolean isTapAllowed(int tappedObj) {
+		if(tapCount < tapLimit) {
+			return true;
+		}
+		else if(tappedObjects.contains(tappedObj)) {
+			return true;
+		}
+		
+		return false;
 	}
 
 	public void dispose() {
@@ -151,6 +179,7 @@ public class GameProperties {
 		actorGroup = new Group();
 		actorsToReplace = Arrays.asList();
 		gameSprites.clear();
+		isAutoInteractionAllowed = false;
 	}
 
 

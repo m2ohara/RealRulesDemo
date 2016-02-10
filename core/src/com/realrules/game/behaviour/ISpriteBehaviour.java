@@ -13,7 +13,7 @@ public interface ISpriteBehaviour {
 	//New act behaviour
 	void onAct(float delta, GameSprite actor, ArrayList<Orientation> invalidDirections);
 	
-	int getInfluenceAmount();
+//	int getInfluenceAmount();
 	
 	public Orientation getOrientation();
 	

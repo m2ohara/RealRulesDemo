@@ -5,7 +5,9 @@ public interface IBehaviourProperties {
 	
 	public float getRotateProbability();
 	public float getInteractProbability();
-	public int getInfluenceAmount();
+	
+	public int getInfluenceAmount(); //TODO: Remoe. Not in use
+	
 	//TODO: Refactor actingType into this class
 
 }
