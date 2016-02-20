@@ -29,15 +29,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.realrules.game.gestures.GameGestures;
 import com.realrules.game.interact.IInteractionType;
-import com.realrules.game.interact.OpposerInteractionType;
-import com.realrules.game.interact.SupporterInteractionType;
+import com.realrules.game.interact.IndividualInteractionType;
 import com.realrules.game.setup.GameGenerator;
 import com.realrules.game.state.Follower;
 import com.realrules.game.state.FollowerType;
-import com.realrules.game.state.PlayerState;
 import com.realrules.game.state.GameScoreState;
-import com.realrules.game.state.ScoreState;
 import com.realrules.game.state.GameScoreState.State;
+import com.realrules.game.state.PlayerState;
+import com.realrules.game.state.ScoreState;
 
 public class Game extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -236,9 +235,13 @@ public class Game extends ApplicationAdapter {
 	private void setSpeechScreen() {
 		
 		if(Assets.get().isLoaded()) {
-			setToStage(getImage("SpeechScreen", "screens//screensPack"), 0, 0);
-			Actor btn = getButton("CreateSpeechBtn");
-			setToStage(btn, 0, -260);
+//			setToStage(getImage("SpeechScreen", "screens//screensPack"), 0, 0);
+//			Actor btn = getButton("CreateSpeechBtn");
+//			setToStage(btn, 0, -260);
+			
+			setToStage(getImage("MechanicsScreen", "screens//screensPack"), 0, 0);
+			Actor btn = getButton("PlayGameBtn");
+			setToStage(btn, 0, 290);
 			
 			btn.addListener(new ClickListener() {
 				 public void clicked(InputEvent event, float x, float y) {
@@ -273,12 +276,12 @@ public class Game extends ApplicationAdapter {
 		if(vType == 0) {
 			voteType = "PASS";
 			winState = State.WIN;
-			interactionType = new SupporterInteractionType();
+			interactionType = new IndividualInteractionType();
 		}
 		else {
 			voteType = "DEFEAT";
 			winState = State.LOSE;
-			interactionType = new OpposerInteractionType();
+			interactionType = new IndividualInteractionType();
 		}
 		
 		int amount = WorldSystem.get().getSystemWidth() * WorldSystem.get().getSystemHeight();
@@ -302,7 +305,7 @@ public class Game extends ApplicationAdapter {
 	
 	private void setCrowdScreen() {
 		
-		Actor screen = getImage("GameScreen", "screens//screensPack");
+		Actor screen = getImage("ConceptScreen", "screens//screensPack");
 		screen.setTouchable(Touchable.disabled);
 		setToStage(screen, 0, 0);
 		

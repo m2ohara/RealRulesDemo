@@ -60,6 +60,16 @@ public class PlayerState {
 		return followerTypes;
 	}
 	
+	public FollowerType getFollowerTypeByHead(Head head) {
+		for(FollowerType type : followerTypes) {
+			if(type.head == head) {
+				return type;
+			}
+		}
+		
+		return null;
+	}
+	
 	public int getLevel() {
 		return this.playerStateEntity.getLevel();
 	}

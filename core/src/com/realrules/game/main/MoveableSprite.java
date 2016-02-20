@@ -194,7 +194,7 @@ public class MoveableSprite
 	}
 	
 	public String getFramesPath() {
-		return (String)PlayerState.get().getFollowerTypes().get(PlayerState.get().getFollowerTypes().indexOf(this.type)).imagePath;
+		return (String)PlayerState.get().getFollowerTypeByHead(this.type).imagePath;
 	}
 	
 	public Actor getTargetImage() {

@@ -20,6 +20,7 @@ public class Behaviour implements ISpriteBehaviour {
 	private TouchAction onTouch;
 	public IOnAct actType;
 	private SpriteOrientation changeOrientation;
+	private IBehaviourProperties properties;
 	
 	public Behaviour(boolean isActive, IOnAct onAct, TouchAction touchAction, IBehaviourProperties properties, SpriteOrientation changeOrientation) {
 
@@ -30,6 +31,7 @@ public class Behaviour implements ISpriteBehaviour {
 		this.onTouch = touchAction;
 		
 		this.changeOrientation = changeOrientation;
+		this.properties = properties;
 	}
 	
 
@@ -37,9 +39,9 @@ public class Behaviour implements ISpriteBehaviour {
 	@Override
 	public void onTouch() {
 		
-		if(isActive) {
-//			onTouch.onAction();
-		}
+//		if(isActive) {
+////			onTouch.onAction();
+//		}
 		if(GameProperties.get().isTapAllowed(this.hashCode()) && changeOrientation.cyclicChange()) {
 			actType.changeSpriteOrientation();
 			GameProperties.get().updateTapCount(this.hashCode());
@@ -56,11 +58,6 @@ public class Behaviour implements ISpriteBehaviour {
 		}
 		
 	}
-
-//	@Override
-//	public int getInfluenceAmount() {
-//		return influenceAmount;
-//	}
 	
 	//Orientation logic
 	@Override
@@ -79,5 +76,9 @@ public class Behaviour implements ISpriteBehaviour {
 	public void changeOrientation() {
 		changeOrientation.onCyclicChange();
 		actType.changeSpriteOrientation();	
+	}
+	
+	public int getInfluenceType() {
+		return properties.getInfluenceType();
 	}
 }
