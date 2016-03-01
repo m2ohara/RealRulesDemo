@@ -3,15 +3,15 @@ package com.realrules.game.interact;
 import java.util.Random;
 
 import com.realrules.game.main.GameSprite;
-import com.realrules.game.main.InteractSprite;
+import com.realrules.game.main.AutoInteractSprite;
 
-public class PromoterInteractBehaviour implements IInteraction {
+public class PromoterAutonomousBehaviour implements IInteraction {
 	
 	private float interactSuccess = 0.2f;
 	private Random rand = new Random();
 	private float interactionStateLength = 4f;
 	private int interactionStages = 3;
-	private InteractSprite interactSprite;
+	private AutoInteractSprite interactSprite;
 	private IInteractionType interactionType;
 	
 	@Override
@@ -23,7 +23,7 @@ public class PromoterInteractBehaviour implements IInteraction {
 			
 			interactor.isInteracting = true; //TODO: Replace with isInteracting
 			interactee.isActive = false;
-			interactSprite = new InteractSprite(interactionStateLength, interactionStages, interactor, interactionType);
+			interactSprite = new AutoInteractSprite(interactionStateLength, interactionStages, interactor, interactionType);
 			interactSprite.setAction();
 
 		}

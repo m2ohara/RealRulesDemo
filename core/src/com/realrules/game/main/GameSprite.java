@@ -1,9 +1,6 @@
 package com.realrules.game.main;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Observable;
-import java.util.Observer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -17,20 +14,20 @@ import com.realrules.game.behaviour.Behaviour;
 import com.realrules.game.behaviour.DeceiverProperties;
 import com.realrules.game.behaviour.GossiperProperties;
 import com.realrules.game.behaviour.IBehaviourProperties;
-import com.realrules.game.behaviour.ISpriteBehaviour;
 import com.realrules.game.behaviour.PromoterProperties;
 import com.realrules.game.interact.AutonomousInteraction;
-import com.realrules.game.interact.DeceiverInteraction;
-import com.realrules.game.interact.GossiperInteraction;
+import com.realrules.game.interact.DeceiverAutonomousBehaviour;
+import com.realrules.game.interact.GenericInteraction;
+import com.realrules.game.interact.GossiperAutonomousBehaviour;
 import com.realrules.game.interact.IInteractionType;
-import com.realrules.game.interact.PromoterInteraction;
+import com.realrules.game.interact.PromoterAutonomousBehaviour;
 import com.realrules.game.main.Game.Head;
 import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.state.GameScoreState;
 import com.realrules.game.touch.DeceiverTouchAction;
 import com.realrules.game.touch.GossiperTouchAction;
-import com.realrules.game.touch.SpriteOrientation;
 import com.realrules.game.touch.PromoterTouchAction;
+import com.realrules.game.touch.SpriteOrientation;
 
 public class GameSprite  extends Image {
 	
@@ -42,6 +39,8 @@ public class GameSprite  extends Image {
 	public boolean isActive = true;
 	public int status = 0; //0 : neutral, 1 : for 2 : against
 	public boolean isIntermediateInteractor = false;
+	public boolean isFirstInteractor = false;
+	public int actualStatus = 0;
 	
 	private ArrayList<Orientation> validDirections;
 	private SpriteOrientation changeOrientation;
@@ -109,7 +108,7 @@ public class GameSprite  extends Image {
 					new GossiperTouchAction(manInteraction, getXGameCoord(), getYGameCoord()), 
 					properties,
 					changeOrientation);
-			interaction = new GossiperInteraction();
+			interaction = new GenericInteraction(new GossiperAutonomousBehaviour());
 
 		}
 		if(type == type.DECEIVER) {
@@ -122,7 +121,7 @@ public class GameSprite  extends Image {
 					new DeceiverTouchAction(manInteraction, getXGameCoord(), getYGameCoord()),
 					properties,
 					changeOrientation);
-			interaction = new DeceiverInteraction();
+			interaction = new GenericInteraction(new DeceiverAutonomousBehaviour());
 		}
 		if(type == type.INFLUENCER) {
 			IBehaviourProperties properties = new PromoterProperties();
@@ -134,7 +133,7 @@ public class GameSprite  extends Image {
 					new PromoterTouchAction(manInteraction, getXGameCoord(), getYGameCoord()),
 					properties,
 					changeOrientation);
-			interaction = new PromoterInteraction();
+			interaction = new GenericInteraction(new PromoterAutonomousBehaviour());
 		}
 		
 		//Refactor into Behaviour

@@ -4,10 +4,12 @@ import com.realrules.game.main.GameSprite;
 
 public interface IInteractionType {
 	
-	void setInteractorStatus(GameSprite interactor);
+	void setStatus();
 	
-	void setInfluencedSprite(GameSprite interactee);
+	void setInfluencedSprite();
 	
 	void complete();
+	
+	void setInteracts(GameSprite interactor, GameSprite interactee);
 
 }

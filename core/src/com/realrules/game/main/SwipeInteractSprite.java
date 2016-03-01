@@ -30,28 +30,27 @@ public class SwipeInteractSprite extends Image{
 	public SwipeInteractSprite(float interactionStateLength, int interactionStages, GameSprite interactor, GameSprite interactee, IInteractionType interactionType) {
 		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
 		
-		this.interactionType = interactionType;
-		
 		//Set interaction length based on level - faster for higher difficulty
 		this.interactionStateLength = (float)(interactionStateLength - (PlayerState.get().getLevel()/2));
 		if(this.interactionStateLength < 1) { this.interactionStateLength = 1; }
 		
 		//Scale sprite based on level - smaller for higher difficulty
-		finalScale = WorldSystem.get().getLevelScaleFactor();
-		
+		finalScale = WorldSystem.get().getLevelScaleFactor();		
 		this.interactionScaleFactor = finalScale/(float)(interactionStages);
 		this.currentScaleFactor = interactionScaleFactor;
 		
-		setSprite(interactor.getStartingX()+35, interactor.getStartingY()+35);	
+		setSprite(interactor.getStartingX()+interactor.getWidth()/2, interactor.getStartingY()+interactor.getHeight()/2);	
 		this.setDrawable(new TextureRegionDrawable(new TextureRegion(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0))));
 		
 		this.interactor = interactor;
 		this.interactee = interactee;
 		
+		this.interactionType = interactionType;
+		this.interactionType.setInteracts(interactor, interactee);
+		
 		//If first interaction
-		if(interactor.status == 1) {
-			interactionType.setInfluencedSprite(interactor);
-			interactor.setColor(Color.WHITE);
+		if(interactor.isFirstInteractor) {
+			startFirstInteraction();
 		}
 	}
 	
@@ -65,7 +64,7 @@ public class SwipeInteractSprite extends Image{
 	}
 	
 	public void startInteraction() {
-//		System.out.println("Starting interaction");
+		System.out.println("Starting interaction");
 		interactor.isActive = true;
 		GameProperties.get().isAutoInteractionAllowed = true;
 	}
@@ -82,7 +81,7 @@ public class SwipeInteractSprite extends Image{
 		super.act(delta);
 		
 		//Start interaction
-		if(interactor.isActive == true && interactor.status == 1 && scaleAction == null) {
+		if(interactor.isActive == true && scaleAction == null) {
 			setAction();
 		}
 		
@@ -90,41 +89,65 @@ public class SwipeInteractSprite extends Image{
 		if(interactor.isActive == true && this.scaleAction != null && this.getActions().size == 0 && currentScaleFactor >= finalScale) {
 			scaleAction.finish();
 			this.remove();
+			
+			if(interactor.isFirstInteractor) {
+				completeFirstInteraction();
+			}
 			//If intermediate interaction
-			if(interactee.isIntermediateInteractor) {
-				setInteractor();
-				setNextInteractSprite();
+			else if(interactee.isIntermediateInteractor ) {
+				completeIntermediateInteraction();
 			}
 			//Last interaction
-			else {
-				setInteractor();
-				setInteracteeToSelected();
-				GameProperties.get().resetTapCount();
+			else{
+				completeLastInteraction();
 			}
 		}
 		
 		//Interaction action finished
-		else if(interactor.status == 1 && this.scaleAction != null && this.getActions().size == 0 && currentScaleFactor < finalScale) {
+		else if(interactor.isActive == true && this.scaleAction != null && this.getActions().size == 0 && currentScaleFactor < finalScale) {
 			currentScaleFactor += interactionScaleFactor;
 			scaleAction = Actions.scaleTo(currentScaleFactor, currentScaleFactor, interactionStateLength);
 			this.addAction(scaleAction);
 		}
 	}
 	
+	private void startFirstInteraction() {
+		interactionType.setStatus();
+		interactor.setColor(Color.WHITE);
+	}
+	
+	private void completeFirstInteraction() {
+		interactionType.setInfluencedSprite();
+		setInteractor();
+		setInteractee();
+	}
+	
+	private void completeIntermediateInteraction() {
+		interactionType.setStatus();
+		interactionType.setInfluencedSprite();
+		setInteractor();
+		setInteractee();
+	}
+	
+	private void completeLastInteraction() {
+		interactionType.setStatus();
+		interactionType.setInfluencedSprite();
+		setInteractor();
+		setSelectedInteractee();
+		GameProperties.get().resetTapCount();
+	}
+	
 	private void setInteractor() {
-		interactionType.setInteractorStatus(interactor);
 		interactor.behaviour.changeOrientation();
 		interactor.isIntermediateInteractor = false;
 	}
 	
-	private void setNextInteractSprite() {
+	private void setInteractee() {
 		interactee.isActive = true;
-		interactee.status = 1;
-		interactionType.setInfluencedSprite(interactee);
 	}
 	
 	
-	private void setInteracteeToSelected() {
+	private void setSelectedInteractee() {
 		if(GameScoreState.validTouchAction()) {
 			interactee.setColor(Color.ORANGE);
 		}
@@ -136,7 +159,6 @@ public class SwipeInteractSprite extends Image{
 		if(interactee.isOrientationSet()) {
 			GameProperties.get().isAutoInteractionAllowed = false;
 		}		
-		interactee.status = 1;
 		interactee.isActive = true;
 	}
 

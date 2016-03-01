@@ -3,18 +3,17 @@ package com.realrules.game.interact;
 import java.util.Random;
 
 import com.realrules.game.main.GameSprite;
-import com.realrules.game.main.InteractSprite;
+import com.realrules.game.main.AutoInteractSprite;
 
-public class GossiperInteractBehaviour implements IInteraction {
+public class DeceiverAutonomousBehaviour implements IInteraction {
 	
 	private float interactSuccess = 0.2f;
-	private float promoteOpposeProb = 0.5f;
 	private Random rand = new Random();
-	private float interactionStateLength = 3f;
+	private float interactionStateLength = 4f;
 	private int interactionStages = 3;
-	private InteractSprite interactSprite;
+	private AutoInteractSprite interactSprite;
 	private IInteractionType interactionType;
-	
+
 	@Override
 	public void interact(GameSprite interactor, GameSprite interactee) {
 		
@@ -22,9 +21,9 @@ public class GossiperInteractBehaviour implements IInteraction {
 		if(!interactor.isIntermediateInteractor && !interactor.isInteracting && interactee.status == 0 && interactee.isActive && rand.nextFloat() > interactSuccess) {
 			setInteractionResult(interactor, interactee);
 			
-			interactor.isInteracting = true; //TODO: Replace with isInteracting
+			interactor.isInteracting = true;
 			interactee.isActive = false;
-			interactSprite = new InteractSprite(interactionStateLength, interactionStages, interactor, interactionType);
+			interactSprite = new AutoInteractSprite(interactionStateLength, interactionStages, interactor, interactionType);
 			interactSprite.setAction();
 
 		}
@@ -35,13 +34,7 @@ public class GossiperInteractBehaviour implements IInteraction {
 		
 		if(interactee.status == 0 && interactee.isActive == true) {
 			//Oppose
-			if(rand.nextFloat() > promoteOpposeProb) {
-				interactionType = new OpposerInteractionType(interactor, interactee);
-			}
-			//Promote
-			else {
-				interactionType = new SupporterInteractionType(interactor, interactee);
-			}
+			interactionType = new OpposerInteractionType(interactor, interactee);
 		}
 	}
 	

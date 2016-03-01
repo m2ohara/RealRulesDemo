@@ -305,7 +305,7 @@ public class Game extends ApplicationAdapter {
 	
 	private void setCrowdScreen() {
 		
-		Actor screen = getImage("ConceptScreen", "screens//screensPack");
+		Actor screen = getImage("GameScreen", "screens//screensPack");
 		screen.setTouchable(Touchable.disabled);
 		setToStage(screen, 0, 0);
 		

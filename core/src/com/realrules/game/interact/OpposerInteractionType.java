@@ -12,7 +12,14 @@ public class OpposerInteractionType implements IInteractionType {
 	private GameSprite interactor;
 	private GameSprite interactee;
 	
-	public OpposerInteractionType() {}; //TODO: Remove
+	public OpposerInteractionType() {};
+	
+	@Override
+	public void setInteracts(GameSprite interactor, GameSprite interactee) {
+		this.interactor = interactor;
+		this.interactee = interactee;
+		
+	}
 	
 	public OpposerInteractionType(GameSprite interactor, GameSprite interactee) {
 		this.interactor = interactor;
@@ -20,9 +27,9 @@ public class OpposerInteractionType implements IInteractionType {
 	}
 	
 	//Swipe interaction
-	public void setInteractorStatus(GameSprite interactor) {
+	public void setStatus() {
 		interactor.status = 3;		
-		System.out.println("Setting middle opposer");
+		System.out.println("Setting intermediate opposer");
 	}
 	
 	//On autonomous interaction complete
@@ -31,11 +38,11 @@ public class OpposerInteractionType implements IInteractionType {
 		interactor.isOrientationSet();
 		interactor.isInteracting = false;
 		interactee.isActive = true;
-		setInfluencedSprite(interactee);
+		setInfluencedSprite();
 		System.out.println("opposer interaction complete");
 	}
 	
-	public void setInfluencedSprite(GameSprite interactee) {
+	public void setInfluencedSprite() {
 		
 		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(1));
 

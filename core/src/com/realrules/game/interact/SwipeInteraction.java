@@ -79,6 +79,23 @@ public class SwipeInteraction {
 			}
 		}
 	}
+	
+	private void interact(GameSprite interactor, GameSprite interactee) {
+
+		//Influence if interactee is neutral and interactor isn't already interacting
+		if(interactee.status == 0) {
+			if(firstInteraction == null) {
+				System.out.println("Assigning first interaction");
+				interactor.isFirstInteractor = true;
+				firstInteraction = new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, new IndividualInteractionType());
+			}
+			else {
+				System.out.println("Assigning next interaction");
+				new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, new IndividualInteractionType());
+			}
+
+		}
+	}
 
 	public void reset() {
 		if(firstInteraction != null) {firstInteraction.startInteraction();}
@@ -154,22 +171,6 @@ public class SwipeInteraction {
 	
 	private void removeConnectors() {
 		GameProperties.get().getStage().getActors().removeAll(connectors, false);
-	}
-	
-	public void interact(GameSprite interactor, GameSprite interactee) {
-
-		//Influence if interactee is neutral and interactor isn't already interacting
-		if(interactee.status == 0) {
-			if(firstInteraction == null) {
-				System.out.println("Assigning first interaction");
-				firstInteraction = new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, interactionType);
-			}
-			else {
-				System.out.println("Assigning next interaction");
-				new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, interactionType);
-			}
-
-		}
 	}
 
 }
