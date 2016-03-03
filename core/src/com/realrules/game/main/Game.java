@@ -301,6 +301,7 @@ public class Game extends ApplicationAdapter {
 		setToStage(label2, 0, -90);
 		
 		setGestureDetector(new GestureDetector(new GameGestures(stage, interactionType, vType)));
+		GameProperties.get().swipeSprite = new SwipeSprite(interactionType, vType);
 	}
 	
 	private void setCrowdScreen() {
@@ -388,6 +389,8 @@ public class Game extends ApplicationAdapter {
 		setVoteCount();
 		
 		setReputationCount();
+		
+//		GameProperties.get().swipeSprite.activate();
 		
 	}
 	

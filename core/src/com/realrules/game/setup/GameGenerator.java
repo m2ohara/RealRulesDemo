@@ -49,6 +49,7 @@ public class GameGenerator {
 					current.status = 1;
 					current.setName("startingGameSprite");
 					current.setColor(Color.YELLOW);
+					GameProperties.get().swipeSprite.setStartSprite(current);
 				}
 				GameProperties.get().addToActorGroup(current);
 				

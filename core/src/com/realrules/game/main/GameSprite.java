@@ -40,7 +40,7 @@ public class GameSprite  extends Image {
 	public int status = 0; //0 : neutral, 1 : for 2 : against
 	public boolean isIntermediateInteractor = false;
 	public boolean isFirstInteractor = false;
-	public int actualStatus = 0;
+	public int scoreStatus = 0;
 	
 	private ArrayList<Orientation> validDirections;
 	private SpriteOrientation changeOrientation;

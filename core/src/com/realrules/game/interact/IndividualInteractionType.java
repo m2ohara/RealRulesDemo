@@ -31,22 +31,22 @@ public class IndividualInteractionType implements IInteractionType {
 		//If first
 		if(interactor.isFirstInteractor) {
 			//If first interactor of game
-			if(interactor.actualStatus == 0) {
+			if(interactor.scoreStatus == 0) {
 				interactor.status = (interactor.behaviour.getInfluenceType()-2);
 				setFirstInfluencedSprite();
 			}
 			//If first interactor of following swipes
 			else {
-				interactor.status = interactor.actualStatus;
+				interactor.status = interactor.scoreStatus;
 				interactee.status = interactor.behaviour.getInfluenceType();
 			}
 			System.out.println("Setting first interactor status: "+interactor.status);
 		}
 		//If last
 		else if(!interactee.isIntermediateInteractor){
-			interactee.actualStatus = interactor.behaviour.getInfluenceType();
+			interactee.scoreStatus = interactor.behaviour.getInfluenceType();
 			interactee.status = 1;
-			System.out.println("Setting last interactee status: "+interactee.actualStatus);
+			System.out.println("Setting last interactee status: "+interactee.scoreStatus);
 		}
 		else {
 			//Set interactee to interactor's influence type
@@ -97,8 +97,8 @@ public class IndividualInteractionType implements IInteractionType {
 	}
 	
 	private void setLastInfluencedSprite() {
-		System.out.println("Setting last interactee handsign: "+interactee.actualStatus);
-		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(interactee.actualStatus-2));
+		System.out.println("Setting last interactee handsign: "+interactee.scoreStatus);
+		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(interactee.scoreStatus-2));
 
 		handSign.setOrigin(handSign.getWidth()/2, handSign.getHeight()/2);
 		handSign.setPosition(interactee.getStartingX(), interactee.getStartingY());

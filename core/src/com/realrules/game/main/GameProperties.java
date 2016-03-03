@@ -16,23 +16,16 @@ import com.realrules.game.state.PlayerState;
 public class GameProperties {
 
 	private static GameProperties instance;
-//	private List<Head> followerType = null;
-//	private List<Integer> followerTypeAmount = null;
-//	private int rewardScore = 3500; //TODO: Place in DB
+
 	private ArrayList<GameSprite> gameSprites = new ArrayList<GameSprite>();
 	public boolean isAutoInteractionAllowed = false;
 	public SwipeInteraction swipeInteraction = null;
+	public SwipeSprite swipeSprite = null;
 	private int tapLimit;
 
 	private GameProperties() {
-//		followerType = Arrays.asList(Head.GOSSIPER, Head.INFLUENCER, Head.DECEIVER);//TODO: Set from DB
-//		followerTypeAmount = Arrays.asList(1, 1, 1);
 		tapLimit = PlayerState.get().getTapLimit();
 	}
-
-//	private GameProperties(PlayerState plState) {
-//
-//	}
 
 	public static GameProperties get() {
 		if(instance == null) {
@@ -41,10 +34,6 @@ public class GameProperties {
 
 		return instance;
 	}
-
-//	public void Load() {
-//
-//	}	
 	
 	public void setSwipeInteraction(SwipeInteraction swipeInteraction) {
 		this.swipeInteraction = swipeInteraction;
@@ -53,15 +42,6 @@ public class GameProperties {
 	public SwipeInteraction getSwipeInteraction() {
 		return this.swipeInteraction;
 	}
-
-	//TODO: Refactor into separate followers class
-//	public List<Head> getFollowerType() {
-//		return followerType;
-//	}
-//
-//	public List<Integer> getfollowerTypeAmount() {
-//		return followerTypeAmount;
-//	}	
 
 	private float universalTimeRatio = 0.7f;
 
@@ -143,10 +123,6 @@ public class GameProperties {
 	public void addActorToStage(Actor actor) {
 		this.stage.addActor(actor);
 	}
-
-//	public int getRewardScore() {
-//		return rewardScore;
-//	}
 	
 	private int tapCount = 0;
 	private ArrayList<Integer> tappedObjects = new ArrayList<Integer>();
