@@ -45,7 +45,7 @@ public class SwipeSprite {
 		sourceSprite.setPosition(x+sourceSprite.getWidth()/2, y+sourceSprite.getWidth()/2);
 		sourceSprite.setScale(WorldSystem.get().getLevelScaleFactor());
 		
-//		System.out.println("Setting source sprite coords "+sourceSprite.getX()+", "+sourceSprite.getY());
+		System.out.println("Setting source sprite coords "+sourceSprite.getX()+", "+sourceSprite.getY());
 		
 		GameProperties.get().getStage().addActor(sourceSprite);
 	}
@@ -114,10 +114,11 @@ public class SwipeSprite {
 		sourceSprite.remove();
 		dragSprite.remove();
 		
-		setSourceSprite(lastActor.getX(), lastActor.getY());
-		
 		startSprite = (GameSprite)lastActor;
 		interaction.reset();
+		
+		activate();
+	
 	}
 
 }

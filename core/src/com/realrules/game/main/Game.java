@@ -27,6 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.realrules.game.gestures.DefaultGestures;
 import com.realrules.game.gestures.GameGestures;
 import com.realrules.game.interact.IInteractionType;
 import com.realrules.game.interact.IndividualInteractionType;
@@ -300,7 +301,8 @@ public class Game extends ApplicationAdapter {
 		Label label2 = new Label("BY "+winAmount+" VOTES TO WIN", skin);
 		setToStage(label2, 0, -90);
 		
-		setGestureDetector(new GestureDetector(new GameGestures(stage, interactionType, vType)));
+//		setGestureDetector(new GestureDetector(new GameGestures(stage, interactionType, vType)));
+		setGestureDetector(new GestureDetector(new DefaultGestures()));
 		GameProperties.get().swipeSprite = new SwipeSprite(interactionType, vType);
 	}
 	
@@ -390,7 +392,7 @@ public class Game extends ApplicationAdapter {
 		
 		setReputationCount();
 		
-//		GameProperties.get().swipeSprite.activate();
+		GameProperties.get().swipeSprite.activate();
 		
 	}
 	

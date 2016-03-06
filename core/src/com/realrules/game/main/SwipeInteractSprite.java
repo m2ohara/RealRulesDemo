@@ -28,7 +28,7 @@ public class SwipeInteractSprite extends Image{
 	private IInteractionType interactionType;
 
 	public SwipeInteractSprite(float interactionStateLength, int interactionStages, GameSprite interactor, GameSprite interactee, IInteractionType interactionType) {
-		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
+		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(1));
 		
 		//Set interaction length based on level - faster for higher difficulty
 		this.interactionStateLength = (float)(interactionStateLength - (PlayerState.get().getLevel()/2));
@@ -40,7 +40,7 @@ public class SwipeInteractSprite extends Image{
 		this.currentScaleFactor = interactionScaleFactor;
 		
 		setSprite(interactor.getStartingX()+interactor.getWidth()/2, interactor.getStartingY()+interactor.getHeight()/2);	
-		this.setDrawable(new TextureRegionDrawable(new TextureRegion(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0))));
+		this.setDrawable(new TextureRegionDrawable(new TextureRegion(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(1))));
 		
 		this.interactor = interactor;
 		this.interactee = interactee;

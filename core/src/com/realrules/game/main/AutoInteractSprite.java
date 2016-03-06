@@ -24,7 +24,7 @@ public class AutoInteractSprite extends Image {
 	private IInteractionType interactionType;
 	
 	public AutoInteractSprite(float interactionStateLength, int interactionStages, GameSprite interactor, IInteractionType interactionType) {
-		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0));
+		super(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(1));
 		
 		this.interactionType = interactionType;
 		//Set interaction length based on level - faster for higher difficulty
@@ -39,7 +39,7 @@ public class AutoInteractSprite extends Image {
 		
 		
 		setSprite(interactor.getStartingX()+35, interactor.getStartingY()+35);		
-		this.setDrawable(new TextureRegionDrawable(new TextureRegion(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(0))));
+		this.setDrawable(new TextureRegionDrawable(new TextureRegion(new TextureAtlas(Gdx.files.internal(framesPath)).getRegions().get(1))));
 	}
 	
 	private void setSprite(float xCoord, float yCoord) {
