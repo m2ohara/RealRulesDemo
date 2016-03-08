@@ -25,7 +25,7 @@ public class SwipeInteraction {
 	private int interactionStages = 3;
 	//TODO: Clean up orientation logic
 	SwipeInteractSprite firstInteraction = null;
-	private Orientation orientation = null;
+//	private Orientation orientation = null;
 	private Array<Actor> connectors = new Array<Actor>();
 
 	public SwipeInteraction(IInteractionType interactionType, int connectorSprite) {
@@ -33,7 +33,7 @@ public class SwipeInteraction {
 		this.connectorSprite = connectorSprite == 0 ? 1  : 0;
 	}
 
-	public void interactHit(GameSprite hitActor, boolean isFirst) {
+	public boolean interactHit(GameSprite hitActor, boolean isFirst) {
 		
 		//If new actor is hit
 		if((lastHitActor == null || !hitActor.equals(lastHitActor))) {
@@ -48,9 +48,9 @@ public class SwipeInteraction {
 					System.out.println("First follower hit facing "+hitActor.getOrientation());
 				}
 				//If next
-				else if(interactor != null && !isFirst && !invalidInteraction && PlayerState.get().getInfluenceLimit() > hitCount && hitActor.status == 0) {
-					this.orientation = lastHitActor.getOrientation();
-					if(validInteraction(hitActor)) {
+				else if(interactor != null && !isFirst && !invalidInteraction && PlayerState.get().getInfluenceLimit() > hitCount && hitActor.status == 0 && isValidInteraction(hitActor)) {
+//					this.orientation = lastHitActor.getOrientation();
+//					if(isValidInteraction(hitActor)) {
 						lastHitActor.isActive = false;
 						hitActor.isActive = false;
 						//Set previous hit actor to passive follower
@@ -60,24 +60,29 @@ public class SwipeInteraction {
 						setConnectorSprite(lastHitActor);
 						hitCount += 1;
 						GameScoreState.addUserPoints(1);
-					}
-					else {
-						invalidInteraction = true;
-						hitActor.isActive = true;
-					}
+//					}
+//					else {
+//						invalidInteraction = true;
+//						hitActor.isActive = true;
+//					}
 				}	
 				else {
-					invalidInteraction = true;
+//					invalidInteraction = true;
 					hitActor.isActive = true;
+					return false;
 				}
 
-				if(invalidInteraction)
-					hitActor.isActive = true;
-
-				lastHitActor = hitActor;
+//				if(invalidInteraction)
+//					hitActor.isActive = true;
 				
+//				lastHitActor = hitActor;
+				
+				lastHitActor = hitActor;
+				return true;
 			}
 		}
+		
+		return false;
 	}
 	
 	private void interact(GameSprite interactor, GameSprite interactee) {
@@ -106,20 +111,20 @@ public class SwipeInteraction {
 		removeConnectors();
 	}
 
-	private boolean validInteraction(GameSprite hitActor) {
+	public boolean isValidInteraction(GameSprite hitActor) {
 
 		boolean isValid = false;
 
-		if(hitActor.status == 0) {
+		if(lastHitActor != null && hitActor.status == 0) {
 
-			if(orientation == Orientation.E) {
+			if(lastHitActor.getOrientation() == Orientation.E) {
 				if(WorldSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (WorldSystem.get().getGameXCoords().indexOf(hitActor.startingX)-1) 
 						&& WorldSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  WorldSystem.get().getGameYCoords().indexOf(hitActor.startingY)) {
 					isValid = true;
 //					System.out.println("Follower hit to the right. Last Hit x : "+WorldSystem.get().getGameXCoords().indexOf(lastHitActor.startingX)+", Hit X "+WorldSystem.get().getGameXCoords().indexOf(hitActor.startingX));
 				}
 			}
-			else if(orientation == Orientation.N) {
+			else if(lastHitActor.getOrientation() == Orientation.N) {
 				if(WorldSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == WorldSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
 						&& WorldSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (WorldSystem.get().getGameYCoords().indexOf(hitActor.startingY)+1)) {
 					isValid = true;
@@ -127,14 +132,14 @@ public class SwipeInteraction {
 				}
 
 			}
-			else if(orientation == Orientation.S) {
+			else if(lastHitActor.getOrientation() == Orientation.S) {
 				if(WorldSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == WorldSystem.get().getGameXCoords().indexOf(hitActor.startingX) 
 						&& WorldSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  (WorldSystem.get().getGameYCoords().indexOf(hitActor.startingY)-1)) {
 					isValid = true;
 //					System.out.println("Follower hit below");
 				}
 			}
-			else if(orientation == Orientation.W) {
+			else if(lastHitActor.getOrientation() == Orientation.W) {
 				if(WorldSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (WorldSystem.get().getGameXCoords().indexOf(hitActor.startingX)+1) 
 						&& WorldSystem.get().getGameYCoords().indexOf(lastHitActor.startingY) ==  WorldSystem.get().getGameYCoords().indexOf(hitActor.startingY)) {
 					isValid = true;
@@ -155,13 +160,13 @@ public class SwipeInteraction {
 		connector.setOrigin(connector.getWidth()/2, connector.getHeight()/2);
 		connector.setPosition(lastHitActor.getStartingX() - 20, lastHitActor.getStartingY() -22);
 
-		if(this.orientation == Orientation.E) {
+		if(lastHitActor.getOrientation() == Orientation.E) {
 			connector.rotateBy(270);
 		}
-		else if(this.orientation == Orientation.S) {
+		else if(lastHitActor.getOrientation() == Orientation.S) {
 			connector.rotateBy(180);
 		}
-		else if(this.orientation == Orientation.W) {
+		else if(lastHitActor.getOrientation() == Orientation.W) {
 			connector.rotateBy(90);
 		}
 

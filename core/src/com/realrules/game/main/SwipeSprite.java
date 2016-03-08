@@ -19,6 +19,7 @@ public class SwipeSprite {
 	private DragAndDrop dragAndDrop;
 	private Actor sourceSprite;
 	private Actor dragSprite;
+	private Actor lastValidTarget;
 	private TextureRegion sourceTexture = new TextureAtlas(Gdx.files.internal("sprites//Meep//Effects//Effects.pack")).getRegions().get(0);
 	
 	private static SwipeInteraction interaction = null;
@@ -70,8 +71,9 @@ public class SwipeSprite {
 				Payload payload = new Payload();
 				payload.setObject(dragSprite);
 				payload.setDragActor(dragSprite);
-				System.out.println("Starting drag");
 				interaction.interactHit(startSprite, true);
+				sourceSprite.setVisible(false);
+				System.out.println("Starting drag");
 
 				return payload;
 			}
@@ -81,22 +83,31 @@ public class SwipeSprite {
 	private void addDropTarget(final Actor target) {
 		dragAndDrop.addTarget(new Target(target) {
 			boolean isHit = false;
+			boolean isValid = true;
 			public boolean drag (Source source, Payload payload, float x, float y, int pointer) {	
 
 				//On hit
 				if(!isHit) {
-					System.out.println("Hit actor ");
-					interaction.interactHit((GameSprite)target, false);
-					//TODO: If invalid hit
-						//Drop
 					isHit = true;
+					if(interaction.interactHit((GameSprite)target, false)) {
+						System.out.println("Valid interaction at " + x + ", " + y);
+						isValid = true;
+						lastValidTarget = target;
+					}
+					else if(lastValidTarget != null) {
+						System.out.println("Invalid interaction at " + x + ", " + y);
+						sourceSprite.setVisible(true);
+						isValid = false;
+					}
 				}
 				
-				return true;
+				return isValid;
 			}
 
 			public void reset (Source source, Payload payload) {
-
+				if(!isValid) {
+					onComplete(lastValidTarget);
+				}
 			}
 
 			public void drop (Source source, Payload payload, float x, float y, int pointer) {
@@ -110,9 +121,13 @@ public class SwipeSprite {
 	}
 	
 	private void onComplete(Actor lastActor) {
+		
+		System.out.println("Resetting swipe sprite");
+		
 		dragAndDrop.clear();
 		sourceSprite.remove();
 		dragSprite.remove();
+		lastValidTarget = null;
 		
 		startSprite = (GameSprite)lastActor;
 		interaction.reset();
