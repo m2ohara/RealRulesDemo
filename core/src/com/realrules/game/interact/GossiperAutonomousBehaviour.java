@@ -4,6 +4,8 @@ import java.util.Random;
 
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.AutoInteractSprite;
+import com.realrules.game.main.GameSprite.InteractorType;
+import com.realrules.game.main.GameSprite.Status;
 
 public class GossiperAutonomousBehaviour implements IInteraction {
 	
@@ -19,10 +21,11 @@ public class GossiperAutonomousBehaviour implements IInteraction {
 	public void interact(GameSprite interactor, GameSprite interactee) {
 		
 		//Influence if interactee is neutral and interactor isn't already interacting
-		if(!interactor.isIntermediateInteractor && !interactor.isInteracting && interactee.status == 0 && interactee.isActive && rand.nextFloat() > interactSuccess) {
+		if(!interactor.isInteracting && interactee.interactStatus == Status.NEUTRAL && rand.nextFloat() > interactSuccess) {
+			System.out.println("Starting auto interaction");
 			setInteractionResult(interactor, interactee);
 			
-			interactor.isInteracting = true; //TODO: Replace with isInteracting
+			interactor.isInteracting = true;
 			interactee.isActive = false;
 			interactSprite = new AutoInteractSprite(interactionStateLength, interactionStages, interactor, interactionType);
 			interactSprite.setAction();
@@ -33,7 +36,7 @@ public class GossiperAutonomousBehaviour implements IInteraction {
 	
 	private void setInteractionResult(GameSprite interactor, GameSprite interactee) {
 		
-		if(interactee.status == 0 && interactee.isActive == true) {
+		if(interactee.interactStatus == Status.NEUTRAL && interactee.isActive == true) {
 			//Oppose
 			if(rand.nextFloat() > promoteOpposeProb) {
 				interactionType = new OpposerInteractionType(interactor, interactee);

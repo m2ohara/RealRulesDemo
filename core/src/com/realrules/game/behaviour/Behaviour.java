@@ -1,13 +1,11 @@
 package com.realrules.game.behaviour;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 
 import com.realrules.game.act.IOnAct;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
-import com.realrules.game.main.WorldSystem;
+import com.realrules.game.main.GameSprite.InfluenceType;
 import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.touch.SpriteOrientation;
 import com.realrules.game.touch.TouchAction;
@@ -16,15 +14,12 @@ public class Behaviour implements ISpriteBehaviour {
 
 	//Members
 	private boolean isActive = true;
-//	private int influenceAmount;
 	private TouchAction onTouch;
 	public IOnAct actType;
 	private SpriteOrientation changeOrientation;
 	private IBehaviourProperties properties;
 	
 	public Behaviour(boolean isActive, IOnAct onAct, TouchAction touchAction, IBehaviourProperties properties, SpriteOrientation changeOrientation) {
-
-//		this.influenceAmount = properties.getInfluenceAmount();
 		
 		this.isActive = isActive;
 		this.actType = onAct;
@@ -78,7 +73,7 @@ public class Behaviour implements ISpriteBehaviour {
 		actType.changeSpriteOrientation();	
 	}
 	
-	public int getInfluenceType() {
+	public InfluenceType getInfluenceType() {
 		return properties.getInfluenceType();
 	}
 }

@@ -4,6 +4,8 @@ import java.util.Random;
 
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.AutoInteractSprite;
+import com.realrules.game.main.GameSprite.InteractorType;
+import com.realrules.game.main.GameSprite.Status;
 
 public class DeceiverAutonomousBehaviour implements IInteraction {
 	
@@ -18,7 +20,7 @@ public class DeceiverAutonomousBehaviour implements IInteraction {
 	public void interact(GameSprite interactor, GameSprite interactee) {
 		
 		//Influence if interactee is neutral and interactor isn't already interacting
-		if(!interactor.isIntermediateInteractor && !interactor.isInteracting && interactee.status == 0 && interactee.isActive && rand.nextFloat() > interactSuccess) {
+		if(interactor.interactorType == InteractorType.None && !interactor.isInteracting && interactee.interactStatus == Status.NEUTRAL && interactee.isActive && rand.nextFloat() > interactSuccess) {
 			setInteractionResult(interactor, interactee);
 			
 			interactor.isInteracting = true;
@@ -32,7 +34,7 @@ public class DeceiverAutonomousBehaviour implements IInteraction {
 	
 	private void setInteractionResult(GameSprite interactor, GameSprite interactee) {
 		
-		if(interactee.status == 0 && interactee.isActive == true) {
+		if(interactee.interactStatus == Status.NEUTRAL && interactee.isActive == true) {
 			//Oppose
 			interactionType = new OpposerInteractionType(interactor, interactee);
 		}

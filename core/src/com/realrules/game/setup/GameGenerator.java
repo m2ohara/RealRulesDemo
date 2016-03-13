@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 import com.realrules.game.main.Game.Head;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.GameSprite.Status;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.state.FollowerType;
 import com.realrules.game.state.PlayerState;
@@ -36,7 +37,7 @@ public class GameGenerator {
 			for(int y = 0; y < WorldSystem.get().getSystemHeight(); y++) {
 				GameSprite current = null;
 				float rand = crowdSetter.nextFloat();
-				if(rand < 0.33) {
+				if(rand < 33) {
 					current = new GameSprite(Head.GOSSIPER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(0).imagePath, true);
 				}
 				else if(rand >= 0.33 && rand < 0.66) {
@@ -46,7 +47,7 @@ public class GameGenerator {
 					current = new GameSprite(Head.DECEIVER, WorldSystem.get().getGameXCoords().get(x), WorldSystem.get().getGameYCoords().get(y), types.get(2).imagePath, true);
 				}
 				if(y == WorldSystem.get().getSystemHeight()-1 && x == starterX) {
-					current.status = 1;
+					current.interactStatus = Status.SELECTED;
 					current.setName("startingGameSprite");
 					current.setColor(Color.YELLOW);
 					GameProperties.get().swipeSprite.setStartSprite(current);

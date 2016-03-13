@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.realrules.game.interact.SwipeInteraction;
 import com.realrules.game.main.Game.Head;
+import com.realrules.game.main.GameSprite.Status;
 import com.realrules.game.state.PlayerState;
 
 public class GameProperties {
@@ -83,8 +84,8 @@ public class GameProperties {
 
 			GameSprite actorToAdd = new GameSprite(actor.getType(), actor.getCurrentX(), actor.getCurrentY(), actor.getFramesPath(), false);
 			actorToAdd.setValidOrientations();
-			if(((GameSprite)actorToRemove).status == 1) {
-				actorToAdd.status = 1;
+			if(((GameSprite)actorToRemove).interactStatus == Status.SELECTED) {
+				actorToAdd.interactStatus = Status.SELECTED;
 				actorToAdd.setColor(Color.YELLOW);
 			}
 			actorGroup.addActor(actorToAdd);

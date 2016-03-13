@@ -1,6 +1,7 @@
 package com.realrules.game.interact;
 
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.GameSprite.Status;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
 
@@ -65,7 +66,7 @@ public class Interactee {
 		GameSprite interactee = getInteractee(xGameCoord, yGameCoord, orientation);
 
 		//Does interactee exist, isn't influenced and isn't being influenced
-		if(interactee != null && interactee.status == 0 && interactee.isActive) {
+		if(interactee != null && interactee.interactStatus == Status.NEUTRAL && interactee.isActive) {
 			return true;
 		}
 		

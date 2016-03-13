@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Array;
 import com.realrules.game.main.Game.Head;
+import com.realrules.game.main.GameSprite.Status;
 import com.realrules.game.state.Follower;
 import com.realrules.game.state.PlayerState;
 
@@ -120,7 +121,7 @@ public class MoveableSprite
 			}
 
 			public void reset (Source source, Payload payload) {
-				if(((GameSprite)getActor()).status == 1)
+				if(((GameSprite)getActor()).interactStatus == Status.SELECTED)
 					getActor().setColor(Color.ORANGE);
 				else
 					getActor().setColor(Color.WHITE);

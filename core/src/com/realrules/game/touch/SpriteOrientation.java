@@ -8,6 +8,7 @@ import java.util.Random;
 
 import com.realrules.game.interact.Interactee;
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.GameSprite.Status;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
 
@@ -30,7 +31,7 @@ public class SpriteOrientation {
 	
 	public boolean cyclicChange() {
 		GameSprite sprite = WorldSystem.get().getMemberFromCoords(xGameCoord, yGameCoord);
-		if(sprite != null && sprite.status != 0) {
+		if(sprite != null && sprite.interactStatus != Status.NEUTRAL) {
 			return false;
 		}
 		else {

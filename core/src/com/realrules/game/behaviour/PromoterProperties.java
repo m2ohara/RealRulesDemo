@@ -1,11 +1,14 @@
 package com.realrules.game.behaviour;
 
+import com.realrules.game.main.GameSprite.InfluenceType;
+import com.realrules.game.main.GameSprite.Status;
+
 public class PromoterProperties implements IBehaviourProperties {
 
 	private float rotateP = 0.8f;
 	private float interactP = 0.4f;
 	private int influenceAmount = 3;
-	private int influenceType = 2;
+	private InfluenceType influenceType = InfluenceType.SUPPORT;
 
 	@Override
 	public float getRotateProbability() {
@@ -23,7 +26,7 @@ public class PromoterProperties implements IBehaviourProperties {
 	}
 	
 	@Override
-	public int getInfluenceType() {
+	public InfluenceType getInfluenceType() {
 		return influenceType;
 	}
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.GameSprite.InfluenceType;
 import com.realrules.game.state.GameScoreState.State;
 
 public class DefaultGameRules implements IGameRules {
@@ -31,10 +32,10 @@ public class DefaultGameRules implements IGameRules {
 		
 		for(Actor a : actors.getChildren()) {
 			GameSprite actor = (GameSprite) a;
-			if(actor.status == 1 || actor.status == 2) {
+			if(actor.influenceType == InfluenceType.SUPPORT) {
 				forPoints+=1;
 			}
-			else if(actor.status == 3) {
+			else if(actor.influenceType == InfluenceType.OPPOSE) {
 				againstPoints+=1;
 			}
 		}

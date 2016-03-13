@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.GameSprite.InfluenceType;
+import com.realrules.game.main.GameSprite.Status;
 
 public class SupporterInteractionType implements IInteractionType {
 	
@@ -29,14 +31,16 @@ public class SupporterInteractionType implements IInteractionType {
 	
 	//Swipe interaction
 	public void setStatus() {
-		interactor.status = 2;
+		interactor.interactStatus = Status.INFLUENCED;
+		interactor.influenceType = InfluenceType.SUPPORT;
 		System.out.println("Setting intermediate supporter");
 	}
 	
 	//On autonomous interaction complete
 	public void complete() {
-		interactee.status = 2;
-		interactor.isOrientationSet();
+		interactee.interactStatus = Status.INFLUENCED;
+		interactor.influenceType = InfluenceType.SUPPORT;
+		interactor.changeOrientationOnInvalid();
 		interactor.isInteracting = false;
 		interactee.isActive = true;
 		setInfluencedSprite();

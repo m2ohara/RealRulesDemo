@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.GameSprite.InfluenceType;
+import com.realrules.game.main.GameSprite.Status;
 
 public class OpposerInteractionType implements IInteractionType {
 	private GameSprite interactor;
@@ -28,14 +30,16 @@ public class OpposerInteractionType implements IInteractionType {
 	
 	//Swipe interaction
 	public void setStatus() {
-		interactor.status = 3;		
+		interactor.interactStatus = Status.INFLUENCED;
+		interactor.influenceType = InfluenceType.OPPOSE;
 		System.out.println("Setting intermediate opposer");
 	}
 	
 	//On autonomous interaction complete
 	public void complete() {
-		interactee.status = 3;
-		interactor.isOrientationSet();
+		interactee.interactStatus = Status.INFLUENCED;
+		interactor.influenceType = InfluenceType.OPPOSE;
+		interactor.changeOrientationOnInvalid();
 		interactor.isInteracting = false;
 		interactee.isActive = true;
 		setInfluencedSprite();

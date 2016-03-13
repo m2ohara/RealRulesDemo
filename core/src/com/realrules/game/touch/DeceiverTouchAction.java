@@ -10,6 +10,7 @@ import com.realrules.game.interact.OpposerInteractionType;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem;
+import com.realrules.game.main.GameSprite.Status;
 import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.state.GameScoreState;
 
@@ -117,7 +118,7 @@ public class DeceiverTouchAction extends TouchAction {
 		
 	private void setToLastFollower(GameSprite actor) {
 		actor.setColor(Color.YELLOW);
-		actor.status = 1;
+		actor.interactStatus = Status.SELECTED;
 	}
 	
 	private void setConnectorSprite(GameSprite lastHitActor) {

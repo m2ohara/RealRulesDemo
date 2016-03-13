@@ -37,9 +37,11 @@ public class GameSprite  extends Image {
 	public float startingX;
 	public float startingY;
 	public boolean isActive = true;
-	public int status = 0; //0 : neutral, 1 : for 2 : against
-	public boolean isIntermediateInteractor = false;
-	public boolean isFirstInteractor = false;
+	public Status interactStatus = Status.NEUTRAL;
+	public InfluenceType influenceType = null;
+	public InteractorType interactorType = InteractorType.None;
+//	public boolean isIntermediateInteractor = false;
+//	public boolean isFirstInteractor = false;
 	public int scoreStatus = 0;
 	
 	private ArrayList<Orientation> validDirections;
@@ -175,9 +177,14 @@ public class GameSprite  extends Image {
 		return behaviour.getOrientation();
 	}
 	
-	public boolean isOrientationSet() {
+	public boolean changeOrientationOnInvalid() {
 		return behaviour.changeOrientationOnInvalid();
 	}
+
+	public enum Status { NEUTRAL, SELECTED, INFLUENCED }
 	
+	public enum InfluenceType { OPPOSE, SUPPORT }
+	
+	public enum InteractorType { First, Intermediate, Last, None}
 	
 }

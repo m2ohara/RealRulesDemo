@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.Array;
 import com.realrules.game.main.Assets;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.GameSprite.InteractorType;
+import com.realrules.game.main.GameSprite.Status;
 import com.realrules.game.main.WorldSystem.Orientation;
 import com.realrules.game.touch.SpriteOrientation;
 
@@ -74,7 +76,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 		}
 		
 		//If not interacting increment states
-		if(!actor.isInteracting && !actor.isIntermediateInteractor) {
+		if(!actor.isInteracting && actor.interactorType == InteractorType.None) {
 			animateStateTime += delta;
 			attemptInteractStateTime += delta;
 		}
@@ -132,7 +134,7 @@ public class OnAnimateTalkingAct implements IOnAct{
 	
 	public void setFrame() {
 		//Based on rotation probability
-		if(actor.status > 1 && rand.nextFloat() < this.rotateP) {
+		if(actor.interactStatus == Status.INFLUENCED && rand.nextFloat() < this.rotateP) {
 			this.changeOrientation.onCyclicChange();
 			changeSpriteOrientation();
 		}

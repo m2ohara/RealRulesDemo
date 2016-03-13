@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.GameSprite.InteractorType;
+import com.realrules.game.main.GameSprite.Status;
 import com.realrules.game.main.SwipeInteractSprite;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
@@ -41,25 +43,26 @@ public class SwipeInteraction {
 			if(hitActor.isActive) {
 
 				//If first hit and is the current influenced actor
-				if(isFirst && hitActor.status == 1) {	
+				if(isFirst && hitActor.interactStatus == Status.SELECTED) {	
 					invalidInteraction = false;
 					interactor = hitActor;
 
 					System.out.println("First follower hit facing "+hitActor.getOrientation());
 				}
 				//If next
-				else if(interactor != null && !isFirst && !invalidInteraction && PlayerState.get().getInfluenceLimit() > hitCount && hitActor.status == 0 && isValidInteraction(hitActor)) {
+				else if(interactor != null && !isFirst && !invalidInteraction && PlayerState.get().getInfluenceLimit() > hitCount && hitActor.interactStatus == Status.NEUTRAL && isValidInteraction(hitActor)) {
 //					this.orientation = lastHitActor.getOrientation();
 //					if(isValidInteraction(hitActor)) {
 						lastHitActor.isActive = false;
 						hitActor.isActive = false;
 						//Set previous hit actor to passive follower
-						lastHitActor.isIntermediateInteractor = true;
+						lastHitActor.interactorType = InteractorType.Intermediate;
 						interact(lastHitActor, hitActor );
 						
 						setConnectorSprite(lastHitActor);
 						hitCount += 1;
 						GameScoreState.addUserPoints(1);
+						System.out.println("Next follower hit facing "+hitActor.getOrientation());
 //					}
 //					else {
 //						invalidInteraction = true;
@@ -68,6 +71,7 @@ public class SwipeInteraction {
 				}	
 				else {
 //					invalidInteraction = true;
+					System.out.println("No follower hit");
 					hitActor.isActive = true;
 					return false;
 				}
@@ -88,10 +92,10 @@ public class SwipeInteraction {
 	private void interact(GameSprite interactor, GameSprite interactee) {
 
 		//Influence if interactee is neutral and interactor isn't already interacting
-		if(interactee.status == 0) {
+		if(interactee.interactStatus == Status.NEUTRAL) {
 			if(firstInteraction == null) {
 				System.out.println("Assigning first interaction");
-				interactor.isFirstInteractor = true;
+				interactor.interactorType = InteractorType.First;
 				firstInteraction = new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, new IndividualInteractionType());
 			}
 			else {
@@ -115,7 +119,7 @@ public class SwipeInteraction {
 
 		boolean isValid = false;
 
-		if(lastHitActor != null && hitActor.status == 0) {
+		if(lastHitActor != null && hitActor.interactStatus == Status.NEUTRAL) {
 
 			if(lastHitActor.getOrientation() == Orientation.E) {
 				if(WorldSystem.get().getGameXCoords().indexOf(lastHitActor.startingX) == (WorldSystem.get().getGameXCoords().indexOf(hitActor.startingX)-1) 

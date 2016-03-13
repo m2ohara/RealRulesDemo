@@ -3,6 +3,7 @@ package com.realrules.game.touch;
 import java.util.ArrayList;
 
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.GameSprite.Status;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.WorldSystem.Orientation;
 
@@ -47,7 +48,7 @@ public abstract class TouchAction implements ITouchAction {
 	}
 	
 	public boolean isSelectedInteractor() {
-		if(WorldSystem.get().getMemberFromCoords(getInteractorX(), getInteractorY()).status == 1) {;
+		if(WorldSystem.get().getMemberFromCoords(getInteractorX(), getInteractorY()).interactStatus == Status.SELECTED) {;
 			return true;
 		}
 		return false;

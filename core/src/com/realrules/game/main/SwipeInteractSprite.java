@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.realrules.game.interact.IInteractionType;
+import com.realrules.game.main.GameSprite.InteractorType;
 import com.realrules.game.state.PlayerState;
 import com.realrules.game.state.GameScoreState;
 
@@ -49,7 +50,7 @@ public class SwipeInteractSprite extends Image{
 		this.interactionType.setInteracts(interactor, interactee);
 		
 		//If first interaction
-		if(interactor.isFirstInteractor) {
+		if(interactor.interactorType == InteractorType.First) {
 			startFirstInteraction();
 		}
 	}
@@ -90,15 +91,15 @@ public class SwipeInteractSprite extends Image{
 			scaleAction.finish();
 			this.remove();
 			
-			if(interactor.isFirstInteractor) {
+			if(interactor.interactorType == InteractorType.First) {
 				completeFirstInteraction();
 			}
 			//If intermediate interaction
-			else if(interactee.isIntermediateInteractor ) {
+			else if(interactor.interactorType == InteractorType.Intermediate) {
 				completeIntermediateInteraction();
 			}
 			//Last interaction
-			else{
+			else {
 				completeLastInteraction();
 			}
 		}
@@ -117,6 +118,7 @@ public class SwipeInteractSprite extends Image{
 	}
 	
 	private void completeFirstInteraction() {
+		interactionType.setStatus();
 		interactionType.setInfluencedSprite();
 		setInteractor();
 		setInteractee();
@@ -139,7 +141,7 @@ public class SwipeInteractSprite extends Image{
 	
 	private void setInteractor() {
 		interactor.behaviour.changeOrientation();
-		interactor.isIntermediateInteractor = false;
+		interactor.interactorType = InteractorType.None;
 	}
 	
 	private void setInteractee() {
@@ -156,7 +158,7 @@ public class SwipeInteractSprite extends Image{
 		}
 		
 		//Can last interactee interact on next swipe
-		if(interactee.isOrientationSet()) {
+		if(interactee.changeOrientationOnInvalid()) {
 			GameProperties.get().isAutoInteractionAllowed = false;
 		}		
 		interactee.isActive = true;

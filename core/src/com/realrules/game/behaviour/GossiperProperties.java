@@ -2,6 +2,8 @@ package com.realrules.game.behaviour;
 
 import java.util.Random;
 
+import com.realrules.game.main.GameSprite.InfluenceType;
+
 
 public class GossiperProperties implements IBehaviourProperties {
 	
@@ -19,8 +21,8 @@ public class GossiperProperties implements IBehaviourProperties {
 	public int getInfluenceAmount() {
 		return influenceAmount;
 	}
-	public int getInfluenceType() {
-		return rand.nextInt(2) + 2;
+	public InfluenceType getInfluenceType() {
+		return InfluenceType.values()[rand.nextInt(2)];
 	}
 
 }

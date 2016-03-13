@@ -1,6 +1,7 @@
 package com.realrules.game.interact;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.realrules.game.main.GameSprite.Status;
 import com.realrules.game.main.WorldSystem;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.WorldSystem.Orientation;
@@ -12,7 +13,7 @@ public class AutonomousInteraction {
 	public void interact(GameSprite interactor, Group actorGroup, Orientation orientation) {
 //		System.out.println("Interactor with status "+interactor.status);
 		// As long as interactor isn't neutral
-		if (interactor.status > 1) {
+		if (interactor.interactStatus == Status.INFLUENCED) {
 			GameSprite interactee = null;
 
 			// If facing towards the right

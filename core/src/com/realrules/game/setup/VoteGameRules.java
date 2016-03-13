@@ -4,6 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.GameSprite.InfluenceType;
+import com.realrules.game.main.GameSprite.Status;
 import com.realrules.game.state.GameScoreState.State;
 
 public class VoteGameRules implements IGameRules {
@@ -51,7 +53,7 @@ public class VoteGameRules implements IGameRules {
 		
 		for(Actor a : actors.getChildren()) {
 			GameSprite actor = (GameSprite) a;
-			if(actor.status == 1) {
+			if(actor.interactStatus == Status.SELECTED) {
 				if(winState == State.WIN) {
 					forVotes+=1;
 				}
@@ -59,10 +61,10 @@ public class VoteGameRules implements IGameRules {
 					againstVotes+=1;
 				}			
 			}
-			if(actor.status == 2) {
+			if(actor.influenceType == InfluenceType.SUPPORT) {
 				forVotes+=1;
 			}
-			else if(actor.status == 3) {
+			else if(actor.influenceType == InfluenceType.OPPOSE) {
 				againstVotes+=1;
 			}
 		}

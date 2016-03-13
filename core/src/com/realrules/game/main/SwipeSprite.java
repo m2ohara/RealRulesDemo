@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.realrules.game.interact.IInteractionType;
 import com.realrules.game.interact.SwipeInteraction;
+import com.realrules.game.main.GameSprite.Status;
 
 public class SwipeSprite {
 	
@@ -94,7 +95,7 @@ public class SwipeSprite {
 						isValid = true;
 						lastValidTarget = target;
 					}
-					else if(lastValidTarget != null) {
+					else if(((GameSprite)target).interactStatus == Status.NEUTRAL && lastValidTarget != null) {
 						System.out.println("Invalid interaction at " + x + ", " + y);
 						sourceSprite.setVisible(true);
 						isValid = false;
