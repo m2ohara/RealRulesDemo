@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
+import com.realrules.game.interact.individual.IndividualInteraction;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.GameSprite.InteractorType;
@@ -55,8 +56,6 @@ public class SwipeInteraction {
 //					if(isValidInteraction(hitActor)) {
 						lastHitActor.isActive = false;
 						hitActor.isActive = false;
-						//Set previous hit actor to passive follower
-						lastHitActor.interactorType = InteractorType.Intermediate;
 						interact(lastHitActor, hitActor );
 						
 						setConnectorSprite(lastHitActor);
@@ -96,11 +95,14 @@ public class SwipeInteraction {
 			if(firstInteraction == null) {
 				System.out.println("Assigning first interaction");
 				interactor.interactorType = InteractorType.First;
-				firstInteraction = new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, new IndividualInteractionType());
+				interactee.interactorType = InteractorType.Last;
+				firstInteraction = new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, new IndividualInteraction());
 			}
 			else {
 				System.out.println("Assigning next interaction");
-				new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, new IndividualInteractionType());
+				interactor.interactorType = InteractorType.Intermediate;
+				interactee.interactorType = InteractorType.Last;
+				new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, new IndividualInteraction());
 			}
 
 		}

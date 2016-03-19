@@ -95,11 +95,11 @@ public class SwipeInteractSprite extends Image{
 				completeFirstInteraction();
 			}
 			//If intermediate interaction
-			else if(interactor.interactorType == InteractorType.Intermediate) {
+			if(interactor.interactorType == InteractorType.Intermediate) {
 				completeIntermediateInteraction();
 			}
 			//Last interaction
-			else {
+			if(interactee.interactorType == InteractorType.Last){
 				completeLastInteraction();
 			}
 		}
