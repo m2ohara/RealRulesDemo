@@ -22,7 +22,7 @@ public class GossiperAutonomousBehaviour implements IInteraction {
 		
 		//Influence if interactee is neutral and interactor isn't already interacting
 		if(!interactor.isInteracting && interactee.interactStatus == Status.NEUTRAL && rand.nextFloat() > interactSuccess) {
-			System.out.println("Starting auto interaction");
+			System.out.println("Starting auto interaction for interactor: "+interactor.interactStatus+", interactee "+interactee.interactStatus);
 			setInteractionResult(interactor, interactee);
 			
 			interactor.isInteracting = true;

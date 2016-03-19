@@ -25,11 +25,15 @@ public class IndividualInteraction implements IInteractionType {
 		}
 		
 		if(interactor.interactorType == InteractorType.Intermediate) {
-			interactorInteraction = new IntermediateInteraction(interactor);
+			interactorInteraction = new IntermediateInteraction(interactor, interactor.influenceType);
+		}
+		
+		if(interactee.interactorType == InteractorType.Intermediate) {
+			interacteeInteraction = new IntermediateInteraction(interactee, interactor.influenceType);
 		}
 		
 		if(interactee.interactorType == InteractorType.Last) {
-			interacteeInteraction = new LastInteraction(interactee);
+			interacteeInteraction = new LastInteraction(interactee, interactor.influenceType);
 		}
 	}
 

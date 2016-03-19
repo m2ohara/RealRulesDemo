@@ -6,21 +6,24 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
+import com.realrules.game.main.GameSprite.InfluenceType;
 import com.realrules.game.main.GameSprite.InteractorType;
 import com.realrules.game.main.GameSprite.Status;
 
 public class IntermediateInteraction implements IIndividualInteraction {
 	
 	private GameSprite interactor;
+	private InfluenceType influenceType;
 	
-	public IntermediateInteraction(GameSprite interactor) {
+	public IntermediateInteraction(GameSprite interactor, InfluenceType influenceType) {
 		this.interactor = interactor;
+		this.influenceType = influenceType;
 	}
 	
 	public void setStatus() {
 		if(interactor.interactorType == InteractorType.Intermediate){
 			//Set interactee to interactor's influence type
-			interactor.influenceType = (interactor.behaviour.getInfluenceType());
+			interactor.influenceType = influenceType;
 			interactor.interactStatus = Status.INFLUENCED;
 		}
 	}
