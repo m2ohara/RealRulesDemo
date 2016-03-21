@@ -65,7 +65,7 @@ public class SwipeInteractSprite extends Image{
 	}
 	
 	public void startInteraction() {
-		System.out.println("Starting interaction");
+//		System.out.println("Starting interaction");
 		interactor.isActive = true;
 		GameProperties.get().isAutoInteractionAllowed = true;
 	}
@@ -91,17 +91,19 @@ public class SwipeInteractSprite extends Image{
 			scaleAction.finish();
 			this.remove();
 			
-			if(interactor.interactorType == InteractorType.First) {
-				completeFirstInteraction();
-			}
-			//If intermediate interaction
-			if(interactor.interactorType == InteractorType.Intermediate) {
-				completeIntermediateInteraction();
-			}
-			//Last interaction
-			if(interactee.interactorType == InteractorType.Last){
-				completeLastInteraction();
-			}
+//			if(interactor.interactorType == InteractorType.First) {
+//				completeFirstInteraction();
+//			}
+//			//If intermediate interaction
+//			if(interactor.interactorType == InteractorType.Intermediate) {
+//				completeIntermediateInteraction();
+//			}
+//			//Last interaction
+//			if(interactee.interactorType == InteractorType.Last){
+//				completeLastInteraction();
+//			}
+			
+			completeInteraction();
 		}
 		
 		//Interaction action finished
@@ -135,8 +137,15 @@ public class SwipeInteractSprite extends Image{
 		interactionType.setStatus();
 		interactionType.setInfluencedSprite();
 		setInteractor();
-		setSelectedInteractee();
-		GameProperties.get().resetTapCount();
+//		setSelectedInteractee();
+//		GameProperties.get().resetTapCount();
+	}
+	
+	private void completeInteraction() {
+		interactionType.setStatus();
+		interactionType.setInfluencedSprite();
+		setInteractor();
+		setInteractee();
 	}
 	
 	private void setInteractor() {
@@ -149,19 +158,19 @@ public class SwipeInteractSprite extends Image{
 	}
 	
 	
-	private void setSelectedInteractee() {
-		if(GameScoreState.validTouchAction()) {
-			interactee.setColor(Color.ORANGE);
-		}
-		else {
-			interactee.setColor(Color.YELLOW);
-		}
-		
-		//Can last interactee interact on next swipe
-		if(interactee.changeOrientationOnInvalid()) {
-			GameProperties.get().isAutoInteractionAllowed = false;
-		}		
-		interactee.isActive = true;
-	}
+//	private void setSelectedInteractee() {
+//		if(GameScoreState.validTouchAction()) {
+//			interactee.setColor(Color.ORANGE);
+//		}
+//		else {
+//			interactee.setColor(Color.YELLOW);
+//		}
+//		
+//		//Can last interactee interact on next swipe
+//		if(interactee.changeOrientationOnInvalid()) {
+//			GameProperties.get().isAutoInteractionAllowed = false;
+//		}		
+//		interactee.isActive = true;
+//	}
 
 }

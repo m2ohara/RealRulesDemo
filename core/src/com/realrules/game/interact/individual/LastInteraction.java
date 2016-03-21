@@ -1,6 +1,7 @@
 package com.realrules.game.interact.individual;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -10,6 +11,7 @@ import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.GameSprite.InfluenceType;
 import com.realrules.game.main.GameSprite.InteractorType;
 import com.realrules.game.main.GameSprite.Status;
+import com.realrules.game.state.GameScoreState;
 
 public class LastInteraction implements IIndividualInteraction {
 	
@@ -27,18 +29,35 @@ public class LastInteraction implements IIndividualInteraction {
 			interactor.influenceType = influenceType;
 			interactor.interactStatus = Status.SELECTED;
 			interactor.changeOrientationOnInvalid();
-			System.out.println("Setting last interactee status: "+interactor.scoreStatus);
+			setSelectedInteractee();
+			GameProperties.get().resetTapCount();
+			System.out.println("Setting last interactee influence: "+interactor.influenceType);
 		}
 	}
 	
 	public void setInfluencedSprite() {
-		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(interactor.behaviour.getInfluenceType().ordinal()));
+		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(influenceType.ordinal()));
 
 		handSign.setOrigin(handSign.getWidth()/2, handSign.getHeight()/2);
 		handSign.setPosition(interactor.getStartingX(), interactor.getStartingY());
 		//Disable to GameSprite can be hit
 		handSign.setTouchable(Touchable.disabled);
 		GameProperties.get().addActorToStage(handSign);
+	}
+	
+	private void setSelectedInteractee() {
+		if(GameScoreState.validTouchAction()) {
+			interactor.setColor(Color.ORANGE);
+		}
+		else {
+			interactor.setColor(Color.YELLOW);
+		}
+		
+		//Can last interactee interact on next swipe
+		if(interactor.changeOrientationOnInvalid()) {
+			GameProperties.get().isAutoInteractionAllowed = false;
+		}		
+		interactor.isActive = true;
 	}
 
 }

@@ -8,7 +8,6 @@ import com.realrules.game.main.GameProperties;
 import com.realrules.game.main.GameSprite;
 import com.realrules.game.main.GameSprite.InfluenceType;
 import com.realrules.game.main.GameSprite.InteractorType;
-import com.realrules.game.main.GameSprite.Status;
 
 public class IntermediateInteraction implements IIndividualInteraction {
 	
@@ -24,12 +23,12 @@ public class IntermediateInteraction implements IIndividualInteraction {
 		if(interactor.interactorType == InteractorType.Intermediate){
 			//Set interactee to interactor's influence type
 			interactor.influenceType = influenceType;
-			interactor.interactStatus = Status.INFLUENCED;
+			System.out.println("Setting intermediate interactee influence: "+interactor.influenceType);
 		}
 	}
 	
 	public void setInfluencedSprite(){
-		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(interactor.behaviour.getInfluenceType().ordinal()));
+		Actor handSign = new Image(new TextureAtlas(Gdx.files.internal("sprites//Meep//Gestures//HandSigns.pack")).getRegions().get(influenceType.ordinal()));
 
 		handSign.setOrigin(handSign.getWidth()/2, handSign.getHeight()/2);
 		handSign.setPosition(interactor.getStartingX(), interactor.getStartingY());

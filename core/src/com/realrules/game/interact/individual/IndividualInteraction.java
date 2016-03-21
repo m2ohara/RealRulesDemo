@@ -24,16 +24,16 @@ public class IndividualInteraction implements IInteractionType {
 			interactorInteraction = new FirstInteraction(interactor);
 		}
 		
-		if(interactor.interactorType == InteractorType.Intermediate) {
-			interactorInteraction = new IntermediateInteraction(interactor, interactor.influenceType);
+		if(interactor.interactorType == InteractorType.Intermediate && interactor.influenceType == null) {
+			interactorInteraction = new IntermediateInteraction(interactor, interactor.behaviour.getInfluenceType());
 		}
 		
-		if(interactee.interactorType == InteractorType.Intermediate) {
-			interacteeInteraction = new IntermediateInteraction(interactee, interactor.influenceType);
+		if(interactee.interactorType == InteractorType.Intermediate && interactee.influenceType == null) {
+			interacteeInteraction = new IntermediateInteraction(interactee, interactor.behaviour.getInfluenceType());
 		}
 		
 		if(interactee.interactorType == InteractorType.Last) {
-			interacteeInteraction = new LastInteraction(interactee, interactor.influenceType);
+			interacteeInteraction = new LastInteraction(interactee, interactor.behaviour.getInfluenceType());
 		}
 	}
 
@@ -75,7 +75,6 @@ public class IndividualInteraction implements IInteractionType {
 	@Override
 	public void complete() {
 		interactee.influenceType = interactor.behaviour.getInfluenceType();
-		interactee.interactStatus = Status.INFLUENCED;
 		interactor.changeOrientationOnInvalid();
 		interactor.isInteracting = false;
 		interactee.isActive = true;

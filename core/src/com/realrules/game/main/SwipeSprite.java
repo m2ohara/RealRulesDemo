@@ -47,7 +47,7 @@ public class SwipeSprite {
 		sourceSprite.setPosition(x+sourceSprite.getWidth()/2, y+sourceSprite.getWidth()/2);
 		sourceSprite.setScale(WorldSystem.get().getLevelScaleFactor());
 		
-		System.out.println("Setting source sprite coords "+sourceSprite.getX()+", "+sourceSprite.getY());
+//		System.out.println("Setting source sprite coords "+sourceSprite.getX()+", "+sourceSprite.getY());
 		
 		GameProperties.get().getStage().addActor(sourceSprite);
 	}
@@ -74,7 +74,7 @@ public class SwipeSprite {
 				payload.setDragActor(dragSprite);
 				interaction.interactHit(startSprite, true);
 				sourceSprite.setVisible(false);
-				System.out.println("Starting drag");
+//				System.out.println("Starting drag");
 
 				return payload;
 			}
@@ -91,12 +91,12 @@ public class SwipeSprite {
 				if(!isHit) {
 					isHit = true;
 					if(interaction.interactHit((GameSprite)target, false)) {
-						System.out.println("Valid interaction at " + x + ", " + y);
+//						System.out.println("Valid interaction at " + x + ", " + y);
 						isValid = true;
 						lastValidTarget = target;
 					}
 					else if(((GameSprite)target).interactStatus == Status.NEUTRAL && lastValidTarget != null) {
-						System.out.println("Invalid interaction at " + x + ", " + y);
+//						System.out.println("Invalid interaction at " + x + ", " + y);
 						sourceSprite.setVisible(true);
 						isValid = false;
 					}
@@ -113,7 +113,7 @@ public class SwipeSprite {
 
 			public void drop (Source source, Payload payload, float x, float y, int pointer) {
 				
-				System.out.println("Dropped at " + x + ", " + y);
+//				System.out.println("Dropped at " + x + ", " + y);
 				
 				//Set dragActor new source coordinates
 				onComplete(getActor());
@@ -123,7 +123,7 @@ public class SwipeSprite {
 	
 	private void onComplete(Actor lastActor) {
 		
-		System.out.println("Resetting swipe sprite");
+//		System.out.println("Resetting swipe sprite");
 		
 		dragAndDrop.clear();
 		sourceSprite.remove();

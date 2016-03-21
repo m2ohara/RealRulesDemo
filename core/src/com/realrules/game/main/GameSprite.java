@@ -183,7 +183,7 @@ public class GameSprite  extends Image {
 
 	public enum Status { NEUTRAL, SELECTED, INFLUENCED }
 	
-	public enum InfluenceType { OPPOSE, SUPPORT }
+	public enum InfluenceType { SUPPORT, OPPOSE }
 	
 	public enum InteractorType { First, Intermediate, Last, None}
 	

@@ -92,16 +92,19 @@ public class SwipeInteraction {
 
 		//Influence if interactee is neutral and interactor isn't already interacting
 		if(interactee.interactStatus == Status.NEUTRAL) {
+			
+			interactee.interactStatus = Status.INFLUENCED;
+			interactee.interactorType = InteractorType.Last;
+			
 			if(firstInteraction == null) {
 				System.out.println("Assigning first interaction");
 				interactor.interactorType = InteractorType.First;
-				interactee.interactorType = InteractorType.Last;
 				firstInteraction = new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, new IndividualInteraction());
 			}
 			else {
 				System.out.println("Assigning next interaction");
+				interactor.interactStatus = Status.INFLUENCED;
 				interactor.interactorType = InteractorType.Intermediate;
-				interactee.interactorType = InteractorType.Last;
 				new SwipeInteractSprite(interactionStateLength, interactionStages, interactor, interactee, new IndividualInteraction());
 			}
 
