@@ -52,8 +52,6 @@ public class SwipeInteraction {
 				}
 				//If next
 				else if(interactor != null && !isFirst && !invalidInteraction && PlayerState.get().getInfluenceLimit() > hitCount && hitActor.interactStatus == Status.NEUTRAL && isValidInteraction(hitActor)) {
-//					this.orientation = lastHitActor.getOrientation();
-//					if(isValidInteraction(hitActor)) {
 						lastHitActor.isActive = false;
 						hitActor.isActive = false;
 						interact(lastHitActor, hitActor );
@@ -62,23 +60,14 @@ public class SwipeInteraction {
 						hitCount += 1;
 						GameScoreState.addUserPoints(1);
 						System.out.println("Next follower hit facing "+hitActor.getOrientation());
-//					}
-//					else {
-//						invalidInteraction = true;
-//						hitActor.isActive = true;
-//					}
+
 				}	
 				else {
-//					invalidInteraction = true;
 					System.out.println("No follower hit");
 					hitActor.isActive = true;
+					lastHitActor = null;
 					return false;
 				}
-
-//				if(invalidInteraction)
-//					hitActor.isActive = true;
-				
-//				lastHitActor = hitActor;
 				
 				lastHitActor = hitActor;
 				return true;

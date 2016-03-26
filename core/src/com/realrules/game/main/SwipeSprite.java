@@ -91,12 +91,12 @@ public class SwipeSprite {
 				if(!isHit) {
 					isHit = true;
 					if(interaction.interactHit((GameSprite)target, false)) {
-//						System.out.println("Valid interaction at " + x + ", " + y);
+						System.out.println("Valid interaction at " + x + ", " + y);
 						isValid = true;
 						lastValidTarget = target;
 					}
 					else if(((GameSprite)target).interactStatus == Status.NEUTRAL && lastValidTarget != null) {
-//						System.out.println("Invalid interaction at " + x + ", " + y);
+						System.out.println("Invalid interaction at " + x + ", " + y);
 						sourceSprite.setVisible(true);
 						isValid = false;
 					}
@@ -123,7 +123,7 @@ public class SwipeSprite {
 	
 	private void onComplete(Actor lastActor) {
 		
-//		System.out.println("Resetting swipe sprite");
+		System.out.println("Resetting swipe sprite");
 		
 		dragAndDrop.clear();
 		sourceSprite.remove();

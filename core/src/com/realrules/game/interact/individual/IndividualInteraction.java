@@ -21,18 +21,22 @@ public class IndividualInteraction implements IInteractionType {
 	
 	private void setInteraction() {
 		if(interactor.interactorType == InteractorType.First) {
+			System.out.println("Setting first interaction for interactor "+interactor.hashCode());
 			interactorInteraction = new FirstInteraction(interactor);
 		}
 		
 		if(interactor.interactorType == InteractorType.Intermediate && interactor.influenceType == null) {
+			System.out.println("Setting intermediate interaction for interactor "+interactor.hashCode());
 			interactorInteraction = new IntermediateInteraction(interactor, interactor.behaviour.getInfluenceType());
 		}
 		
 		if(interactee.interactorType == InteractorType.Intermediate && interactee.influenceType == null) {
+			System.out.println("Setting intermediate interaction for interactee "+interactee .hashCode());
 			interacteeInteraction = new IntermediateInteraction(interactee, interactor.behaviour.getInfluenceType());
 		}
 		
-		if(interactee.interactorType == InteractorType.Last) {
+		if(interactee.interactorType == InteractorType.Last && interactee.influenceType == null) {
+			System.out.println("Setting last interaction for interactee "+interactee.hashCode());
 			interacteeInteraction = new LastInteraction(interactee, interactor.behaviour.getInfluenceType());
 		}
 	}
@@ -62,11 +66,11 @@ public class IndividualInteraction implements IInteractionType {
 		}
 		
 		if(interactorInteraction != null) {
-			interactorInteraction.setInfluencedSprite();;
+			interactorInteraction.setInfluencedSprite();
 		}
 		
 		if(interacteeInteraction != null) {
-			interacteeInteraction.setInfluencedSprite();;
+			interacteeInteraction.setInfluencedSprite();
 		}
 		
 	}
