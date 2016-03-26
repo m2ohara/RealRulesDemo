@@ -1,5 +1,7 @@
 package com.realrules.game.main;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -20,8 +22,12 @@ public class SwipeSprite {
 	private DragAndDrop dragAndDrop;
 	private Actor sourceSprite;
 	private Actor dragSprite;
-	private Actor lastValidTarget;
+	private Actor lastValidActor;
 	private TextureRegion sourceTexture = new TextureAtlas(Gdx.files.internal("sprites//Meep//Effects//Effects.pack")).getRegions().get(0);
+	private ArrayList<Target> targets = new ArrayList<Target>();
+//	private boolean continueDrag = true;
+//	private boolean doOnComplete = true;
+//	private Target lastValidTarget = null;
 	
 	private static SwipeInteraction interaction = null;
 	private GameSprite startSprite = null;
@@ -82,10 +88,15 @@ public class SwipeSprite {
 	}
 	
 	private void addDropTarget(final Actor target) {
-		dragAndDrop.addTarget(new Target(target) {
+		
+		Target targetToAdd = new Target(target) {
 			boolean isHit = false;
 			boolean isValid = true;
-			public boolean drag (Source source, Payload payload, float x, float y, int pointer) {	
+			public boolean drag (Source source, Payload payload, float x, float y, int pointer) {
+				
+//				if(!continueDrag) {
+//					return true;
+//				}
 
 				//On hit
 				if(!isHit) {
@@ -93,12 +104,13 @@ public class SwipeSprite {
 					if(interaction.interactHit((GameSprite)target, false)) {
 						System.out.println("Valid interaction at " + x + ", " + y);
 						isValid = true;
-						lastValidTarget = target;
+						lastValidActor = target;
 					}
-					else if(((GameSprite)target).interactStatus == Status.NEUTRAL && lastValidTarget != null) {
+					else if(((GameSprite)target).interactStatus == Status.NEUTRAL && lastValidActor != null) {
 						System.out.println("Invalid interaction at " + x + ", " + y);
 						sourceSprite.setVisible(true);
 						isValid = false;
+//						continueDrag = false;
 					}
 				}
 				
@@ -107,33 +119,50 @@ public class SwipeSprite {
 
 			public void reset (Source source, Payload payload) {
 				if(!isValid) {
-					onComplete(lastValidTarget);
+//					TODO: Stop dragging and set to current target
+//					source.dragStop(null, this.getActor().getX(), this.getActor().getY(), this.getActor()., payload, this);
+					removeInvalidTargets(this);
+					onComplete(lastValidActor);
 				}
 			}
 
 			public void drop (Source source, Payload payload, float x, float y, int pointer) {
 				
-//				System.out.println("Dropped at " + x + ", " + y);
+				System.out.println("Dropped at " + x + ", " + y);
 				
 				//Set dragActor new source coordinates
-				onComplete(getActor());
+				onComplete(lastValidActor);
 			}
-		});
+		};
+		
+		targets.add(targetToAdd);
+		dragAndDrop.addTarget(targetToAdd);
+	}
+	
+	private void removeInvalidTargets(Target validTarget) {
+		for(Target targetToRemove : targets) {
+			if(!targetToRemove.equals(validTarget)) {
+				dragAndDrop.removeTarget(targetToRemove);
+			}
+		}
 	}
 	
 	private void onComplete(Actor lastActor) {
 		
-		System.out.println("Resetting swipe sprite");
-		
-		dragAndDrop.clear();
-		sourceSprite.remove();
-		dragSprite.remove();
-		lastValidTarget = null;
-		
-		startSprite = (GameSprite)lastActor;
-		interaction.reset();
-		
-		activate();
+//		if(doOnComplete) {
+			System.out.println("Resetting swipe sprite");
+//			doOnComplete = false;
+			
+			dragAndDrop.clear();
+			sourceSprite.remove();
+			dragSprite.remove();
+			lastValidActor = null;
+			
+			startSprite = (GameSprite)lastActor;
+			interaction.reset();
+			
+			activate();
+//		}
 	
 	}
 
